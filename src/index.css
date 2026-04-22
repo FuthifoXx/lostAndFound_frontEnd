@@ -276,6 +276,8 @@ ul {
 
 .nav-center {
   display: flex;
+  max-width: var(--max-width);
+  margin: 0 auto;
   justify-content: space-between;
   align-items: center;
 }
@@ -283,4 +285,5 @@ ul {
 .nav-links a {
   margin-left: 1rem;
   color: var(--grey-700);
+  font-weight: 500;
 }
