@@ -25,6 +25,7 @@ function Login() {
       await login(form)
       navigate('/dashboard')
     } catch (err) {
+      console.log(err)
       setError(err.message)
     }
   }
