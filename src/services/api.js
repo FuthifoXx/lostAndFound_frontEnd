@@ -1,25 +1,3 @@
-// const API_URL = 'http://localhost:5000/api/auth'
-
-import { data } from 'react-router-dom'
-
-// export const loginUser = async (data) => {
-//   const res = await fetch(`${API_URL}/login`, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data),
-//   })
-
-//   const result = await res.json()
-
-//   if (!res.ok) {
-//     throw new Error(result.message || 'Login failed')
-//   }
-
-//   return result
-// }
-
 const API_URL = 'http://localhost:5000/api'
 
 // Get token from localStorage
@@ -73,6 +51,25 @@ export const getMyItems = () => {
   return apiRequest('/lost-items/my-items')
 }
 
-export const createLostItem = (data) => {
-  return apiRequest('/lost-items', 'POST', data)
+// get my lost items
+export const createLostItem = async (data) => {
+  const token = JSON.parse(localStorage.getItem('user'))?.token
+
+  const res = await fetch('http://localhost:5000/api/lost-items', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // DO NOT set Content-Type here
+    },
+    body: data,
+  })
+
+  const result = await res.json()
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Failed to create item')
+  }
+
+  return result
 }
+

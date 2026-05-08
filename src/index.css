@@ -267,6 +267,15 @@ ul {
   /* margin: 0 2px; */
 }
 
+/* Dashboard Image */
+.item-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--borderRadius);
+  margin-bottom: 1rem;
+}
+
 /* Navbar */
 .nav {
   background: white;
@@ -286,4 +295,78 @@ ul {
   margin-left: 1rem;
   color: var(--grey-700);
   font-weight: 500;
+}
+
+/* DASHBOARD */
+
+.dashboard {
+  max-width: var(--max-width);
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* GRID */
+.items-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* CARD */
+.item-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow-2);
+  transition: var(--transition);
+}
+
+.item-card:hover {
+  box-shadow: var(--shadow-4);
+  transform: translateY(-3px);
+}
+
+/* HEADER */
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* DESCRIPTION */
+.item-desc {
+  margin: 1rem 0;
+  color: var(--grey-600);
+}
+
+/* FOOTER */
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--small-text);
+  color: var(--grey-500);
+}
+
+/* STATUS BADGES */
+.status {
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--borderRadius);
+  font-size: var(--extra-small-text);
+  text-transform: capitalize;
+}
+
+/* Status Colors */
+.status.pending {
+  background: var(--grey-200);
+}
+
+.status.matched {
+  background: var(--primary-200);
+  color: var(--primary-700);
+}
+
+.status.claimed {
+  background: var(--green-light);
+  color: var(--green-dark);
 }
