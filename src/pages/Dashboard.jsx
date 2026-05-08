@@ -1,9 +1,25 @@
 import { useEffect, useState } from 'react'
-import { getMyItems } from '../services/api'
+import { getMyItems, deleteLostItem } from '../services/api'
 
 function Dashboard() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this item?',
+    )
+
+    if (!confirmDelete) return
+
+    try {
+      await deleteLostItem(id)
+
+      setItems(items.filter((item) => item._id !== id))
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +64,14 @@ function Dashboard() {
               <div className='item-footer'>
                 <small>{item.location}</small>
                 <small>{new Date(item.dateLost).toLocaleDateString()}</small>
+                <div className='item-actions'>
+                  <button
+                    className='btn delete-btn'
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
