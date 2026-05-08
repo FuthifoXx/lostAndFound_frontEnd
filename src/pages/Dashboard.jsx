@@ -15,7 +15,7 @@ function Dashboard() {
     try {
       await deleteLostItem(id)
 
-      setItems(items.filter((item) => item._id !== id))
+      setItems((prevItems) => prevItems.filter((item) => item._id !== id))
     } catch (err) {
       console.log(err.message)
     }
@@ -64,6 +64,7 @@ function Dashboard() {
               <div className='item-footer'>
                 <small>{item.location}</small>
                 <small>{new Date(item.dateLost).toLocaleDateString()}</small>
+                  </div>
                 <div className='item-actions'>
                   <button
                     className='btn delete-btn'
@@ -72,7 +73,6 @@ function Dashboard() {
                     Delete
                   </button>
                 </div>
-              </div>
             </div>
           ))}
         </div>

@@ -74,5 +74,5 @@ export const createLostItem = async (data) => {
 }
 
 export const deleteLostItem = async (id) => {
-  return apiRequest(`/lost-item/${id}`, 'DELETE')
+  return apiRequest(`/lost-items/${id}`, 'DELETE')
 }
