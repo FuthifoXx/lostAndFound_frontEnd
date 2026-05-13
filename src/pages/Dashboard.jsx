@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { getMyItems, deleteLostItem } from '../services/api'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -64,15 +66,21 @@ function Dashboard() {
               <div className='item-footer'>
                 <small>{item.location}</small>
                 <small>{new Date(item.dateLost).toLocaleDateString()}</small>
-                  </div>
-                <div className='item-actions'>
-                  <button
-                    className='btn delete-btn'
-                    onClick={() => handleDelete(item._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+              </div>
+              <div className='item-actions'>
+                <button
+                  className='btn delete-btn'
+                  onClick={() => handleDelete(item._id)}
+                >
+                  Delete
+                </button>
+                <button
+                  className='btn edit-btn'
+                  onClick={() => navigate(`/edit-item/${item._id}`)}
+                >
+                  Edit
+                </button>
+              </div>
             </div>
           ))}
         </div>

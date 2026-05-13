@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import AddItem from './pages/AddItem'
 import MyItems from './pages/MyItems'
 import Notifications from './pages/Notifications'
+import EditItem from './pages/EditItem'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Route path='/add-item' element={<AddItem />} />
       <Route path='/my-items' element={<MyItems />} />
       <Route path='/notifications' element={<Notifications />} />
+      <Route path='/edit-item/:id' element={<EditItem />} />
     </Routes>
   )
 }

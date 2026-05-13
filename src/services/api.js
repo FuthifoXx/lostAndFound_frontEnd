@@ -76,3 +76,7 @@ export const createLostItem = async (data) => {
 export const deleteLostItem = async (id) => {
   return apiRequest(`/lost-items/${id}`, 'DELETE')
 }
+
+export const updateLostItem = async (id, data) => {
+  return apiRequest(`/lost-items/${id}`, 'PUT',data)
+}
