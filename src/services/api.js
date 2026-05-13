@@ -80,3 +80,7 @@ export const deleteLostItem = async (id) => {
 export const updateLostItem = async (id, data) => {
   return apiRequest(`/lost-items/${id}`, 'PUT',data)
 }
+
+export const getNotifications = async () => {
+  return apiRequest('/notifications')
+}
