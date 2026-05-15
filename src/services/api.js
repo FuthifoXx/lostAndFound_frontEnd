@@ -78,9 +78,21 @@ export const deleteLostItem = async (id) => {
 }
 
 export const updateLostItem = async (id, data) => {
-  return apiRequest(`/lost-items/${id}`, 'PUT',data)
+  return apiRequest(`/lost-items/${id}`, 'PUT', data)
 }
 
 export const getNotifications = async () => {
   return apiRequest('/notifications')
+}
+
+export const getAllItems = async () => {
+  const res = await fetch('http://localhost:5000/api/lost-items')
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Failed to fetch items')
+  }
+
+  return data.items
 }

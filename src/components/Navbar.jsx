@@ -11,6 +11,7 @@ function Navbar() {
           <Link to='/login'>Login</Link>
           <Link to='/add-item'>Add Item</Link>
           <Link to='/notifications'>Notifications</Link>
+          <Link to='/items'>Browse Items</Link>
         </div>
       </div>
     </nav>
