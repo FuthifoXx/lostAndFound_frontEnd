@@ -38,26 +38,28 @@ function ItemDetails() {
           <img src={item.image} alt={item.name} className='details-img' />
         )}
 
-        <div className="details-content">
+        <div className='details-content'>
           <h2>{item.name}</h2>
 
-          <P>{item.description}</P>
+          <p>{item.description}</p>
 
-          <div className="details-info">
-               <p>
-                    <strong>Location:</strong> {item.location}
-               </p>
+          <div className='details-info'>
+            <p>
+              <strong>Location:</strong> {item.location}
+            </p>
 
-               <p>
-                    <strong>Date Lost</strong>{' '}
-                    {new Date(item.dateLost).toLocaleDateString()}
-               </p>
+            <p>
+              <strong>Date Lost</strong>{' '}
+              {new Date(item.dateLost).toLocaleDateString()}
+            </p>
 
-               <p>
-                    <strong>Status</strong> {item.status}
-               </p>
+            <p>
+              <strong>Status:</strong>{' '}
+              <span className={`status-badge ${item.status}`}>
+                {item.status}
+              </span>
+            </p>
           </div>
-
         </div>
       </div>
     </div>
