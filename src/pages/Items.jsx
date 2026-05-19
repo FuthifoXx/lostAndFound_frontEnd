@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAllItems } from '../services/api'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
 function Items() {
@@ -54,29 +54,39 @@ function Items() {
         ) : (
           <div className='items-grid'>
             {items.map((item) => (
-              <div
+              <Link
+                to={`/items/${item._id}`}
+                className='item-link'
                 key={item._id}
-                className='item-card'
-                onClick={() => navigate(`/items/${item._id}`)}
               >
-                {item.image && (
-                  <img src={item.image} alt={item.name} className='item-img' />
-                )}
+                <div className='item-card'>
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className='item-img'
+                    />
+                  )}
 
-                <div className='item-header'>
-                  <h5>{item.name}</h5>
+                  <div className='item-header'>
+                    <h5>{item.name}</h5>
 
-                  <span className={`status ${item.status}`}>{item.status}</span>
+                    <span className={`status ${item.status}`}>
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <p className='item-desc'>{item.description}</p>
+
+                  <div className='item-footer'>
+                    <small>{item.location}</small>
+
+                    <small>
+                      {new Date(item.dateLost).toLocaleDateString()}
+                    </small>
+                  </div>
                 </div>
-
-                <p className='item-desc'>{item.description}</p>
-
-                <div className='item-footer'>
-                  <small>{item.location}</small>
-
-                  <small>{new Date(item.dateLost).toLocaleDateString()}</small>
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

@@ -476,6 +476,21 @@ ul {
   color: #41464b;
 }
 
+.item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item-card {
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.item-card:hover {
+  transform: translate(-5px);
+  box-shadow: var(--shadow-4);
+}
+
 /* Mobile */
 
 @media screen and (max-width: 768px) {
