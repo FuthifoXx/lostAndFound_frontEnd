@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import { getAllItems } from '../services/api'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
 function Items() {
+  const [search, setSearch] = useState('')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await getAllItems()
+        const data = await getAllItems(search)
 
         console.log('PUBLIC ITEMS:', data)
 
@@ -22,7 +25,7 @@ function Items() {
     }
 
     fetchItems()
-  }, [])
+  }, [search])
 
   if (loading) {
     return <div className='loading'></div>
@@ -36,12 +39,26 @@ function Items() {
         <h3 className='title'>Public Lost & Found Items</h3>
         <div className='title-underline'></div>
 
+        <div className='form-row search-row'>
+          <input
+            type='text'
+            className='form-input'
+            placeholder='Search items...'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
         {items.length === 0 ? (
           <p className='text'>No approved items found</p>
         ) : (
           <div className='items-grid'>
             {items.map((item) => (
-              <div key={item._id} className='item-card'>
+              <div
+                key={item._id}
+                className='item-card'
+                onClick={() => navigate(`/items/${item._id}`)}
+              >
                 {item.image && (
                   <img src={item.image} alt={item.name} className='item-img' />
                 )}

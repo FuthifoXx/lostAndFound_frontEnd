@@ -9,6 +9,7 @@ import Notifications from './pages/Notifications'
 import EditItem from './pages/EditItem'
 import Items from './pages/Items'
 import ProtectedRoute from './components/ProtectedRoute'
+import ItemDetails from './pages/ItemDetails'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path='/notifications' element={<Notifications />} />
       <Route path='/edit-item/:id' element={<EditItem />} />
       <Route path='/items' element={<Items />} />
+      <Route path='/items/:id' element={<ItemDetails />} />
     </Routes>
   )
 }

@@ -85,8 +85,10 @@ export const getNotifications = async () => {
   return apiRequest('/notifications')
 }
 
-export const getAllItems = async () => {
-  const res = await fetch('http://localhost:5000/api/lost-items')
+export const getAllItems = async (keyword = '') => {
+  const res = await fetch(
+    `http://localhost:5000/api/lost-items?keyword=${keyword}`,
+  )
 
   const data = await res.json()
 
@@ -95,4 +97,16 @@ export const getAllItems = async () => {
   }
 
   return data.items
+}
+
+export const getSingleItem = async (id) => {
+  const res = await fetch(`${API_URL}/lost-items/${id}`)
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Failed to fetch item')
+  }
+
+  return data
 }
