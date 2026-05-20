@@ -110,3 +110,19 @@ export const getSingleItem = async (id) => {
 
   return data
 }
+
+export const requestClaim = async (id) => {
+  return apiRequest(`/lost-item/${id}/claim`, 'POST')
+}
+
+export const getPendingClaims = async () => {
+  return apiRequest('/lost-items/pending-claims')
+}
+
+export const approveClaim = async (id) => {
+  return apiRequest(`/lost-items/${id}/approve-claim`, 'PUT')
+}
+
+export const rejectClaim = async (id) => {
+  return apiRequest(`/lost-items/${id}/reject-claim`, 'PUT')
+}

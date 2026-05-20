@@ -10,6 +10,7 @@ import EditItem from './pages/EditItem'
 import Items from './pages/Items'
 import ProtectedRoute from './components/ProtectedRoute'
 import ItemDetails from './pages/ItemDetails'
+import AdminClaims from './pages/AdminClaims'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path='/edit-item/:id' element={<EditItem />} />
       <Route path='/items' element={<Items />} />
       <Route path='/items/:id' element={<ItemDetails />} />
+      <Route path='/admin/claims' element={<AdminClaims />} />
     </Routes>
   )
 }

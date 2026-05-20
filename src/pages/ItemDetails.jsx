@@ -1,11 +1,30 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getSingleItem } from '../services/api'
+import { getSingleItem, requestClaim } from '../services/api'
 
 function ItemDetails() {
   const { id } = useParams()
   const [item, setItem] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [claimLoading, setClaimLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [error, seError] = useState('')
+
+  const handleClaim = async () => {
+    try {
+      setClaimLoading(true)
+      setError('')
+      setMessage('')
+
+      const data = await requestClaim(item._id)
+
+      setMessage(data.message)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setClaimLoading(false)
+    }
+  }
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -59,6 +78,18 @@ function ItemDetails() {
                 {item.status}
               </span>
             </p>
+
+            {message && <p className='alert alert-success'>{message}</p>}
+
+            {error && <p className='form-alert'>{error}</p>}
+
+            <button
+              className='btn claim-btn'
+              onClick={handleClaim}
+              disabled={claimLoading}
+            >
+              {claimLoading ? 'Requesting...' : 'Claim This Item'}
+            </button>
           </div>
         </div>
       </div>
