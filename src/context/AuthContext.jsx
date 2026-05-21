@@ -4,7 +4,9 @@ import { loginUser } from '../services/api'
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem('user')) || null
+  )
 
   // Load from localStorage
   useEffect(() => {

@@ -11,6 +11,9 @@ import Items from './pages/Items'
 import ProtectedRoute from './components/ProtectedRoute'
 import ItemDetails from './pages/ItemDetails'
 import AdminClaims from './pages/AdminClaims'
+import PartnerRoute from './components/PartnerRoute'
+import AdminRoute from './components/AdminRoute'
+import PendingItems from './pages/PendingItems'
 
 function App() {
   return (
@@ -33,6 +36,30 @@ function App() {
       <Route path='/items' element={<Items />} />
       <Route path='/items/:id' element={<ItemDetails />} />
       <Route path='/admin/claims' element={<AdminClaims />} />
+      <Route
+        path='/add-item'
+        element={
+          <PartnerRoute>
+            <AddItem />
+          </PartnerRoute>
+        }
+      />
+      <Route
+        path='/admin/claims'
+        element={
+          <AdminRoute>
+            <AdminClaims />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path='/pending-items'
+        element={
+          <AdminRoute >
+          <PendingItems />
+          </AdminRoute>
+        }
+      />
     </Routes>
   )
 }

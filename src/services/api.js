@@ -126,3 +126,13 @@ export const approveClaim = async (id) => {
 export const rejectClaim = async (id) => {
   return apiRequest(`/lost-items/${id}/reject-claim`, 'PUT')
 }
+
+//get pending items
+export const getPendingItems = () => {
+  return apiRequest('/lost-items/pending')
+}
+
+//approve item
+export const approveItem = (id) => {
+  return apiRequest(`/lost-item/${id}/approve`, 'PUT')
+}
