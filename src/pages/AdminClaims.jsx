@@ -5,6 +5,7 @@ import { getPendingClaims, approveClaim, rejectClaim } from '../services/api'
 function AdminClaims() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [processingId, setProcessingId] = useState(null)
 
   useEffect(() => {
     const fetchClaims = async () => {
@@ -24,21 +25,29 @@ function AdminClaims() {
 
   const handleApprove = async (id) => {
     try {
+      setProcessingId(id)
+
       await approveClaim(id)
 
       setItems((prev) => prev.filter((item) => item._id !== id))
     } catch (err) {
       console.log(err.message)
+    } finally {
+      setProcessingId(null)
     }
   }
 
   const handleReject = async (id) => {
     try {
+      setProcessingId(id)
+
       await rejectClaim(id)
 
       setItems((prev) => prev.filter((item) => item._id !== id))
     } catch (err) {
       console.log(err.message)
+    } finally {
+      setProcessingId(null)
     }
   }
 
@@ -53,7 +62,11 @@ function AdminClaims() {
       <div className='title-underline'></div>
 
       {items.length === 0 ? (
-        <p className='text'>No pending claims</p>
+        <div className='empty-state'>
+          <h4>No Pending Claims</h4>
+
+          <p>All claims have been reviewed</p>
+        </div>
       ) : (
         <div className='items-grid'>
           {items.map((item) => (
@@ -62,24 +75,56 @@ function AdminClaims() {
                 <img src={item.image} alt={item.name} className='item-img' />
               )}
 
-              <h4>{item.name}</h4>
+              <div className='claim-content'>
+                <h4>{item.name}</h4>
 
-              <p>{item.description}</p>
+                <p className='item-desc'>{item.description}</p>
 
+                <p>
+                  <strong>Location:</strong> {item.location}
+                </p>
+
+                <p>
+                  <strong>Date:</strong>{' '}
+                  {new Date(item.dateLost).toLocaleDateString()}
+                </p>
+
+                <p>
+                  <strong>Status:</strong>{' '}
+                  <span className={`status ${item.claimStatus}`}>
+                    {item.claimStatus}
+                  </span>
+                </p>
+              </div>
+
+              {/* {item.claimedBy && (
               <p>
-                <strong>Location:</strong> {item.location}
+                <strong>Claimed By:</strong>{' '}
+                {item.claimedBy.email}
               </p>
+              )} */}
+
+              {item.matchedUser?.email && (
+                <p>
+                  <strong>Claimed By:</strong> {item.matchedUser.email}
+                </p>
+              )}
 
               <div className='item-actions'>
-                <button className='btn' onClick={() => handleApprove(item._id)}>
-                  Approve
+                <button
+                  className='btn'
+                  disabled={processingId === item._id}
+                  onClick={() => handleApprove(item._id)}
+                >
+                  {processingId === item._id ? 'Processing...' : 'Approve'}
                 </button>
 
                 <button
                   className='btn delete-btn'
+                  disabled={processingId === item._id}
                   onClick={() => handleReject(item._id)}
                 >
-                  Reject
+                  {processingId === item._id ? 'Processing...' : 'Reject'}
                 </button>
               </div>
             </div>

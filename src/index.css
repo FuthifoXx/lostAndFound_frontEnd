@@ -502,3 +502,24 @@ ul {
     min-height: 250px;
   }
 }
+
+.status {
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.status.pending {
+  background: orange;
+}
+
+.status.approved {
+  background: green;
+}
+
+.status.rejected {
+  background: crimson;
+}
