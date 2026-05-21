@@ -11,8 +11,6 @@ function Notifications() {
       try {
         const data = await getNotifications()
 
-        console.log('NOTIFICATIONS:', data)
-
         setNotifications(data)
       } catch (err) {
         console.log(err.message)
@@ -34,26 +32,39 @@ function Notifications() {
 
       <div className='dashboard'>
         <h3 className='title'>Notifications</h3>
+
         <div className='title-underline'></div>
 
         {notifications.length === 0 ? (
-          <p className='text'>No notifications yet</p>
+          <div className='empty-state'>
+            <h4>No Notifications</h4>
+
+            <p>You are all caught up</p>
+          </div>
         ) : (
           <div className='items-grid'>
             {notifications.map((note) => (
               <div key={note._id} className='item-card'>
                 <div className='item-header'>
-                  <h5>{note.type.replace('_', ' ')}</h5>
+                  <h4>{note.type}</h4>
 
                   <span className={`status ${note.status}`}>{note.status}</span>
                 </div>
 
                 <p className='item-desc'>{note.message}</p>
 
-                <div className='item-footer'>
-                  <small>{note.channel}</small>
+                {note.item?.image && (
+                  <img
+                    src={note.item.image}
+                    alt={note.item.name}
+                    className='item-img'
+                  />
+                )}
 
-                  <small>{new Date(note.createdAt).toLocaleDateString()}</small>
+                <div className='item-footer'>
+                  <small>{new Date(note.createdAt).toLocaleString()}</small>
+
+                  <small>{note.channel}</small>
                 </div>
               </div>
             ))}

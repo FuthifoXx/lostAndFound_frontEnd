@@ -112,6 +112,13 @@ export const getSingleItem = async (id) => {
 }
 
 export const requestClaim = async (id) => {
+  await Notification.create({
+    user: item.user,
+    item: item._id,
+    type: 'CLAIM_REQUEST',
+    message: `A new claim request was submitted for ${item.name}`,
+    channel: 'EMAIL',
+  })
   return apiRequest(`/lost-item/${id}/claim`, 'POST')
 }
 
@@ -120,10 +127,26 @@ export const getPendingClaims = async () => {
 }
 
 export const approveClaim = async (id) => {
+  await Notification.create({
+    user: item.matchedUser,
+    item: item._id,
+    type: 'CLAIM_APPROVED',
+    message: `Your calim for ${item.name} was approved`,
+    channel: 'EMAIL',
+    status: 'pending',
+  })
   return apiRequest(`/lost-items/${id}/approve-claim`, 'PUT')
 }
 
 export const rejectClaim = async (id) => {
+  await Notification.create({
+    user: item.matchedUser,
+    item: item._id,
+    type: 'CLAIM_REJECTED',
+    message: `Your claim for ${item.name} was rejected`,
+    channel: 'EMAIL',
+    status: 'pending',
+  })
   return apiRequest(`/lost-items/${id}/reject-claim`, 'PUT')
 }
 
@@ -135,4 +158,9 @@ export const getPendingItems = () => {
 //approve item
 export const approveItem = (id) => {
   return apiRequest(`/lost-item/${id}/approve`, 'PUT')
+}
+
+//get notifications
+export const getNotifications = async () => {
+  return apiRequest('/notifications')
 }
