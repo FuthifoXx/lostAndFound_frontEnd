@@ -160,7 +160,10 @@ export const approveItem = (id) => {
   return apiRequest(`/lost-item/${id}/approve`, 'PUT')
 }
 
-//get notifications
-export const getNotifications = async () => {
-  return apiRequest('/notifications')
+export const markItemRecovered = async (id) => {
+  return apiRequest(`/lost-items/${id}/recover`, 'PUT')
+}
+
+export const closeItemCase = async (id) => {
+  return apiRequest(`/lost-items/${id}/close`, 'PUT')
 }

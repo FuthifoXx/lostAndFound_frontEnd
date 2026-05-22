@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import { getPendingClaims, approveClaim, rejectClaim } from '../services/api'
+import {
+  getPendingClaims,
+  approveClaim,
+  rejectClaim,
+  markItemRecovered,
+  closeItemCase,
+} from '../services/api'
 
 function AdminClaims() {
   const [items, setItems] = useState([])
@@ -48,6 +54,34 @@ function AdminClaims() {
       console.log(err.message)
     } finally {
       setProcessingId(null)
+    }
+  }
+
+  const handleRecovered = async (id) => {
+    try {
+      await markItemRecovered(id)
+
+      setItems((prev) =>
+        prev.map((item) =>
+          item._id === id ? { ...item, status: 'recovered' } : item,
+        ),
+      )
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const handleClose = async (id) => {
+    try {
+      await closeItemCase(id)
+
+      setItems((prev) =>
+        prev.map((item) =>
+          item._id === id ? { ...item, status: 'closed' } : item,
+        ),
+      )
+    } catch (err) {
+      console.log(err.message)
     }
   }
 
@@ -125,6 +159,20 @@ function AdminClaims() {
                   onClick={() => handleReject(item._id)}
                 >
                   {processingId === item._id ? 'Processing...' : 'Reject'}
+                </button>
+
+                <button
+                  className='btn'
+                  onClick={() => handleRecovered(item._id)}
+                >
+                  Mark Recovered
+                </button>
+
+                <button
+                  className='btn delete-btn'
+                  onClick={() => handleClose(item._id)}
+                >
+                  Close Case
                 </button>
               </div>
             </div>
