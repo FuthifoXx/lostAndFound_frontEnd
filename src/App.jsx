@@ -8,13 +8,15 @@ import MyItems from './pages/MyItems'
 import Notifications from './pages/Notifications'
 import EditItem from './pages/EditItem'
 import Items from './pages/Items'
-import ProtectedRoute from './components/ProtectedRoute'
 import ItemDetails from './pages/ItemDetails'
 import AdminClaims from './pages/AdminClaims'
-import PartnerRoute from './components/PartnerRoute'
-import AdminRoute from './components/AdminRoute'
 import PendingItems from './pages/PendingItems'
 import PartnerDashboard from './pages/PartnerDashboard'
+
+import Layout from './components/Layout'
+import ProtectedRoute from './components/ProtectedRoute'
+import PartnerRoute from './components/PartnerRoute'
+import AdminRoute from './components/AdminRoute'
 
 function App() {
   return (
@@ -22,51 +24,95 @@ function App() {
       <Route path='/' element={<Landing />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
+
+      <Route path='/items' element={<Items />} />
+      <Route path='/items/:id' element={<ItemDetails />} />
+
       <Route
         path='/dashboard'
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <Layout>
+              <Dashboard />
+            </Layout>
           </ProtectedRoute>
         }
       />
-      <Route path='/add-item' element={<AddItem />} />
-      <Route path='/my-items' element={<MyItems />} />
-      <Route path='/notifications' element={<Notifications />} />
-      <Route path='/edit-item/:id' element={<EditItem />} />
-      <Route path='/items' element={<Items />} />
-      <Route path='/items/:id' element={<ItemDetails />} />
-      <Route path='/admin/claims' element={<AdminClaims />} />
+
+      <Route
+        path='/notifications'
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Notifications />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/my-items'
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <MyItems />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/edit-item/:id'
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <EditItem />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path='/add-item'
         element={
           <PartnerRoute>
-            <AddItem />
+            <Layout>
+              <AddItem />
+            </Layout>
           </PartnerRoute>
         }
       />
-      <Route
-        path='/admin/claims'
-        element={
-          <AdminRoute>
-            <AdminClaims />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path='/pending-items'
-        element={
-          <AdminRoute>
-            <PendingItems />
-          </AdminRoute>
-        }
-      />
+
       <Route
         path='/partner'
         element={
           <PartnerRoute>
-            <PartnerDashboard />
+            <Layout>
+              <PartnerDashboard />
+            </Layout>
           </PartnerRoute>
+        }
+      />
+
+      <Route
+        path='/pending-items'
+        element={
+          <AdminRoute>
+            <Layout>
+              <PendingItems />
+            </Layout>
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path='/admin/claims'
+        element={
+          <AdminRoute>
+            <Layout>
+              <AdminClaims />
+            </Layout>
+          </AdminRoute>
         }
       />
     </Routes>
