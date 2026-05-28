@@ -160,14 +160,22 @@ export const approveItem = (id) => {
   return apiRequest(`/lost-item/${id}/approve`, 'PUT')
 }
 
+//mark item recovered
 export const markItemRecovered = async (id) => {
   return apiRequest(`/lost-items/${id}/recover`, 'PUT')
 }
 
+//close item case
 export const closeItemCase = async (id) => {
   return apiRequest(`/lost-items/${id}/close`, 'PUT')
 }
 
+//get dashboard stats
 export const getDashboardStats = async () => {
   return apiRequest('/lost-items/stats/dashboard')
+}
+
+//get partner items
+export const getPartnerItems = async () => {
+  return apiRequest('/lost-items/partner/items')
 }

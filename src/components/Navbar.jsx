@@ -21,6 +21,8 @@ function Navbar() {
 
           {user && <Link to='/notifications'>Notifications</Link>}
 
+          {isPartner && <Link to='/partner'>Partner Dashboard</Link>}
+
           {isPartner && <Link to='/add-item'>Upload Item</Link>}
 
           {isAdmin && <Link to='/pending-items'>Pending Items</Link>}

@@ -14,6 +14,7 @@ import AdminClaims from './pages/AdminClaims'
 import PartnerRoute from './components/PartnerRoute'
 import AdminRoute from './components/AdminRoute'
 import PendingItems from './pages/PendingItems'
+import PartnerDashboard from './pages/PartnerDashboard'
 
 function App() {
   return (
@@ -55,9 +56,17 @@ function App() {
       <Route
         path='/pending-items'
         element={
-          <AdminRoute >
-          <PendingItems />
+          <AdminRoute>
+            <PendingItems />
           </AdminRoute>
+        }
+      />
+      <Route
+        path='/partner'
+        element={
+          <PartnerRoute>
+            <PartnerDashboard />
+          </PartnerRoute>
         }
       />
     </Routes>
