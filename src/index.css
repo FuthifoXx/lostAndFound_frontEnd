@@ -523,3 +523,23 @@ ul {
 .status.rejected {
   background: crimson;
 }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #111827;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+}
+
+.stat-card h4 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}

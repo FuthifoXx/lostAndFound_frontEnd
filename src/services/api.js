@@ -167,3 +167,7 @@ export const markItemRecovered = async (id) => {
 export const closeItemCase = async (id) => {
   return apiRequest(`/lost-items/${id}/close`, 'PUT')
 }
+
+export const getDashboardStats = async () => {
+  return apiRequest('/lost-items/stats/dashboard')
+}
