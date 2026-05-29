@@ -27,6 +27,7 @@ function Sidebar() {
 
           <NavLink to='/partner'>Partner Dashboard</NavLink>
           <NavLink to='/add-item'>Upload Item</NavLink>
+          <NavLink to='/recovery-history'>Recovery History</NavLink>
         </div>
       )}
 
@@ -37,6 +38,7 @@ function Sidebar() {
           <NavLink to='/admin'>Admin Dashboard</NavLink>
           <NavLink to='/pending-items'>Pending Items</NavLink>
           <NavLink to='/admin/claims'>Pending Claims</NavLink>
+          <NavLink to='/recovery-history'>Recovery History</NavLink>
         </div>
       )}
     </aside>

@@ -13,6 +13,7 @@ import AdminClaims from './pages/AdminClaims'
 import PendingItems from './pages/PendingItems'
 import PartnerDashboard from './pages/PartnerDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import RecoveryHistory from './pages/RecoveryHistory'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -127,6 +128,16 @@ function App() {
           </AdminRoute>
         }
       />
+      <Route
+  path='/recovery-history'
+  element={
+    <PartnerRoute>
+      <Layout>
+        <RecoveryHistory />
+      </Layout>
+    </PartnerRoute>
+  }
+/>
     </Routes>
   )
 }
