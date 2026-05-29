@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAdminDashboardData } from '../services/api'
 
@@ -35,45 +36,101 @@ function AdminDashboard() {
           <h4>{stats.totalItems}</h4>
           <p>Total Items</p>
         </div>
+
         <div className='stat-card'>
           <h4>{stats.pendingItems}</h4>
           <p>Pending Items</p>
         </div>
+
         <div className='stat-card'>
           <h4>{stats.matchedItems}</h4>
           <p>Matched</p>
         </div>
+
         <div className='stat-card'>
           <h4>{stats.pendingClaims}</h4>
           <p>Pending Claims</p>
         </div>
+
         <div className='stat-card'>
           <h4>{stats.recoveredItems}</h4>
           <p>Recovered</p>
         </div>
       </div>
 
-      <h4>Recent Pending Items</h4>
-      <div className='items-grid'>
-        {recentPendingItems.map((item) => (
-          <div key={item._id} className='item-card'>
-            <h5>{item.name}</h5>
-            <p>{item.description}</p>
-            <small>{item.location}</small>
-          </div>
-        ))}
+      <div className='section-header'>
+        <h4>Recent Pending Items</h4>
+        <Link to='/pending-items' className='section-link'>
+          View all
+        </Link>
       </div>
 
-      <h4 style={{ marginTop: '2rem' }}>Recent Pending Claims</h4>
-      <div className='items-grid'>
-        {recentPendingClaims.map((item) => (
-          <div key={item._id} className='item-card'>
-            <h5>{item.name}</h5>
-            <p>{item.description}</p>
-            <small>{item.matchedUser?.email || 'No claimant email'}</small>
-          </div>
-        ))}
+      {recentPendingItems.length === 0 ? (
+        <div className='empty-state'>
+          <h4>No Pending Items</h4>
+          <p>All uploaded items have been reviewed.</p>
+        </div>
+      ) : (
+        <div className='items-grid'>
+          {recentPendingItems.map((item) => (
+            <div key={item._id} className='item-card compact-card'>
+              {item.image && (
+                <img src={item.image} alt={item.name} className='item-img' />
+              )}
+
+              <div className='item-header'>
+                <h5>{item.name}</h5>
+                <span className='status pending'>Pending</span>
+              </div>
+
+              <p className='item-desc'>{item.description}</p>
+
+              <div className='item-footer'>
+                <small>{item.location}</small>
+                <small>{item.partner?.name || 'No partner'}</small>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className='section-header'>
+        <h4>Recent Pending Claims</h4>
+        <Link to='/admin/claims' className='section-link'>
+          View all
+        </Link>
       </div>
+
+      {recentPendingClaims.length === 0 ? (
+        <div className='empty-state'>
+          <h4>No Pending Claims</h4>
+          <p>All claims have been reviewed.</p>
+        </div>
+      ) : (
+        <div className='items-grid'>
+          {recentPendingClaims.map((item) => (
+            <div key={item._id} className='item-card compact-card'>
+              {item.image && (
+                <img src={item.image} alt={item.name} className='item-img' />
+              )}
+
+              <div className='item-header'>
+                <h5>{item.name}</h5>
+                <span className={`status ${item.claimStatus}`}>
+                  {item.claimStatus}
+                </span>
+              </div>
+
+              <p className='item-desc'>{item.description}</p>
+
+              <div className='item-footer'>
+                <small>{item.matchedUser?.email || 'No claimant email'}</small>
+                <small>{item.partner?.name || 'No partner'}</small>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

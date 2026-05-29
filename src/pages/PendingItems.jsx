@@ -47,6 +47,7 @@ function PendingItems() {
   return (
     <div className='dashboard'>
       <h3 className='title'>Pending Items</h3>
+      <div className="title-underline"></div>
 
       <div className='items-grid'>
         {items.map((item) => (
