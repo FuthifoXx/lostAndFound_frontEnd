@@ -179,3 +179,8 @@ export const getDashboardStats = async () => {
 export const getPartnerItems = async () => {
   return apiRequest('/lost-items/partner/items')
 }
+
+//get admin dashboard data
+export const getAdminDashboardData = async () => {
+  return apiRequest('/lost-items/admin/dashboard')
+}

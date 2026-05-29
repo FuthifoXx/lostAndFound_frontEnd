@@ -12,6 +12,7 @@ import ItemDetails from './pages/ItemDetails'
 import AdminClaims from './pages/AdminClaims'
 import PendingItems from './pages/PendingItems'
 import PartnerDashboard from './pages/PartnerDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -111,6 +112,17 @@ function App() {
           <AdminRoute>
             <Layout>
               <AdminClaims />
+            </Layout>
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path='/admin'
+        element={
+          <AdminRoute>
+            <Layout>
+              <AdminDashboard />
             </Layout>
           </AdminRoute>
         }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 function Sidebar() {
@@ -9,17 +9,36 @@ function Sidebar() {
 
   return (
     <aside className='sidebar'>
-      <Link to='/'>Home</Link>
-      <Link to='/items'>Browse Items</Link>
+      <div className='sidebar-section'>
+        <p className='sidebar-label'>Main</p>
 
-      {user && <Link to='/dashboard'>Dashboard</Link>}
-      {user && <Link to='/notifications'>Notifications</Link>}
+        <NavLink to='/items'>Browse Items</NavLink>
 
-      {isPartner && <Link to='/partner'>Partner Dashboard</Link>}
-      {isPartner && <Link to='/add-item'>Upload Item</Link>}
+        {user && <NavLink to='/notifications'>Notifications</NavLink>}
 
-      {isAdmin && <Link to='/pending-items'>Pending Items</Link>}
-      {isAdmin && <Link to='/admin/claims'>Pending Claims</Link>}
+        {user && !isAdmin && !isPartner && (
+          <NavLink to='/dashboard'>My Dashboard</NavLink>
+        )}
+      </div>
+
+      {isPartner && (
+        <div className='sidebar-section'>
+          <p className='sidebar-label'>Partner</p>
+
+          <NavLink to='/partner'>Partner Dashboard</NavLink>
+          <NavLink to='/add-item'>Upload Item</NavLink>
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className='sidebar-section'>
+          <p className='sidebar-label'>Admin</p>
+
+          <NavLink to='/admin'>Admin Dashboard</NavLink>
+          <NavLink to='/pending-items'>Pending Items</NavLink>
+          <NavLink to='/admin/claims'>Pending Claims</NavLink>
+        </div>
+      )}
     </aside>
   )
 }
