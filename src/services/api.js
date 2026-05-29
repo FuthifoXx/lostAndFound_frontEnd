@@ -184,3 +184,7 @@ export const getPartnerItems = async () => {
 export const getAdminDashboardData = async () => {
   return apiRequest('/lost-items/admin/dashboard')
 }
+
+export const getRecoveryHistory = async () => {
+  return apiRequest('/lost-item/recovery-history')
+}
