@@ -185,6 +185,22 @@ export const getAdminDashboardData = async () => {
   return apiRequest('/lost-items/admin/dashboard')
 }
 
+//get recovery history
 export const getRecoveryHistory = async () => {
   return apiRequest('/lost-item/recovery-history')
+}
+
+//mark as recovered
+export const markAsRecovered = async (id) => {
+  return apiRequest(`/lost-items/${id}/recover`, 'PUT')
+}
+
+//closeCase
+export const closeCase = async (id) => {
+  return apiRequest(`/lost-items/${id}/close`, 'PUT')
+}
+
+//get recovery analytics
+export const getRecoveryAnalytics = async () => {
+  return apiRequest('/lost-items/analytics/recovery')
 }

@@ -1,10 +1,47 @@
 import { useEffect, useState } from 'react'
-import { getPartnerItems } from '../services/api'
-import Navbar from '../components/Navbar'
+import { getPartnerItems, markAsRecovered, closeCase } from '../services/api'
 
 function PartnerDashboard() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const handleRecover = async (id) => {
+    try {
+      await markAsRecovered(id)
+
+      setItems((prev) =>
+        prev.map((item) =>
+          item._id === id
+            ? {
+                ...item,
+                status: 'recovered',
+              }
+            : item,
+        ),
+      )
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const handleClose = async (id) => {
+    try {
+      await closeCase(id)
+
+      setItems((prev) =>
+        prev.map((item) =>
+          item._id === id
+            ? {
+                ...item,
+                status: 'closed',
+              }
+            : item,
+        ),
+      )
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
   useEffect(() => {
     const fetchPartnerItems = async () => {
@@ -27,8 +64,6 @@ function PartnerDashboard() {
 
   return (
     <>
-      <Navbar />
-
       <div className='dashboard'>
         <h3 className='title'>Partner Dashboard</h3>
         <div className='title-underline'></div>
@@ -73,6 +108,24 @@ function PartnerDashboard() {
                 <div className='item-footer'>
                   <small>{new Date(item.createdAt).toLocaleDateString()}</small>
                 </div>
+
+                {item.status === 'claimed' && (
+                  <button
+                    className='btn'
+                    onClick={() => handleRecover(item._id)}
+                  >
+                    Mark Recovered
+                  </button>
+                )}
+
+                {item.status === 'recovered' && (
+                  <button
+                    className='btn delete-btn'
+                    onClick={() => handleClose(item._id)}
+                  >
+                    Close Case
+                  </button>
+                )}
               </div>
             ))}
           </div>
