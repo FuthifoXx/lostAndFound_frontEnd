@@ -14,6 +14,8 @@ import PendingItems from './pages/PendingItems'
 import PartnerDashboard from './pages/PartnerDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import RecoveryHistory from './pages/RecoveryHistory'
+import RecoveryAnalytics from './pages/RecoveryAnalytics'
+import BranchPerformance from './pages/BranchPerformance'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -129,15 +131,35 @@ function App() {
         }
       />
       <Route
-  path='/recovery-history'
-  element={
-    <PartnerRoute>
-      <Layout>
-        <RecoveryHistory />
-      </Layout>
-    </PartnerRoute>
-  }
-/>
+        path='/recovery-history'
+        element={
+          <PartnerRoute>
+            <Layout>
+              <RecoveryHistory />
+            </Layout>
+          </PartnerRoute>
+        }
+      />
+      <Route
+        path='/analytics/recovery'
+        element={
+          <PartnerRoute>
+            <Layout>
+              <RecoveryAnalytics />
+            </Layout>
+          </PartnerRoute>
+        }
+      />
+      <Route
+        path='/analytics/branches'
+        element={
+          <AdminRoute>
+            <Layout>
+              <BranchPerformance />
+            </Layout>
+          </AdminRoute>
+        }
+      />
     </Routes>
   )
 }

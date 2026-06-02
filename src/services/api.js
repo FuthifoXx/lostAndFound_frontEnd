@@ -204,3 +204,8 @@ export const closeCase = async (id) => {
 export const getRecoveryAnalytics = async () => {
   return apiRequest('/lost-items/analytics/recovery')
 }
+
+//get branch performance
+export const getBranchPerformance = async () => {
+  return apiRequest('/lost-items/analytics/branches')
+}

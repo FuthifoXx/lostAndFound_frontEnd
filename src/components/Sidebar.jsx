@@ -28,6 +28,7 @@ function Sidebar() {
           <NavLink to='/partner'>Partner Dashboard</NavLink>
           <NavLink to='/add-item'>Upload Item</NavLink>
           <NavLink to='/recovery-history'>Recovery History</NavLink>
+          <NavLink to='/analytics/recovery'>Recovery Analytics</NavLink>
         </div>
       )}
 
@@ -39,6 +40,8 @@ function Sidebar() {
           <NavLink to='/pending-items'>Pending Items</NavLink>
           <NavLink to='/admin/claims'>Pending Claims</NavLink>
           <NavLink to='/recovery-history'>Recovery History</NavLink>
+          <NavLink to='/analytics/recovery'>Recovery Analytics</NavLink>
+          <NavLink to='/analytics/branches'>Branch Performance</NavLink>
         </div>
       )}
     </aside>
