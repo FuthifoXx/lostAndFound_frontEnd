@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { getRecoveryHistory } from '../services/api'
+import { useNavigate } from 'react-router-dom'
 
 function RecoveryHistory() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -78,6 +80,12 @@ function RecoveryHistory() {
                   {new Date(item.closedAt).toLocaleDateString()}
                 </p>
               )}
+              <button
+                className='btn btn-hipster'
+                onClick={() => navigate(`/items/${item._id}/timeline`)}
+              >
+                View Timeline
+              </button>
             </div>
           ))}
         </div>

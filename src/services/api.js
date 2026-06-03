@@ -209,3 +209,8 @@ export const getRecoveryAnalytics = async () => {
 export const getBranchPerformance = async () => {
   return apiRequest('/lost-items/analytics/branches')
 }
+
+//get item timeline
+export const getItemTimeline = async (id) => {
+  return apiRequest(`/lost-items/${id}/timeline`)
+}

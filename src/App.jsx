@@ -16,6 +16,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import RecoveryHistory from './pages/RecoveryHistory'
 import RecoveryAnalytics from './pages/RecoveryAnalytics'
 import BranchPerformance from './pages/BranchPerformance'
+import ItemTimeline from './pages/ItemTimeline'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -158,6 +159,16 @@ function App() {
               <BranchPerformance />
             </Layout>
           </AdminRoute>
+        }
+      />
+      <Route
+        path='/items/:id/timeline'
+        element={
+          <PartnerRoute>
+            <Layout>
+              <ItemTimeline />
+            </Layout>
+          </PartnerRoute>
         }
       />
     </Routes>

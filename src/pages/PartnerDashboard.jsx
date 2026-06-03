@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { getPartnerItems, markAsRecovered, closeCase } from '../services/api'
+import { useNavigate } from 'react-router-dom'
 
 function PartnerDashboard() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   const handleRecover = async (id) => {
     try {
@@ -109,23 +111,32 @@ function PartnerDashboard() {
                   <small>{new Date(item.createdAt).toLocaleDateString()}</small>
                 </div>
 
-                {item.status === 'claimed' && (
-                  <button
-                    className='btn'
-                    onClick={() => handleRecover(item._id)}
-                  >
-                    Mark Recovered
-                  </button>
-                )}
+                <div className='item-action'>
+                  {item.status === 'claimed' && (
+                    <button
+                      className='btn'
+                      onClick={() => handleRecover(item._id)}
+                    >
+                      Mark Recovered
+                    </button>
+                  )}
 
-                {item.status === 'recovered' && (
+                  {item.status === 'recovered' && (
+                    <button
+                      className='btn delete-btn'
+                      onClick={() => handleClose(item._id)}
+                    >
+                      Close Case
+                    </button>
+                  )}
+
                   <button
-                    className='btn delete-btn'
-                    onClick={() => handleClose(item._id)}
+                    className='btn btn-hipster'
+                    onClick={() => navigate(`/items/${item._id}/timeline`)}
                   >
-                    Close Case
+                    View Timeline
                   </button>
-                )}
+                </div>
               </div>
             ))}
           </div>

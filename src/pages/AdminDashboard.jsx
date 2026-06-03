@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAdminDashboardData } from '../services/api'
 
 function AdminDashboard() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +23,15 @@ function AdminDashboard() {
   }, [])
 
   if (loading) return <div className='loading'></div>
-  if (!data) return <p>Unable to load admin dashboard</p>
+
+  if (!data) {
+    return (
+      <div className='empty-state'>
+        <h4>Unable to load admin dashboard</h4>
+        <p>Please try again later.</p>
+      </div>
+    )
+  }
 
   const { stats, recentPendingItems, recentPendingClaims } = data
 
@@ -60,6 +69,7 @@ function AdminDashboard() {
 
       <div className='section-header'>
         <h4>Recent Pending Items</h4>
+
         <Link to='/pending-items' className='section-link'>
           View all
         </Link>
@@ -89,6 +99,15 @@ function AdminDashboard() {
                 <small>{item.location}</small>
                 <small>{item.partner?.name || 'No partner'}</small>
               </div>
+
+              <div className='item-actions'>
+                <button
+                  className='btn btn-hipster'
+                  onClick={() => navigate(`/items/${item._id}/timeline`)}
+                >
+                  View Timeline
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -96,6 +115,7 @@ function AdminDashboard() {
 
       <div className='section-header'>
         <h4>Recent Pending Claims</h4>
+
         <Link to='/admin/claims' className='section-link'>
           View all
         </Link>
@@ -126,6 +146,15 @@ function AdminDashboard() {
               <div className='item-footer'>
                 <small>{item.matchedUser?.email || 'No claimant email'}</small>
                 <small>{item.partner?.name || 'No partner'}</small>
+              </div>
+
+              <div className='item-actions'>
+                <button
+                  className='btn btn-hipster'
+                  onClick={() => navigate(`/items/${item._id}/timeline`)}
+                >
+                  View Timeline
+                </button>
               </div>
             </div>
           ))}
