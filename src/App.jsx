@@ -17,6 +17,7 @@ import RecoveryHistory from './pages/RecoveryHistory'
 import RecoveryAnalytics from './pages/RecoveryAnalytics'
 import BranchPerformance from './pages/BranchPerformance'
 import ItemTimeline from './pages/ItemTimeline'
+import PartnerClaims from './pages/PartnerClaims'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -167,6 +168,16 @@ function App() {
           <PartnerRoute>
             <Layout>
               <ItemTimeline />
+            </Layout>
+          </PartnerRoute>
+        }
+      />
+      <Route
+        path='/partner/claims'
+        element={
+          <PartnerRoute>
+            <Layout>
+              <PartnerClaims />
             </Layout>
           </PartnerRoute>
         }

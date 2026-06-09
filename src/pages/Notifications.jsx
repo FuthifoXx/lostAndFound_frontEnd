@@ -20,27 +20,65 @@ function Notifications() {
     fetchNotifications()
   }, [])
 
-  if (loading) {
-    return <div className='loading'></div>
-  }
+  if (loading) return <div className='loading'></div>
 
   return (
     <div className='dashboard'>
       <h3 className='title'>Notifications</h3>
-
       <div className='title-underline'></div>
 
       {notifications.length === 0 ? (
-        <p className='text'>No notifications yet</p>
+        <div className='empty-state'>
+          <h4>No Notifications</h4>
+          <p>You are all caught up.</p>
+        </div>
       ) : (
         <div className='items-grid'>
           {notifications.map((note) => (
             <div key={note._id} className='item-card'>
-              <h4>{note.type.replace('_', ' ')}</h4>
+              <div className='item-header'>
+                <h5>
+                  {note.type ? note.type.replace('_', ' ') : 'Notification'}
+                </h5>
 
-              <p>{note.message}</p>
+                <span className={`status ${note.status || 'pending'}`}>
+                  {note.status || 'pending'}
+                </span>
+              </div>
 
-              <small>{new Date(note.createdAt).toLocaleString()}</small>
+              <p className='item-desc'>{note.message}</p>
+
+              {note.item && (
+                <>
+                  {note.item.image && (
+                    <img
+                      src={note.item.image}
+                      alt={note.item.name}
+                      className='item-img'
+                    />
+                  )}
+
+                  <p>
+                    <strong>Item:</strong> {note.item.name}
+                  </p>
+
+                  <p>
+                    <strong>Location:</strong> {note.item.location}
+                  </p>
+
+                  <p>
+                    <strong>Item Status:</strong>{' '}
+                    <span className={`status ${note.item.status}`}>
+                      {note.item.status}
+                    </span>
+                  </p>
+                </>
+              )}
+
+              <div className='item-footer'>
+                <small>{note.channel || 'APP'}</small>
+                <small>{new Date(note.createdAt).toLocaleString()}</small>
+              </div>
             </div>
           ))}
         </div>

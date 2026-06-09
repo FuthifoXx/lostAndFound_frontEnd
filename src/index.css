@@ -346,11 +346,6 @@ ul {
   cursor: pointer;
 }
 
-.item-card:hover {
-  box-shadow: var(--shadow-4);
-  transform: translateY(-3px);
-}
-
 /* HEADER */
 .item-header {
   display: flex;
@@ -488,7 +483,7 @@ ul {
 }
 
 .item-card:hover {
-  transform: translate(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-4);
 }
 

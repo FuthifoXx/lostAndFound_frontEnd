@@ -29,6 +29,7 @@ function Sidebar() {
           <NavLink to='/add-item'>Upload Item</NavLink>
           <NavLink to='/recovery-history'>Recovery History</NavLink>
           <NavLink to='/analytics/recovery'>Recovery Analytics</NavLink>
+          <NavLink to='/partner/claims'>Claim Requests</NavLink>
         </div>
       )}
 
