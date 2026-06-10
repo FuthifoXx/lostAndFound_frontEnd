@@ -369,15 +369,29 @@ ul {
 
 /* STATUS BADGES */
 .status {
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--borderRadius);
-  font-size: var(--extra-small-text);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
   text-transform: capitalize;
+  font-weight: bold;
 }
 
-/* Status Colors */
 .status.pending {
-  background: var(--grey-200);
+  background: orange;
+}
+
+.status.sent,
+.status.approved,
+.status.claimed,
+.status.recovered,
+.status.closed {
+  background: green;
+}
+
+.status.failed,
+.status.rejected {
+  background: crimson;
 }
 
 .status.matched {
@@ -385,9 +399,8 @@ ul {
   color: var(--primary-700);
 }
 
-.status.claimed {
-  background: var(--green-light);
-  color: var(--green-dark);
+.status.none {
+  background: var(--grey-400);
 }
 
 /* ITEM DETAILS */

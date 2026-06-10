@@ -18,6 +18,7 @@ import RecoveryAnalytics from './pages/RecoveryAnalytics'
 import BranchPerformance from './pages/BranchPerformance'
 import ItemTimeline from './pages/ItemTimeline'
 import PartnerClaims from './pages/PartnerClaims'
+import ClaimRequests from './pages/ClaimRequests'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -178,6 +179,16 @@ function App() {
           <PartnerRoute>
             <Layout>
               <PartnerClaims />
+            </Layout>
+          </PartnerRoute>
+        }
+      />
+      <Route
+        path='/claim-requests'
+        element={
+          <PartnerRoute>
+            <Layout>
+              <ClaimRequests />
             </Layout>
           </PartnerRoute>
         }
