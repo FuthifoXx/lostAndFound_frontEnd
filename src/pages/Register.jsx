@@ -48,8 +48,9 @@ function Register() {
   }
 
   return (
-    <form className='form' onSubmit={handleSubmit}>
-      <h4>Register</h4>
+    <form className='form' onSubmit={handleSubmit} autoComplete='off'>
+      <h4 className='title'>Register</h4>
+      <div className="title-underline"></div>
 
       {error && <p className='form-alert'>{error}</p>}
       {success && <p className='alert alert-success'>{success}</p>}
@@ -77,6 +78,7 @@ function Register() {
             className='form-input'
             value={form.idNumber}
             onChange={handleChange}
+            placeholder='e.g. **********089'
           />
         </div>
       )}
@@ -115,6 +117,7 @@ function Register() {
           className='form-input'
           value={form.surname}
           onChange={handleChange}
+          placeholder='e.g. Maseko'
         />
       </div>
 
@@ -126,6 +129,7 @@ function Register() {
           className='form-input'
           value={form.initials}
           onChange={handleChange}
+          placeholder='e.g. GM'
         />
       </div>
 
@@ -149,6 +153,7 @@ function Register() {
           className='form-input'
           value={form.phone}
           onChange={handleChange}
+          placeholder='e.g. 0831234567'
         />
       </div>
 
@@ -160,6 +165,8 @@ function Register() {
           className='form-input'
           value={form.email}
           onChange={handleChange}
+          placeholder='user@mail.com'
+          autoComplete='email'
         />
       </div>
 
@@ -171,6 +178,7 @@ function Register() {
           className='form-input'
           value={form.password}
           onChange={handleChange}
+          autoComplete='new-password'
         />
       </div>
 
