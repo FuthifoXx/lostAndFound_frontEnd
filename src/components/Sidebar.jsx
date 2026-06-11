@@ -39,6 +39,7 @@ function Sidebar() {
           <p className='sidebar-label'>Admin</p>
 
           <NavLink to='/admin'>Admin Dashboard</NavLink>
+          <NavLink to='/admin/users'>User Management</NavLink>
           <NavLink to='/pending-items'>Pending Items</NavLink>
           <NavLink to='/admin/claims'>Pending Claims</NavLink>
           <NavLink to='/recovery-history'>Recovery History</NavLink>

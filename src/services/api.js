@@ -224,9 +224,14 @@ export const getAllUsers = async () => {
   return apiRequest('/auth/users')
 }
 
-//get user by id 
+//get user by id
 export const getUserById = async (id) => {
   return apiRequest(`/auth/users/${id}`)
+}
+
+//update user by id
+export const updateUserById = async (id, data) => {
+  return apiRequest(`/auth/users/${id}`, 'PUT', data)
 }
 
 //delete user by id
