@@ -19,6 +19,7 @@ import BranchPerformance from './pages/BranchPerformance'
 import ItemTimeline from './pages/ItemTimeline'
 import PartnerClaims from './pages/PartnerClaims'
 import ClaimRequests from './pages/ClaimRequests'
+import Profile from './pages/Profile'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -191,6 +192,16 @@ function App() {
               <ClaimRequests />
             </Layout>
           </PartnerRoute>
+        }
+      />
+      <Route
+        path='/profile'
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Profile />
+            </Layout>
+          </ProtectedRoute>
         }
       />
     </Routes>

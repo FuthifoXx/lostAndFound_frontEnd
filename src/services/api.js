@@ -218,3 +218,18 @@ export const updateMe = async (formData) => {
 export const deleteMe = async () => {
   return apiRequest('/auth/me', 'DELETE')
 }
+
+//get all users
+export const getAllUsers = async () => {
+  return apiRequest('/auth/users')
+}
+
+//get user by id 
+export const getUserById = async (id) => {
+  return apiRequest(`/auth/users/${id}`)
+}
+
+//delete user by id
+export const deleteUserById = async (id) => {
+  return apiRequest(`/auth/users/${id}`, 'DELETE')
+}
