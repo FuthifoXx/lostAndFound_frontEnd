@@ -45,6 +45,7 @@ function Sidebar() {
           <NavLink to='/recovery-history'>Recovery History</NavLink>
           <NavLink to='/analytics/recovery'>Recovery Analytics</NavLink>
           <NavLink to='/analytics/branches'>Branch Performance</NavLink>
+          <NavLink to='/admin/partners'>Partner Management</NavLink>
         </div>
       )}
     </aside>

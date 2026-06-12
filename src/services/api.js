@@ -238,3 +238,23 @@ export const updateUserById = async (id, data) => {
 export const deleteUserById = async (id) => {
   return apiRequest(`/auth/users/${id}`, 'DELETE')
 }
+
+//get partners
+export const getPartners = async () => {
+  return apiRequest('/partners')
+}
+
+//create partner
+export const createPartner = async (data) => {
+  return apiRequest('/partners', 'POST', data)
+}
+
+//verify partner
+export const verifyPartner = async (id) => {
+  return apiRequest(`/partners/${id}/verify`, 'PUT')
+}
+
+//assign user to partner
+export const assignUserToPartner = async (partnerId, userId) => {
+  return apiRequest(`/partners/${partnerId}/assign-user/${userId}`, 'PUT')
+}
