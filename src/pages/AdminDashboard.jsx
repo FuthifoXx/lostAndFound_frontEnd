@@ -68,6 +68,40 @@ function AdminDashboard() {
       </div>
 
       <div className='section-header'>
+        <h4>Quick Actions</h4>
+      </div>
+
+      <div className='items-grid'>
+        <div className='item-card' onClick={() => navigate('/admin/users')}>
+          <h5>User Management</h5>
+          <p>View, update, promote, or delete users.</p>
+        </div>
+
+        <div className='item-card' onClick={() => navigate('/admin/partners')}>
+          <h5>Partner Management</h5>
+          <p>Create, verify, and assign partners.</p>
+        </div>
+
+        <div className='item-card' onClick={() => navigate('/pending-items')}>
+          <h5>Pending Items</h5>
+          <p>Review uploaded found items.</p>
+        </div>
+
+        <div className='item-card' onClick={() => navigate('/admin/claims')}>
+          <h5>Pending Claims</h5>
+          <p>Review active ownership claims.</p>
+        </div>
+
+        <div
+          className='item-card'
+          onClick={() => navigate('/analytics/branches')}
+        >
+          <h5>Branch Performance</h5>
+          <p>Compare partner recovery activity.</p>
+        </div>
+      </div>
+
+      <div className='section-header'>
         <h4>Recent Pending Items</h4>
 
         <Link to='/pending-items' className='section-link'>
