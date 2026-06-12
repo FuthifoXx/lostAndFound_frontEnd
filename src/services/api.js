@@ -112,14 +112,7 @@ export const getSingleItem = async (id) => {
 }
 
 export const requestClaim = async (id) => {
-  await Notification.create({
-    user: item.user,
-    item: item._id,
-    type: 'CLAIM_REQUEST',
-    message: `A new claim request was submitted for ${item.name}`,
-    channel: 'EMAIL',
-  })
-  return apiRequest(`/lost-item/${id}/claim`, 'POST')
+  return apiRequest(`/lost-items/${id}/claim`, 'PUT')
 }
 
 export const getPendingClaims = async () => {
@@ -141,17 +134,7 @@ export const getPendingItems = () => {
 
 //approve item
 export const approveItem = (id) => {
-  return apiRequest(`/lost-item/${id}/approve`, 'PUT')
-}
-
-//mark item recovered
-export const markItemRecovered = async (id) => {
-  return apiRequest(`/lost-items/${id}/recover`, 'PUT')
-}
-
-//close item case
-export const closeItemCase = async (id) => {
-  return apiRequest(`/lost-items/${id}/close`, 'PUT')
+  return apiRequest(`/lost-items/${id}/approve`, 'PUT')
 }
 
 //get dashboard stats
@@ -171,7 +154,7 @@ export const getAdminDashboardData = async () => {
 
 //get recovery history
 export const getRecoveryHistory = async () => {
-  return apiRequest('/lost-item/recovery-history')
+  return apiRequest('/lost-items/recovery-history')
 }
 
 //mark as recovered
@@ -257,4 +240,14 @@ export const verifyPartner = async (id) => {
 //assign user to partner
 export const assignUserToPartner = async (partnerId, userId) => {
   return apiRequest(`/partners/${partnerId}/assign-user/${userId}`, 'PUT')
+}
+
+//get case notes
+export const getCaseNotes = async (id) => {
+  return apiRequest(`/case-notes/${id}/notes`)
+}
+
+//add case note
+export const addCaseNote = async (id, note) => {
+  return apiRequest(`/case-notes/${id}/notes`, 'POST', { note })
 }
