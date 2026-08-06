@@ -710,7 +710,7 @@ ul {
 
 .receipt-card {
   width: 100%;
-  max-width: 700px;
+  max-width: 750px;
   background: #fff;
   border-radius: 12px;
   padding: 2rem;
@@ -720,6 +720,35 @@ ul {
 .receipt-header {
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.receipt-header h1 {
+  color: var(--primary-500);
+  margin-bottom: .25rem;
+}
+
+.receipt-divider {
+  border-bottom: 2px solid #ddd;
+  margin: 1.5rem 0;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin: .6rem 0;
+}
+
+.receipt-image {
+  width: 180px;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 8px;
+}
+
+.receipt-note {
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .receipt-section {
@@ -752,6 +781,26 @@ ul {
 }
 
 .receipt-footer {
-  margin-top: 2rem;
   text-align: center;
+  margin: 2rem 0;
+}
+
+@media print {
+  body{
+    background: white;
+  }
+
+  .navbar,
+  .sidebar,
+  .item-actions,
+  .btn {
+    display: non !important;
+  }
+
+  .receipt-card {
+    box-shadow: none;
+    border: none;
+    width: 100%;
+    max-width: 100%;
+  }
 }
