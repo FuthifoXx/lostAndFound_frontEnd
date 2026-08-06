@@ -709,12 +709,12 @@ ul {
 }
 
 .receipt-card {
+  width: 100%;
   max-width: 700px;
-  margin: auto;
+  background: #fff;
+  border-radius: 12px;
   padding: 2rem;
-  background: white;
-  border-radius: .5rem;
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-3);
 }
 
 .receipt-header {
@@ -723,11 +723,16 @@ ul {
 }
 
 .receipt-section {
-  margin: 1rem 0;
+  margin: 1.5rem 0;
 }
 
 .receipt-section p {
   margin: .6rem 0;
+}
+
+.receipt-section h4 {
+  margin-bottom: .5rem;
+  color: var(--primary-500) 
 }
 
 .item-actions {
@@ -738,4 +743,15 @@ ul {
 
 .item-actions .btn {
   min-width: 240px;
+}
+
+.receipt-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.receipt-footer {
+  margin-top: 2rem;
+  text-align: center;
 }
