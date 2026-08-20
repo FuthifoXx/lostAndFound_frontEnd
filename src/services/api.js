@@ -235,7 +235,7 @@ export const createPartner = async (data) => {
 //verify partner
 export const verifyPartner = async (id) => {
   return apiRequest(`/partners/${id}/verify`, 'PUT')
-}
+}    
 
 //assign user to partner
 export const assignUserToPartner = async (partnerId, userId) => {
@@ -257,7 +257,38 @@ export const getReceipt = async (itemId) => {
   return apiRequest(`/receipts/${itemId}`)
 }
 
-//Create receipt 
+//Create receipt
 export const createReceipt = async (itemId, data) => {
   return apiRequest(`/receipts/${itemId}`, 'POST', data)
 }
+
+//Download receipt PDF
+export const downloadReceiptPDF = async (itemId) => {
+  const token = getToken()
+
+  const res = await fetch(`${API_URL}/receipts/${itemId}/pdf`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  })
+
+  if (!res.ok) {
+    const result = await res.json()
+    throw new Error(result.message || 'Failed to download receipt')
+  }
+
+  return res.blob()
+}
+
+export const verifyReceipt = async (receiptNumber) => {
+  const res = await fetch(`${API_URL}/receipts/verify/${receiptNumber}`)
+
+  const result = await res.json()
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Receipt verification failed')
+  }
+
+  return result
+}
+

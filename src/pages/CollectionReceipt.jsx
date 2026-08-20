@@ -1,159 +1,307 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getReceipt } from '../services/api'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getReceipt, downloadReceiptPDF } from '../services/api'
 
 function CollectionReceipt() {
-  const { id } = useParams()
+  const { itemId } = useParams()
+  const navigate = useNavigate()
 
   const [receipt, setReceipt] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [downloading, setDownloading] = useState(false)
+
+  const handleDownloadPDF = async () => {
+    try {
+      setDownloading(true)
+
+      const blob = await downloadReceiptPDF(itemId)
+
+      const url = window.URL.createObjectURL(blob)
+
+      const link = document.createElement('a')
+
+      link.href = url
+      link.download = `${receipt.receiptNumber}.pdf`
+
+      document.body.appendChild(link)
+
+      link.click()
+
+      link.remove()
+
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error(err.message)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   useEffect(() => {
     const fetchReceipt = async () => {
       try {
-        const data = await getReceipt(id)
+        setError('')
+
+        const data = await getReceipt(itemId)
+
         setReceipt(data)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message)
       } finally {
         setLoading(false)
       }
     }
 
     fetchReceipt()
-  }, [id])
+  }, [itemId])
+
+  const maskDocument = (value) => {
+    if (!value) return 'Not provided'
+
+    if (value.length <= 4) {
+      return value
+    }
+
+    return `${'*'.repeat(value.length - 4)}${value.slice(-4)}`
+  }
+
+  const getDocumentDetails = () => {
+    if (receipt.idNumber) {
+      return {
+        type: 'RSA ID Number',
+        number: receipt.idNumber,
+      }
+    }
+
+    if (receipt.passportNumber) {
+      return {
+        type: 'Passport Number',
+        number: receipt.passportNumber,
+      }
+    }
+
+    if (receipt.documentNumber) {
+      return {
+        type: 'Document Number',
+        number: receipt.documentNumber,
+      }
+    }
+
+    return {
+      type: 'Identity Document',
+      number: 'Not provided',
+    }
+  }
 
   if (loading) {
     return <div className='loading'></div>
   }
 
-  if (!receipt) {
+  if (error || !receipt) {
     return (
       <div className='empty-state'>
-        <h4>Receipt Not Found</h4>
-        <p>No collection receipt exists for this item.</p>
+        <h4>Collection Receipt Unavailable</h4>
+        <p>{error || 'We could not find a receipt for this item.'}</p>
+
+        <button className='btn' onClick={() => navigate(-1)}>
+          Go Back
+        </button>
       </div>
     )
   }
 
+  const document = getDocumentDetails()
+
+  const ownerName = [
+    ...(receipt.owner?.firstNames || []),
+    receipt.owner?.surname,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className='receipt-container'>
-      <div className='receipt-card'>
+    <div className='receipt-page'>
+      <div className='receipt-actions no-print'>
+        <button className='btn' onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+
+        <button className='btn btn-primary' onClick={() => window.print()}>
+          🖨 Print
+        </button>
+
+        <button
+          className='btn btn-primary'
+          onClick={handleDownloadPDF}
+          disabled={downloading}
+        >
+          {downloading ? 'Generating PDF...' : '🧾 Download PDF'}
+        </button>
+      </div>
+
+      <div className='receipt'>
+        {/* Header */}
         <div className='receipt-header'>
-          <h1>Back2Owner</h1>
-          <p>Lost & Found Collection Receipt</p>
+          <div>
+            <h1>LOST & FOUND</h1>
+            <p>Management System</p>
+          </div>
+
+          <div className='receipt-title'>
+            <h2>COLLECTION RECEIPT</h2>
+
+            <p>
+              Receipt No:
+              <strong>{receipt.receiptNumber}</strong>
+            </p>
+          </div>
         </div>
 
-        <div className='receipt-divider'></div>
-
-        <div className='receipt-row'>
-          <strong>Receipt No:</strong>
-          <span>{receipt._id.slice(-8).toUpperCase()}</span>
+        {/* Receipt status */}
+        <div className='receipt-status'>
+          <span>PROPERTY SUCCESSFULLY RELEASED</span>
         </div>
 
-        <div className='receipt-row'>
-          <strong>Collection Date:</strong>
-          <span>{new Date(receipt.collectedAt).toLocaleString()}</span>
-        </div>
+        {/* Owner */}
+        <section className='receipt-section'>
+          <h3>Owner Details</h3>
 
-        <div className='receipt-divider'></div>
+          <div className='receipt-grid'>
+            <div>
+              <span className='receipt-label'>Full Name</span>
+              <strong>{ownerName || 'Not available'}</strong>
+            </div>
 
-        <h3>Partner Information</h3>
+            <div>
+              <span className='receipt-label'>Email</span>
+              <strong>{receipt.owner?.email || 'Not available'}</strong>
+            </div>
 
-        <div className='receipt-row'>
-          <strong>Partner</strong>
-          <span>{receipt.partner?.name}</span>
-        </div>
+            <div>
+              <span className='receipt-label'>{document.type}</span>
+              <strong>{maskDocument(document.number)}</strong>
+            </div>
+          </div>
+        </section>
 
-        <div className='receipt-row'>
-          <strong>Branch</strong>
-          <span>{receipt.partner?.branch}</span>
-        </div>
+        {/* Item */}
+        <section className='receipt-section'>
+          <h3>Property Details</h3>
 
-        <div className='receipt-divider'></div>
+          <div className='receipt-grid'>
+            <div>
+              <span className='receipt-label'>Item</span>
+              <strong>{receipt.item?.name || 'Not available'}</strong>
+            </div>
 
-        <h3>Recovered Item</h3>
+            <div>
+              <span className='receipt-label'>Description</span>
+              <strong>{receipt.item?.description || 'Not available'}</strong>
+            </div>
 
-        {receipt.item?.image && (
-          <img
-            src={receipt.item.image}
-            alt={receipt.item.name}
-            className='receipt-image'
-          />
+            <div>
+              <span className='receipt-label'>Location</span>
+              <strong>{receipt.item?.location || 'Not available'}</strong>
+            </div>
+          </div>
+
+          {receipt.item?.image && (
+            <div className='receipt-item-image'>
+              <img src={receipt.item.image} alt={receipt.item.name} />
+            </div>
+          )}
+        </section>
+
+        {/* Partner */}
+        <section className='receipt-section'>
+          <h3>Collection Location</h3>
+
+          <div className='receipt-grid'>
+            <div>
+              <span className='receipt-label'>Partner</span>
+              <strong>{receipt.partner?.name || 'Not available'}</strong>
+            </div>
+
+            <div>
+              <span className='receipt-label'>Branch</span>
+              <strong>{receipt.partner?.branch || 'Not available'}</strong>
+            </div>
+          </div>
+        </section>
+
+        {/* Collection */}
+        <section className='receipt-section'>
+          <h3>Collection Details</h3>
+
+          <div className='receipt-grid'>
+            <div>
+              <span className='receipt-label'>Collected By</span>
+              <strong>{receipt.collectedBy}</strong>
+            </div>
+
+            <div>
+              <span className='receipt-label'>Collection Date</span>
+              <strong>
+                {new Date(receipt.collectedAt).toLocaleDateString()}
+              </strong>
+            </div>
+
+            <div>
+              <span className='receipt-label'>Collection Time</span>
+              <strong>
+                {new Date(receipt.collectedAt).toLocaleTimeString()}
+              </strong>
+            </div>
+          </div>
+        </section>
+
+        {/* Notes */}
+        {receipt.notes && (
+          <section className='receipt-section'>
+            <h3>Collection Notes</h3>
+
+            <div className='receipt-notes'>
+              <p>{receipt.notes}</p>
+            </div>
+          </section>
         )}
 
-        <div className='receipt-row'>
-          <strong>Name</strong>
-          <span>{receipt.item?.name}</span>
-        </div>
+        {/* Signature */}
+        <section className='receipt-section'>
+          <h3>Confirmation</h3>
 
-        <div className='receipt-row'>
-          <strong>Description</strong>
-          <span>{receipt.item?.description}</span>
-        </div>
+          <p className='receipt-confirmation'>
+            I confirm that the property described above has been released to me
+            after verification of my identity.
+          </p>
 
-        <div className='receipt-row'>
-          <strong>Location</strong>
-          <span>{receipt.item?.location}</span>
-        </div>
+          <div className='signature-grid'>
+            <div className='signature-box'>
+              <div className='signature-line'>{receipt.signature || ''}</div>
 
-        <div className='receipt-row'>
-          <strong>Date Lost</strong>
-          <span>{new Date(receipt.item?.dateLost).toLocaleDateString()}</span>
-        </div>
+              <span>Owner Signature</span>
+            </div>
 
-        <div className='receipt-divider'></div>
+            <div className='signature-box'>
+              <div className='signature-line'></div>
 
-        <h3>Owner Details</h3>
+              <span>Partner Representative</span>
+            </div>
+          </div>
+        </section>
 
-        <div className='receipt-row'>
-          <strong>Name</strong>
-
-          <span>
-            {receipt.owner?.firstNames?.join(' ')} {receipt.owner?.surname}
-          </span>
-        </div>
-
-        <div className='receipt-row'>
-          <strong>Identity</strong>
-          <span>{receipt.item?.identityType}</span>
-        </div>
-
-        <div className='receipt-divider'></div>
-
-        <h3>Collection Details</h3>
-
-        <div className='receipt-row'>
-          <strong>Collected By</strong>
-          <span>{receipt.collectedBy}</span>
-        </div>
-
-        <div className='receipt-row'>
-          <strong>Owner Signature</strong>
-          <span>{receipt.signature}</span>
-        </div>
-
-        <div className='receipt-divider'></div>
-
-        <h3>Notes</h3>
-
-        <div className='receipt-notes'>
-          {receipt.notes || 'No additional notes.'}
-        </div>
-
-        <div className='receipt-divider'></div>
-
+        {/* Footer */}
         <div className='receipt-footer'>
-          <p>Thank you for using</p>
+          <p>
+            This receipt serves as confirmation of the collection and release of
+            the property described above.
+          </p>
 
-          <h2>Back2Owner</h2>
+          <strong>Lost & Found Management System</strong>
 
-          <p>Reconnecting People With Their Property</p>
+          <small>Receipt generated electronically.</small>
         </div>
-
-        <button className='btn btn-block' onClick={() => window.print()}>
-          🖨 Print Receipt
-        </button>
       </div>
     </div>
   )
