@@ -86,7 +86,7 @@ function Profile() {
   if (loading) return <div className='loading'></div>
 
   return (
-    <form className='form' onSubmit={handleSubmit}>
+    <form className='form' onSubmit={handleSubmit} autoComplete='off'>
       <h4>My Profile</h4>
 
       {error && <p className='form-alert'>{error}</p>}
@@ -140,6 +140,7 @@ function Profile() {
           name='email'
           value={form.email}
           onChange={handleChange}
+          autoComplete='email'
         />
       </div>
 
@@ -152,6 +153,7 @@ function Profile() {
           value={form.password}
           onChange={handleChange}
           placeholder='Leave blank to keep old password'
+          autoComplete='new-password'
         />
       </div>
 
