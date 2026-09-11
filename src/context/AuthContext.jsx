@@ -1,20 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { useState } from 'react'
 import { loginUser } from '../services/api'
-
-const AuthContext = createContext()
+import { AuthContext } from './auth-context'
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem('user')) || null
-  )
-
-  // Load from localStorage
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-  }, [])
+    return storedUser ? JSON.parse(storedUser) : null
+  })
 
   const login = async (formData) => {
     const data = await loginUser(formData)
@@ -34,5 +26,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   )
 }
-
-export const useAuth = () => useContext(AuthContext)
