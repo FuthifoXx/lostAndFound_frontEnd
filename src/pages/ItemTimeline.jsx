@@ -136,7 +136,7 @@ function ItemTimeline() {
                 className='btn btn-primary'
                 onClick={() => navigate(`/receipts/${item._id}`)}
               >
-                🧾 View Collection Receipt
+                🧾 Create / View Collection Receipt
               </button>
             </div>
           )}
