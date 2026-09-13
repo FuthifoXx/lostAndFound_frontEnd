@@ -44,6 +44,7 @@ function CollectionReceipt() {
   const handleDownloadPDF = async () => {
     try {
       setDownloading(true)
+      setError('')
 
       const blob = await downloadReceiptPDF(itemId)
 
@@ -53,6 +54,7 @@ function CollectionReceipt() {
 
       link.href = url
       link.download = `${receipt.receiptNumber}.pdf`
+      link.style.display = 'none'
 
       document.body.appendChild(link)
 
@@ -60,9 +62,11 @@ function CollectionReceipt() {
 
       link.remove()
 
-      window.URL.revokeObjectURL(url)
+      // Firefox may cancel a blob download when its URL is revoked in the
+      // same event loop tick as the synthetic click.
+      window.setTimeout(() => window.URL.revokeObjectURL(url), 1000)
     } catch (err) {
-      console.error(err.message)
+      setError(err.message || 'Failed to download receipt PDF')
     } finally {
       setDownloading(false)
     }
@@ -230,12 +234,14 @@ function CollectionReceipt() {
         </button>
       </div>
 
+      {error && <p className='form-alert no-print'>{error}</p>}
+
       <div className='receipt'>
         {/* Header */}
         <div className='receipt-header'>
           <div>
-            <h1>LOST & FOUND</h1>
-            <p>Management System</p>
+            <h1>BACK 2 OWNER</h1>
+            <p>Lost Property Management</p>
           </div>
 
           <div className='receipt-title'>
@@ -388,7 +394,7 @@ function CollectionReceipt() {
             the property described above.
           </p>
 
-          <strong>Lost & Found Management System</strong>
+          <strong>Back 2 Owner</strong>
 
           <small>Receipt generated electronically.</small>
         </div>
