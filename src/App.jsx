@@ -28,6 +28,7 @@ import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import PartnerRoute from './components/PartnerRoute'
 import AdminRoute from './components/AdminRoute'
+import UserRoute from './components/UserRoute'
 import VerifyReceipt from './pages/VerifyReceipt'
 
 function App() {
@@ -43,11 +44,11 @@ function App() {
       <Route
         path='/dashboard'
         element={
-          <ProtectedRoute>
+          <UserRoute>
             <Layout>
               <Dashboard />
             </Layout>
-          </ProtectedRoute>
+          </UserRoute>
         }
       />
 

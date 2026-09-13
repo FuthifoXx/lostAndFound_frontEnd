@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { getRoleHome } from '../utils/getRoleHome'
 
 function Login() {
   const { login } = useAuth()
@@ -23,8 +24,8 @@ function Login() {
 
     try {
       setError('')
-      await login(form)
-      navigate('/dashboard')
+      const authenticatedUser = await login(form)
+      navigate(getRoleHome(authenticatedUser.role), { replace: true })
     } catch (err) {
       console.log(err)
       setError(err.message)
