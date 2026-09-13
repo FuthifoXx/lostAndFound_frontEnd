@@ -65,6 +65,11 @@ function AdminDashboard() {
           <h4>{stats.recoveredItems}</h4>
           <p>Recovered</p>
         </div>
+
+        <div className='stat-card'>
+          <h4>{stats.closedCases}</h4>
+          <p>Closed Cases</p>
+        </div>
       </div>
 
       <div className='section-header'>
