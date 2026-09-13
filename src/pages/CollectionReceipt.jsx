@@ -205,7 +205,7 @@ function CollectionReceipt() {
     )
   }
 
-  const document = getDocumentDetails()
+  const identityDocument = getDocumentDetails()
 
   const ownerName = [
     ...(receipt.owner?.firstNames || []),
@@ -275,8 +275,8 @@ function CollectionReceipt() {
             </div>
 
             <div>
-              <span className='receipt-label'>{document.type}</span>
-              <strong>{maskDocument(document.number)}</strong>
+              <span className='receipt-label'>{identityDocument.type}</span>
+              <strong>{maskDocument(identityDocument.number)}</strong>
             </div>
           </div>
         </section>
