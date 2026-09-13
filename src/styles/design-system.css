@@ -276,8 +276,10 @@ textarea {
   top: 72px;
   z-index: 30;
   align-self: start;
+  flex-direction: column;
   width: 256px;
   height: calc(100vh - 72px);
+  overflow-x: hidden;
   overflow-y: auto;
   padding: var(--space-6) var(--space-4);
   border-right: 1px solid var(--grey-200);
@@ -350,6 +352,8 @@ textarea {
     position: fixed;
     inset: 72px auto 0 0;
     z-index: 50;
+    display: flex;
+    flex-direction: column;
     transform: translateX(-100%);
     transition: transform 180ms ease;
   }
