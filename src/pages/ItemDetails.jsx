@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { getSingleItem, requestClaim } from '../services/api'
 
 function ItemDetails() {
   const { id } = useParams()
+  const { user } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [item, setItem] = useState(null)
   const [loading, setLoading] = useState(true)
   const [claimLoading, setClaimLoading] = useState(false)
@@ -11,6 +15,12 @@ function ItemDetails() {
   const [error, setError] = useState('')
 
   const handleClaim = async () => {
+    if (!user) {
+      const returnTo = `${location.pathname}${location.search}`
+      navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`)
+      return
+    }
+
     try {
       setClaimLoading(true)
       setError('')

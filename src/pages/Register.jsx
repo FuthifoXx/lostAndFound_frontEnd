@@ -1,9 +1,19 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { registerUser } from '../services/api'
 
 function Register() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const requestedReturnTo = searchParams.get('returnTo')
+  const returnTo =
+    requestedReturnTo?.startsWith('/') &&
+    !requestedReturnTo.startsWith('//')
+      ? requestedReturnTo
+      : ''
+  const loginPath = returnTo
+    ? `/login?returnTo=${encodeURIComponent(returnTo)}`
+    : '/login'
 
   const [form, setForm] = useState({
     identityType: 'RSA_ID',
@@ -40,7 +50,7 @@ function Register() {
       setSuccess('Registration successful. Please login.')
 
       setTimeout(() => {
-        navigate('/login')
+        navigate(loginPath)
       }, 1000)
     } catch (err) {
       setError(err.message)
@@ -185,6 +195,10 @@ function Register() {
       <button type='submit' className='btn btn-block'>
         Register
       </button>
+
+      <p className='auth-switch'>
+        Already registered? <Link to={loginPath}>Login</Link>
+      </p>
     </form>
   )
 }
