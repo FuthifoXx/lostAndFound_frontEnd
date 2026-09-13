@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getPendingClaims, approveClaim, rejectClaim } from '../services/api'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function ClaimRequests() {
   const [claims, setClaims] = useState([])
@@ -49,48 +52,25 @@ function ClaimRequests() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Claim Requests</h3>
-      <div className='title-underline'></div>
+      <PageHeader
+        title='Claim Requests'
+        description='Review ownership claims that require a partner decision.'
+      />
 
       {claims.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Claim Requests</h4>
-          <p>There are no pending claims for review.</p>
-        </div>
+        <EmptyState
+          title='No claim requests'
+          description='There are no pending claims for review.'
+        />
       ) : (
         <div className='items-grid'>
           {claims.map((item) => (
-            <div key={item._id} className='item-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-
-              <div className='item-header'>
-                <h5>{item.name}</h5>
-                <span className={`status ${item.claimStatus}`}>
-                  {item.claimStatus}
-                </span>
-              </div>
-
-              <p className='item-desc'>{item.description}</p>
-
-              <p>
-                <strong>Location:</strong> {item.location}
-              </p>
-
-              {item.matchedUser && (
-                <p>
-                  <strong>Claimed By:</strong> {item.matchedUser.email}
-                </p>
-              )}
-
-              {item.partner && (
-                <p>
-                  <strong>Partner:</strong> {item.partner.name}
-                </p>
-              )}
-
-              <div className='item-actions'>
+            <ItemCard
+              key={item._id}
+              item={item}
+              status={item.claimStatus}
+              actions={
+                <>
                 <button
                   className='btn'
                   disabled={processingId === item._id}
@@ -106,8 +86,17 @@ function ClaimRequests() {
                 >
                   {processingId === item._id ? 'Processing...' : 'Reject'}
                 </button>
-              </div>
-            </div>
+                </>
+              }
+            >
+              <p><strong>Location</strong><span>{item.location}</span></p>
+              {item.matchedUser && (
+                <p><strong>Claimed by</strong><span>{item.matchedUser.email}</span></p>
+              )}
+              {item.partner && (
+                <p><strong>Partner</strong><span>{item.partner.name}</span></p>
+              )}
+            </ItemCard>
           ))}
         </div>
       )}
