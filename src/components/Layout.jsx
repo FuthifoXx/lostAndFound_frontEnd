@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Topbar from './Topbar'
 import Sidebar from './Sidebar'
@@ -7,6 +7,10 @@ function Layout({ children }) {
   const [sidebarPath, setSidebarPath] = useState(null)
   const { pathname } = useLocation()
   const sidebarOpen = sidebarPath === pathname
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
 
   return (
     <div className='app-shell'>

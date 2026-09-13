@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getNotifications } from '../services/api'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function Notifications() {
   const [notifications, setNotifications] = useState([])
@@ -24,63 +27,68 @@ function Notifications() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Notifications</h3>
-      <div className='title-underline'></div>
+      <PageHeader
+        title='Notifications'
+        description='Updates about matches, claims and item recovery activity.'
+      />
 
       {notifications.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Notifications</h4>
-          <p>You are all caught up.</p>
-        </div>
+        <EmptyState
+          title='No notifications'
+          description='You are all caught up.'
+        />
       ) : (
-        <div className='items-grid'>
-          {notifications.map((note) => (
-            <div key={note._id} className='item-card'>
-              <div className='item-header'>
-                <h5>
-                  {note.type ? note.type.replace('_', ' ') : 'Notification'}
-                </h5>
+        <div className='items-grid notification-grid'>
+          {notifications.map((note) => {
+            const title = note.type
+              ? note.type.replaceAll('_', ' ')
+              : 'Notification'
 
-                <span className={`status ${note.status || 'pending'}`}>
-                  {note.status || 'pending'}
-                </span>
-              </div>
+            const notificationItem = {
+              name: title,
+              description: note.message,
+              image: note.item?.image,
+            }
 
-              <p className='item-desc'>{note.message}</p>
-
-              {note.item && (
-                <>
-                  {note.item.image && (
-                    <img
-                      src={note.item.image}
-                      alt={note.item.name}
-                      className='item-img'
-                    />
-                  )}
-
-                  <p>
-                    <strong>Item:</strong> {note.item.name}
-                  </p>
-
-                  <p>
-                    <strong>Location:</strong> {note.item.location}
-                  </p>
-
-                  <p>
-                    <strong>Item Status:</strong>{' '}
-                    <span className={`status ${note.item.status}`}>
-                      {note.item.status}
-                    </span>
-                  </p>
-                </>
-              )}
-
-              <div className='item-footer'>
-                <small>{note.channel || 'APP'}</small>
-                <small>{new Date(note.createdAt).toLocaleString()}</small>
-              </div>
-            </div>
-          ))}
+            return (
+              <ItemCard
+                key={note._id}
+                item={notificationItem}
+                status={note.status || 'pending'}
+                badges={
+                  note.item?.status
+                    ? [
+                        {
+                          status: note.item.status,
+                          label: `Item: ${note.item.status}`,
+                        },
+                      ]
+                    : []
+                }
+                footer={
+                  <>
+                    <span>{note.channel || 'In-app'}</span>
+                    <time dateTime={note.createdAt}>
+                      {new Date(note.createdAt).toLocaleString()}
+                    </time>
+                  </>
+                }
+              >
+                {note.item && (
+                  <>
+                    <p>
+                      <strong>Item</strong>
+                      <span>{note.item.name}</span>
+                    </p>
+                    <p>
+                      <strong>Location</strong>
+                      <span>{note.item.location}</span>
+                    </p>
+                  </>
+                )}
+              </ItemCard>
+            )
+          })}
         </div>
       )}
     </div>
