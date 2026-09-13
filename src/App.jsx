@@ -27,6 +27,7 @@ import CollectionReceipt from './pages/CollectionReceipt'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import PartnerRoute from './components/PartnerRoute'
+import PartnerOrAdminRoute from './components/PartnerOrAdminRoute'
 import AdminRoute from './components/AdminRoute'
 import UserRoute from './components/UserRoute'
 import VerifyReceipt from './pages/VerifyReceipt'
@@ -142,21 +143,21 @@ function App() {
       <Route
         path='/recovery-history'
         element={
-          <PartnerRoute>
+          <PartnerOrAdminRoute>
             <Layout>
               <RecoveryHistory />
             </Layout>
-          </PartnerRoute>
+          </PartnerOrAdminRoute>
         }
       />
       <Route
         path='/analytics/recovery'
         element={
-          <PartnerRoute>
+          <PartnerOrAdminRoute>
             <Layout>
               <RecoveryAnalytics />
             </Layout>
-          </PartnerRoute>
+          </PartnerOrAdminRoute>
         }
       />
       <Route
@@ -172,11 +173,11 @@ function App() {
       <Route
         path='/items/:id/timeline'
         element={
-          <PartnerRoute>
+          <PartnerOrAdminRoute>
             <Layout>
               <ItemTimeline />
             </Layout>
-          </PartnerRoute>
+          </PartnerOrAdminRoute>
         }
       />
       <Route
