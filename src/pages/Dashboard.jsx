@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { getMyItems, getDashboardStats } from '../services/api'
 import { useNavigate } from 'react-router-dom'
 import { formatCalendarDate } from '../utils/formatCalendarDate'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
+import StatCard from '../components/StatCard'
 
 function Dashboard() {
   const [items, setItems] = useState([])
@@ -39,62 +43,44 @@ function Dashboard() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>My Lost Items</h3>
-      <div className='title-underline'></div>
+      <PageHeader
+        title='My Lost Items'
+        description='Track matches, claims and recovered property in one place.'
+      />
 
       <div className='stats-grid'>
-        <div className='stat-card'>
-          <h4>{stats.totalItems}</h4>
-          <p>Total Items</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.matchedItems}</h4>
-          <p>Matched</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.pendingClaims}</h4>
-          <p>Pending Claims</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.recoveredItems}</h4>
-          <p>Recovered</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.closedCases}</h4>
-          <p>Closed Cases</p>
-        </div>
+        <StatCard value={stats.totalItems} label='Total items' />
+        <StatCard value={stats.matchedItems} label='Matched' />
+        <StatCard value={stats.pendingClaims} label='Pending claims' />
+        <StatCard value={stats.recoveredItems} label='Recovered' />
+        <StatCard value={stats.closedCases} label='Closed cases' />
       </div>
 
       {items.length === 0 ? (
-        <p className='text'>No items found</p>
+        <EmptyState
+          title='No lost items'
+          description='Matched lost-property records will appear here.'
+        />
       ) : (
         <div className='items-grid'>
           {items.map((item) => (
-            <div key={item._id} className='item-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-              <div className='item-header'>
-                <h5>{item.name}</h5>
-                <div>
-                  <span className={`status ${item.status}`}>{item.status}</span>
-                  {item.claimStatus === 'pending' && (
-                    <span className='status pending'>Pending Claim</span>
-                  )}
-                </div>
-              </div>
-
-              <p className='item-desc'>{item.description}</p>
-
-              <div className='item-footer'>
-                <small>{item.location}</small>
-                <small>{formatCalendarDate(item.dateLost)}</small>
-              </div>
-              <div className='item-actions'>
+            <ItemCard
+              key={item._id}
+              item={item}
+              badges={
+                item.claimStatus === 'pending'
+                  ? [{ status: 'pending', label: 'Claim pending' }]
+                  : []
+              }
+              footer={
+                <>
+                  <span>{item.location}</span>
+                  <time dateTime={item.dateLost}>
+                    {formatCalendarDate(item.dateLost)}
+                  </time>
+                </>
+              }
+              actions={
                 <button
                   className='btn btn-block'
                   onClick={() => navigate(`/items/${item._id}`)}
@@ -105,8 +91,8 @@ function Dashboard() {
                       ? 'Review & Resubmit Claim'
                       : 'View Item / Claim'}
                 </button>
-              </div>
-            </div>
+              }
+            />
           ))}
         </div>
       )}

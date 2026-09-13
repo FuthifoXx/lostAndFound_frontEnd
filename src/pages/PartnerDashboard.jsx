@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getPartnerItems, markAsRecovered, closeCase } from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function PartnerDashboard() {
   const [items, setItems] = useState([])
@@ -67,51 +70,35 @@ function PartnerDashboard() {
   return (
     <>
       <div className='dashboard'>
-        <h3 className='title'>Partner Dashboard</h3>
-        <div className='title-underline'></div>
+        <PageHeader
+          title='Partner Dashboard'
+          description='Manage found items through recovery and case closure.'
+        />
 
         {items.length === 0 ? (
-          <div className='empty-state'>
-            <h4>No Uploaded Items</h4>
-            <p>Your branch has not uploaded any items yet.</p>
-          </div>
+          <EmptyState
+            title='No uploaded items'
+            description='Your branch has not uploaded any items yet.'
+          />
         ) : (
           <div className='items-grid'>
             {items.map((item) => (
-              <div key={item._id} className='item-card'>
-                {item.image && (
-                  <img src={item.image} alt={item.name} className='item-img' />
-                )}
-
-                <div className='item-header'>
-                  <h5>{item.name}</h5>
-                  <span className={`status ${item.status}`}>{item.status}</span>
-                </div>
-
-                <p className='item-desc'>{item.description}</p>
-
-                <p>
-                  <strong>Location:</strong> {item.location}
-                </p>
-
-                <p>
-                  <strong>Claim:</strong>{' '}
-                  <span className={`status ${item.claimStatus}`}>
-                    {item.claimStatus}
-                  </span>
-                </p>
-
-                {item.matchedUser && (
-                  <p>
-                    <strong>Matched User:</strong> {item.matchedUser.email}
-                  </p>
-                )}
-
-                <div className='item-footer'>
-                  <small>{new Date(item.createdAt).toLocaleDateString()}</small>
-                </div>
-
-                <div className='item-action'>
+              <ItemCard
+                key={item._id}
+                item={item}
+                badges={[
+                  {
+                    status: item.claimStatus,
+                    label: `Claim: ${item.claimStatus === 'none' ? 'None' : item.claimStatus}`,
+                  },
+                ]}
+                footer={
+                  <time dateTime={item.createdAt}>
+                    Added {new Date(item.createdAt).toLocaleDateString()}
+                  </time>
+                }
+                actions={
+                  <>
                   {item.status === 'claimed' && (
                     <button
                       className='btn'
@@ -136,8 +123,20 @@ function PartnerDashboard() {
                   >
                     View Timeline
                   </button>
-                </div>
-              </div>
+                  </>
+                }
+              >
+                <p>
+                  <strong>Location</strong>
+                  <span>{item.location}</span>
+                </p>
+                {item.matchedUser && (
+                  <p>
+                    <strong>Matched user</strong>
+                    <span>{item.matchedUser.email}</span>
+                  </p>
+                )}
+              </ItemCard>
             ))}
           </div>
         )}
