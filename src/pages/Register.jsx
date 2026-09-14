@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { registerUser } from '../services/api'
+import Navbar from '../components/Navbar'
 
 function Register() {
   const navigate = useNavigate()
@@ -27,179 +28,163 @@ function Register() {
     email: '',
     password: '',
   })
-
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    })
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
+      setSubmitting(true)
       setError('')
       setSuccess('')
-
       await registerUser(form)
+      setSuccess('Account created. Taking you to sign in…')
 
-      setSuccess('Registration successful. Please login.')
-
-      setTimeout(() => {
-        navigate(loginPath)
-      }, 1000)
+      window.setTimeout(() => navigate(loginPath), 1000)
     } catch (err) {
       setError(err.message)
+    } finally {
+      setSubmitting(false)
     }
   }
 
+  const identityField = {
+    RSA_ID: {
+      label: 'RSA ID number',
+      name: 'idNumber',
+      placeholder: 'e.g. 7908145414089',
+      inputMode: 'numeric',
+    },
+    PASSPORT: {
+      label: 'Passport number',
+      name: 'passportNumber',
+      placeholder: 'Enter passport number',
+    },
+    OTHER: {
+      label: 'Document number',
+      name: 'documentNumber',
+      placeholder: 'Enter document number',
+    },
+  }[form.identityType]
+
   return (
-    <form className='form' onSubmit={handleSubmit} autoComplete='off'>
-      <h4 className='title'>Register</h4>
-      <div className="title-underline"></div>
+    <div className='public-page auth-page registration-page'>
+      <Navbar />
 
-      {error && <p className='form-alert'>{error}</p>}
-      {success && <p className='alert alert-success'>{success}</p>}
+      <main className='registration-shell'>
+        <section className='registration-card'>
+          <header className='registration-heading'>
+            <div>
+              <p className='landing-eyebrow'>Create your secure profile</p>
+              <h1>Let your lost item find you.</h1>
+            </div>
+            <p>
+              Your identity details help Back 2 Owner privately match approved
+              lost property to you. They are not shown in public listings.
+            </p>
+          </header>
 
-      <div className='form-row'>
-        <label className='form-label'>Identity Type</label>
-        <select
-          name='identityType'
-          className='form-input'
-          value={form.identityType}
-          onChange={handleChange}
-        >
-          <option value='RSA_ID'>RSA ID</option>
-          <option value='PASSPORT'>Passport</option>
-          <option value='OTHER'>Other Document</option>
-        </select>
-      </div>
+          <form className='registration-form' onSubmit={handleSubmit}>
+            {returnTo && (
+              <p className='auth-notice'>Create an account to continue with this item.</p>
+            )}
+            {error && <p className='form-alert' role='alert'>{error}</p>}
+            {success && <p className='alert alert-success' role='status'>{success}</p>}
 
-      {form.identityType === 'RSA_ID' && (
-        <div className='form-row'>
-          <label className='form-label'>RSA ID Number</label>
-          <input
-            type='text'
-            name='idNumber'
-            className='form-input'
-            value={form.idNumber}
-            onChange={handleChange}
-            placeholder='e.g. **********089'
-          />
-        </div>
-      )}
+            <fieldset className='registration-section'>
+              <legend><span>1</span> Identity document</legend>
+              <p className='registration-help'>Choose the document used for private matching.</p>
 
-      {form.identityType === 'PASSPORT' && (
-        <div className='form-row'>
-          <label className='form-label'>Passport Number</label>
-          <input
-            type='text'
-            name='passportNumber'
-            className='form-input'
-            value={form.passportNumber}
-            onChange={handleChange}
-          />
-        </div>
-      )}
+              <div className='registration-grid'>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='identity-type'>Identity type</label>
+                  <select id='identity-type' name='identityType' className='form-input' value={form.identityType} onChange={handleChange}>
+                    <option value='RSA_ID'>RSA ID</option>
+                    <option value='PASSPORT'>Passport</option>
+                    <option value='OTHER'>Other document</option>
+                  </select>
+                </div>
 
-      {form.identityType === 'OTHER' && (
-        <div className='form-row'>
-          <label className='form-label'>Document Number</label>
-          <input
-            type='text'
-            name='documentNumber'
-            className='form-input'
-            value={form.documentNumber}
-            onChange={handleChange}
-          />
-        </div>
-      )}
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='identity-number'>{identityField.label}</label>
+                  <input
+                    id='identity-number'
+                    type='text'
+                    name={identityField.name}
+                    className='form-input'
+                    value={form[identityField.name]}
+                    onChange={handleChange}
+                    placeholder={identityField.placeholder}
+                    inputMode={identityField.inputMode}
+                    required
+                  />
+                </div>
+              </div>
+            </fieldset>
 
-      <div className='form-row'>
-        <label className='form-label'>Surname</label>
-        <input
-          type='text'
-          name='surname'
-          className='form-input'
-          value={form.surname}
-          onChange={handleChange}
-          placeholder='e.g. Maseko'
-        />
-      </div>
+            <fieldset className='registration-section'>
+              <legend><span>2</span> Personal details</legend>
+              <p className='registration-help'>Enter your names as they appear on your identity document.</p>
 
-      <div className='form-row'>
-        <label className='form-label'>Initials</label>
-        <input
-          type='text'
-          name='initials'
-          className='form-input'
-          value={form.initials}
-          onChange={handleChange}
-          placeholder='e.g. GM'
-        />
-      </div>
+              <div className='registration-grid registration-grid-three'>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='first-names'>First names</label>
+                  <input id='first-names' type='text' name='firstNames' className='form-input' value={form.firstNames} onChange={handleChange} placeholder='e.g. Gladman Mfanafuthi' autoComplete='given-name' required />
+                </div>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='surname'>Surname</label>
+                  <input id='surname' type='text' name='surname' className='form-input' value={form.surname} onChange={handleChange} placeholder='e.g. Maseko' autoComplete='family-name' required />
+                </div>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='initials'>Initials</label>
+                  <input id='initials' type='text' name='initials' className='form-input' value={form.initials} onChange={handleChange} placeholder='e.g. GM' required />
+                </div>
+              </div>
+            </fieldset>
 
-      <div className='form-row'>
-        <label className='form-label'>First Names</label>
-        <input
-          type='text'
-          name='firstNames'
-          className='form-input'
-          value={form.firstNames}
-          onChange={handleChange}
-          placeholder='e.g. Gladman Mfanafuthi'
-        />
-      </div>
+            <fieldset className='registration-section'>
+              <legend><span>3</span> Contact and security</legend>
+              <p className='registration-help'>Used for secure account access and recovery updates.</p>
 
-      <div className='form-row'>
-        <label className='form-label'>Phone</label>
-        <input
-          type='text'
-          name='phone'
-          className='form-input'
-          value={form.phone}
-          onChange={handleChange}
-          placeholder='e.g. 0831234567'
-        />
-      </div>
+              <div className='registration-grid'>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='register-phone'>Phone number</label>
+                  <input id='register-phone' type='tel' name='phone' className='form-input' value={form.phone} onChange={handleChange} placeholder='e.g. 083 123 4567' autoComplete='tel' inputMode='tel' required />
+                </div>
+                <div className='form-row'>
+                  <label className='form-label' htmlFor='register-email'>Email address</label>
+                  <input id='register-email' type='email' name='email' className='form-input' value={form.email} onChange={handleChange} placeholder='you@example.com' autoComplete='email' required />
+                </div>
+                <div className='form-row registration-password'>
+                  <label className='form-label' htmlFor='register-password'>Password</label>
+                  <div className='password-control'>
+                    <input id='register-password' type={showPassword ? 'text' : 'password'} name='password' className='form-input' value={form.password} onChange={handleChange} autoComplete='new-password' minLength='6' required />
+                    <button type='button' onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                      {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                  <small>Use at least 6 characters.</small>
+                </div>
+              </div>
+            </fieldset>
 
-      <div className='form-row'>
-        <label className='form-label'>Email</label>
-        <input
-          type='email'
-          name='email'
-          className='form-input'
-          value={form.email}
-          onChange={handleChange}
-          placeholder='user@mail.com'
-          autoComplete='email'
-        />
-      </div>
-
-      <div className='form-row'>
-        <label className='form-label'>Password</label>
-        <input
-          type='password'
-          name='password'
-          className='form-input'
-          value={form.password}
-          onChange={handleChange}
-          autoComplete='new-password'
-        />
-      </div>
-
-      <button type='submit' className='btn btn-block'>
-        Register
-      </button>
-
-      <p className='auth-switch'>
-        Already registered? <Link to={loginPath}>Login</Link>
-      </p>
-    </form>
+            <div className='registration-submit'>
+              <button type='submit' className='btn' disabled={submitting || Boolean(success)}>
+                {submitting ? 'Creating account…' : 'Create account'}
+              </button>
+              <p className='auth-switch'>Already registered? <Link to={loginPath}>Sign in</Link></p>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
   )
 }
 
