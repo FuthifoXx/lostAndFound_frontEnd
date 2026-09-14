@@ -642,6 +642,90 @@ textarea {
 .empty-state p { margin-top: var(--space-2); }
 .empty-state-action { margin-top: var(--space-5); }
 
+/* Profile */
+.profile-page { width: 100%; max-width: var(--max-width); margin: 0 auto; }
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.7fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.profile-summary,
+.profile-form {
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  background: white;
+  box-shadow: var(--surface-shadow);
+}
+
+.profile-summary {
+  display: grid;
+  justify-items: var(--card-content-align);
+  padding: var(--space-8) var(--space-6);
+  text-align: var(--card-content-align);
+}
+
+.profile-avatar {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.profile-summary h2 { margin-top: var(--space-4); color: var(--grey-900); font-size: 1.25rem; font-weight: 800; }
+.profile-summary > p { margin-top: var(--space-2); color: var(--grey-600); overflow-wrap: anywhere; }
+
+.profile-verification {
+  display: grid;
+  gap: var(--space-1);
+  width: 100%;
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid var(--brand-200);
+  border-radius: var(--radius-sm);
+  background: var(--brand-50);
+  color: var(--brand-800);
+}
+
+.profile-verification span { font-size: 0.8rem; font-weight: 700; text-transform: capitalize; }
+.profile-privacy-note { font-size: 0.875rem; line-height: 1.6; }
+.profile-form { padding: clamp(1.5rem, 4vw, 2.5rem); }
+.profile-form > .form-alert,
+.profile-form > .alert { margin-bottom: var(--space-6); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); }
+.profile-form > .form-alert { border: 1px solid #fecdd3; background: var(--danger-50); color: var(--danger-700); }
+
+.profile-section { margin: 0; padding: 0 0 var(--space-8); border: 0; }
+.profile-section + .profile-section { padding-top: var(--space-8); border-top: 1px solid var(--grey-200); }
+.profile-section legend { color: var(--grey-900); font-size: 1.2rem; font-weight: 800; }
+.profile-section > p { margin: var(--space-2) 0 var(--space-5); color: var(--grey-600); }
+.profile-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-5); }
+.profile-fields-three { grid-template-columns: 1.4fr 1fr 0.6fr; }
+.profile-form .form-row { margin-bottom: var(--space-5); }
+.profile-password { grid-column: 1 / -1; }
+.profile-save { width: min(100%, 220px); }
+
+.profile-danger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--grey-200);
+}
+
+.profile-danger h2 { color: var(--danger-700); font-size: 1rem; font-weight: 800; }
+.profile-danger p { margin-top: var(--space-1); color: var(--grey-600); font-size: 0.875rem; }
+.profile-delete-confirm { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.profile-delete-confirm strong { flex-basis: 100%; color: var(--danger-700); font-size: 0.8rem; text-align: right; }
+
 .title-underline {
   width: 4rem;
   height: 0.2rem;
@@ -1305,6 +1389,8 @@ textarea {
   .registration-password { max-width: none; }
   .public-details-card { grid-template-columns: 1fr; }
   .public-details-media { height: min(60vw, 430px); min-height: 0; }
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-summary { max-width: 640px; margin: 0 auto; }
 }
 
 @media (max-width: 520px) {
@@ -1362,6 +1448,14 @@ textarea {
   .public-details-heading { align-items: flex-start; flex-direction: column; }
   .public-details-meta { grid-template-columns: 1fr; margin-top: var(--space-6); }
   .claim-panel { margin-top: var(--space-6); padding: var(--space-5); }
+  .profile-fields,
+  .profile-fields-three { grid-template-columns: 1fr; }
+  .profile-save { width: 100%; }
+  .profile-danger { align-items: stretch; flex-direction: column; text-align: center; }
+  .profile-danger > .btn,
+  .profile-delete-confirm .btn { width: 100%; }
+  .profile-delete-confirm { justify-content: center; }
+  .profile-delete-confirm strong { text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
