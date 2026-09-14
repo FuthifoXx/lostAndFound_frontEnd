@@ -351,10 +351,12 @@ textarea {
 
 .dashboard-section-heading {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: var(--space-5);
   margin-bottom: var(--space-5);
+  text-align: center;
 }
 
 .dashboard-section-heading h2 {
@@ -381,6 +383,22 @@ textarea {
 
 .user-dashboard > .empty-state { margin-top: 0; }
 .user-items-grid { margin-top: 0; }
+
+.user-items-grid .item-card-body { text-align: center; }
+
+.user-items-grid .item-header {
+  align-items: center;
+  flex-direction: column;
+}
+
+.user-items-grid .item-badges,
+.user-items-grid .item-footer {
+  align-items: center;
+  justify-content: center;
+}
+
+.user-items-grid .item-meta p { justify-items: center; }
+.user-items-grid .item-actions { justify-content: center; }
 
 .page-header {
   margin: 0 auto var(--space-8);
