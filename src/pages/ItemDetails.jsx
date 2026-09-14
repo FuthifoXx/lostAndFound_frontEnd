@@ -3,6 +3,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getSingleItem, requestClaim } from '../services/api'
 import { formatCalendarDate } from '../utils/formatCalendarDate'
+import Navbar from '../components/Navbar'
+import StatusBadge from '../components/StatusBadge'
+import EmptyState from '../components/EmptyState'
 
 function ItemDetails() {
   const { id } = useParams()
@@ -41,11 +44,12 @@ function ItemDetails() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
+        setError('')
         const data = await getSingleItem(id)
 
         setItem(data)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message)
       } finally {
         setLoading(false)
       }
@@ -54,75 +58,104 @@ function ItemDetails() {
     fetchItem()
   }, [id])
 
-  if (loading) {
-    return <div className='loading'></div>
-  }
-
-  if (!item) {
-    return <h3>Item not found</h3>
-  }
-
-  const isMatchedUser = user?._id === item.matchedUser
+  const isMatchedUser = user?._id === item?.matchedUser
   const canRequestClaim =
     isMatchedUser &&
-    item.status === 'matched' &&
-    ['none', 'rejected'].includes(item.claimStatus)
+    item?.status === 'matched' &&
+    ['none', 'rejected'].includes(item?.claimStatus)
 
   const claimButtonLabel = !user
     ? 'Sign In to Claim'
-    : item.claimStatus === 'pending'
+    : item?.claimStatus === 'pending'
       ? 'Claim Pending'
-      : item.claimStatus === 'approved'
+      : item?.claimStatus === 'approved'
         ? 'Claim Approved'
         : !isMatchedUser
           ? 'Matched Owner Only'
-          : item.claimStatus === 'rejected'
+          : item?.claimStatus === 'rejected'
             ? 'Resubmit Claim'
             : 'Claim This Item'
 
   return (
-    <div className='item-details'>
-      <div className='details-card'>
-        {item.image && (
-          <img src={item.image} alt={item.name} className='details-img' />
-        )}
+    <div className='public-page item-details-page'>
+      <Navbar />
 
-        <div className='details-content'>
-          <h2>{item.name}</h2>
-
-          <p>{item.description}</p>
-
-          <div className='details-info'>
-            <p>
-              <strong>Location:</strong> {item.location}
-            </p>
-
-            <p>
-              <strong>Date Lost</strong>{' '}
-              {formatCalendarDate(item.dateLost)}
-            </p>
-
-            <p>
-              <strong>Status:</strong>{' '}
-              <span className={`status-badge ${item.status}`}>
-                {item.status}
-              </span>
-            </p>
-
-            {message && <p className='alert alert-success'>{message}</p>}
-
-            {error && <p className='form-alert'>{error}</p>}
-
-            <button
-              className='btn claim-btn'
-              onClick={handleClaim}
-              disabled={claimLoading || (Boolean(user) && !canRequestClaim)}
-            >
-              {claimLoading ? 'Requesting...' : claimButtonLabel}
-            </button>
+      <main className='item-details-shell'>
+        {loading ? (
+          <div className='item-details-loading' role='status'>
+            <div className='loading'></div>
+            <p>Loading item details…</p>
           </div>
-        </div>
-      </div>
+        ) : !item ? (
+          <EmptyState
+            icon='!'
+            title='Item could not be found'
+            description={error || 'This item may no longer be publicly available.'}
+          >
+            <button type='button' className='btn btn-hipster' onClick={() => navigate('/items')}>
+              Back to Browse Items
+            </button>
+          </EmptyState>
+        ) : (
+          <article className='public-details-card'>
+            <div className={`public-details-media${item.image ? ' protected-media' : ' public-details-media-empty'}`}>
+              {item.image ? (
+                <>
+                  <img src={item.image} alt='' className='public-details-img' />
+                  <span className='media-privacy-label'>Protected document preview</span>
+                </>
+              ) : (
+                <span>No image provided</span>
+              )}
+            </div>
+
+            <div className='public-details-content'>
+              <div className='public-details-heading'>
+                <div>
+                  <p className='landing-eyebrow'>Found property</p>
+                  <h1>{item.name}</h1>
+                </div>
+                <StatusBadge status={item.status} />
+              </div>
+
+              {item.description && <p className='public-details-description'>{item.description}</p>}
+
+              <dl className='public-details-meta'>
+                <div>
+                  <dt>Collection area</dt>
+                  <dd>{item.location}</dd>
+                </div>
+                <div>
+                  <dt>Date lost</dt>
+                  <dd>{formatCalendarDate(item.dateLost)}</dd>
+                </div>
+              </dl>
+
+              <section className='claim-panel' aria-labelledby='claim-heading'>
+                <h2 id='claim-heading'>Think this belongs to you?</h2>
+                <p>
+                  Sign in and submit a claim. Your details stay private while the verified
+                  collection partner reviews ownership.
+                </p>
+
+                {message && <p className='alert alert-success' role='status'>{message}</p>}
+                {error && <p className='form-alert' role='alert'>{error}</p>}
+
+                <button
+                  type='button'
+                  className='btn claim-btn'
+                  onClick={handleClaim}
+                  disabled={claimLoading || (Boolean(user) && !canRequestClaim)}
+                >
+                  {claimLoading ? 'Requesting…' : claimButtonLabel}
+                </button>
+
+                {!user && <small>You’ll return here after signing in.</small>}
+              </section>
+            </div>
+          </article>
+        )}
+      </main>
     </div>
   )
 }
