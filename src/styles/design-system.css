@@ -1251,7 +1251,7 @@ textarea {
   .registration-grid-three { grid-template-columns: 1fr 1fr; }
   .registration-password { max-width: none; }
   .public-details-card { grid-template-columns: 1fr; }
-  .public-details-media { min-height: min(60vw, 430px); }
+  .public-details-media { height: min(60vw, 430px); min-height: 0; }
 }
 
 @media (max-width: 520px) {
@@ -1302,7 +1302,7 @@ textarea {
   .registration-submit { align-items: stretch; flex-direction: column; }
   .registration-submit .btn { width: 100%; }
   .item-details-shell { width: min(calc(100% - 1.5rem), 1060px); padding-block: var(--space-6); }
-  .public-details-media { min-height: 280px; }
+  .public-details-media { height: clamp(240px, 64vw, 320px); min-height: 0; }
   .public-details-content { padding: var(--space-6) var(--space-5); }
   .public-details-heading { align-items: flex-start; flex-direction: column; }
   .public-details-meta { grid-template-columns: 1fr; margin-top: var(--space-6); }
