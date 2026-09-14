@@ -1,8 +1,8 @@
-function EmptyState({ title, description, children }) {
+function EmptyState({ title, description, icon = '✓', children }) {
   return (
     <section className='empty-state' aria-live='polite'>
       <div className='empty-state-icon' aria-hidden='true'>
-        ✓
+        {icon}
       </div>
       <h2>{title}</h2>
       <p>{description}</p>
