@@ -3,11 +3,14 @@ import { getRecoveryAnalytics } from '../services/api'
 import EmptyState from '../components/EmptyState'
 import PageHeader from '../components/PageHeader'
 import StatCard from '../components/StatCard'
+import { useAuth } from '../hooks/useAuth'
 
 function RecoveryAnalytics() {
   const [analytics, setAnalytics] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'admin'
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -37,7 +40,7 @@ function RecoveryAnalytics() {
   if (error || !analytics) {
     return (
       <div className='dashboard recovery-analytics-page'>
-        <PageHeader title='Recovery Analytics' description='Track property recovery progress across your branch.' />
+        <PageHeader title='Recovery Analytics' description={isAdmin ? 'Track property recovery progress across the platform.' : 'Track property recovery progress across your branch.'} />
         <EmptyState title='Analytics unavailable' description={error || 'Recovery analytics could not be loaded.'} />
       </div>
     )
@@ -49,7 +52,7 @@ function RecoveryAnalytics() {
 
   return (
     <div className='dashboard recovery-analytics-page'>
-      <PageHeader title='Recovery Analytics' description='Track property recovery progress across your branch.' />
+      <PageHeader title='Recovery Analytics' description={isAdmin ? 'Track property recovery progress across the platform.' : 'Track property recovery progress across your branch.'} />
 
       <section className='stats-grid recovery-analytics-stats' aria-label='Recovery performance summary'>
         <StatCard value={analytics.totalItems} label='Total items' />
@@ -62,7 +65,7 @@ function RecoveryAnalytics() {
 
       <section className='analytics-summary' aria-labelledby='recovery-progress-title'>
         <div className='analytics-summary-copy'>
-          <p className='dashboard-section-eyebrow'>Branch performance</p>
+          <p className='dashboard-section-eyebrow'>{isAdmin ? 'Platform performance' : 'Branch performance'}</p>
           <h2 id='recovery-progress-title'>Recovery completion</h2>
           <p><strong>{completedItems} of {analytics.totalItems}</strong> items have reached recovered or closed status.</p>
         </div>
