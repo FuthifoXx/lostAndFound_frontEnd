@@ -667,6 +667,32 @@ textarea {
   font-weight: 650;
 }
 
+.recovery-analytics-stats { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+.analytics-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: var(--space-8);
+  align-items: center;
+  margin-top: var(--space-8);
+  padding: var(--space-8);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow: var(--surface-shadow);
+}
+
+.analytics-summary-copy { text-align: var(--card-content-align); }
+.analytics-summary-copy h2 { color: var(--grey-900); font-size: 1.4rem; font-weight: 800; }
+.analytics-summary-copy > p:last-child { margin-top: var(--space-3); color: var(--grey-600); line-height: 1.6; }
+.analytics-summary-copy strong { color: var(--grey-900); }
+.analytics-progress-block { padding: var(--space-5); border-radius: var(--radius-sm); background: var(--brand-50); }
+.analytics-progress-heading { display: flex; align-items: center; justify-content: space-between; color: var(--grey-700); font-weight: 700; }
+.analytics-progress-heading strong { color: var(--brand-700); font-size: 1.25rem; }
+.analytics-progress-track { height: 10px; margin-top: var(--space-3); overflow: hidden; border-radius: 999px; background: var(--brand-100); }
+.analytics-progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--brand-600); }
+.analytics-progress-block > p { margin-top: var(--space-3); color: var(--grey-600); font-size: 0.9rem; line-height: 1.5; }
+
 .items-grid {
   align-items: stretch;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
@@ -1656,6 +1682,8 @@ textarea {
   .public-details-media { height: min(60vw, 430px); min-height: 0; }
   .profile-layout { grid-template-columns: 1fr; }
   .profile-summary { max-width: 640px; margin: 0 auto; }
+  .recovery-analytics-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .analytics-summary { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {
@@ -1731,6 +1759,9 @@ textarea {
   .claim-decision-confirm .btn { width: 100%; }
   .history-controls { align-items: stretch; flex-direction: column; }
   .history-controls > div { width: 100%; }
+  .recovery-analytics-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analytics-summary { gap: var(--space-5); padding: var(--space-5); }
+  .analytics-progress-block { padding: var(--space-4); }
 }
 
 @media (prefers-reduced-motion: reduce) {
