@@ -1,6 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAdminDashboardData } from '../services/api'
+import EmptyState from '../components/EmptyState'
+import PageHeader from '../components/PageHeader'
+import StatCard from '../components/StatCard'
 
 function AdminDashboard() {
   const [data, setData] = useState(null)
@@ -26,10 +29,10 @@ function AdminDashboard() {
 
   if (!data) {
     return (
-      <div className='empty-state'>
-        <h4>Unable to load admin dashboard</h4>
-        <p>Please try again later.</p>
-      </div>
+      <EmptyState
+        title='Unable to load admin dashboard'
+        description='Please try again later.'
+      />
     )
   }
 
@@ -37,39 +40,18 @@ function AdminDashboard() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Admin Dashboard</h3>
-      <div className='title-underline'></div>
+      <PageHeader
+        title='Admin Dashboard'
+        description='Review platform activity and prioritize work requiring attention.'
+      />
 
       <div className='stats-grid'>
-        <div className='stat-card'>
-          <h4>{stats.totalItems}</h4>
-          <p>Total Items</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.pendingItems}</h4>
-          <p>Pending Items</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.matchedItems}</h4>
-          <p>Matched</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.pendingClaims}</h4>
-          <p>Pending Claims</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.recoveredItems}</h4>
-          <p>Recovered</p>
-        </div>
-
-        <div className='stat-card'>
-          <h4>{stats.closedCases}</h4>
-          <p>Closed Cases</p>
-        </div>
+        <StatCard value={stats.totalItems} label='Total items' />
+        <StatCard value={stats.pendingItems} label='Pending items' />
+        <StatCard value={stats.matchedItems} label='Matched' />
+        <StatCard value={stats.pendingClaims} label='Pending claims' />
+        <StatCard value={stats.recoveredItems} label='Recovered' />
+        <StatCard value={stats.closedCases} label='Closed cases' />
       </div>
 
       <div className='section-header'>
