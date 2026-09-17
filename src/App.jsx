@@ -20,6 +20,7 @@ import ItemTimeline from './pages/ItemTimeline'
 import PartnerClaims from './pages/PartnerClaims'
 import ClaimRequests from './pages/ClaimRequests'
 import Profile from './pages/Profile'
+import AdminUsers from './pages/AdminUsers'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -202,6 +203,16 @@ function App() {
               <Profile />
             </Layout>
           </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/admin/users'
+        element={
+          <AdminRoute>
+            <Layout>
+              <AdminUsers />
+            </Layout>
+          </AdminRoute>
         }
       />
     </Routes>
