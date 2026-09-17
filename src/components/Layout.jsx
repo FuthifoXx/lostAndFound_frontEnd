@@ -1,21 +1,24 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Topbar from './Topbar'
 import Sidebar from './Sidebar'
 
 function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarPath, setSidebarPath] = useState(null)
+  const { pathname } = useLocation()
+  const sidebarOpen = sidebarPath === pathname
 
   return (
     <div className='app-shell'>
       <Topbar
         sidebarOpen={sidebarOpen}
-        onMenuClick={() => setSidebarOpen((open) => !open)}
+        onMenuClick={() => setSidebarPath(sidebarOpen ? null : pathname)}
       />
 
       <div className='app-body'>
         <Sidebar
           open={sidebarOpen}
-          onNavigate={() => setSidebarOpen(false)}
+          onNavigate={() => setSidebarPath(null)}
         />
 
         {sidebarOpen && (
@@ -23,7 +26,7 @@ function Layout({ children }) {
             type='button'
             className='sidebar-backdrop'
             aria-label='Close navigation menu'
-            onClick={() => setSidebarOpen(false)}
+            onClick={() => setSidebarPath(null)}
           />
         )}
 
