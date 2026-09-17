@@ -65,7 +65,7 @@ function AddItem() {
   }
 
   const identifier = {
-    RSA_ID: { label: 'RSA ID Number', name: 'idNumber', value: form.idNumber, placeholder: 'e.g. 13-digit RSA ID number' },
+    RSA_ID: { label: 'RSA ID Number', name: 'idNumber', value: form.idNumber, placeholder: 'Enter the 13-digit RSA ID number' },
     PASSPORT: { label: 'Passport Number', name: 'passportNumber', value: form.passportNumber, placeholder: 'Enter the passport number exactly' },
     OTHER: { label: 'Document Number', name: 'documentNumber', value: form.documentNumber, placeholder: 'e.g. student, permit or access-card number' },
   }[form.identityType]
@@ -104,7 +104,7 @@ function AddItem() {
           <div className='upload-fields upload-fields-three'>
             <div className='form-row'><label className='form-label' htmlFor='surname'>Surname <span>(optional)</span></label><input id='surname' type='text' name='surname' className='form-input' value={form.surname} onChange={handleChange} /></div>
             <div className='form-row'><label className='form-label' htmlFor='initials'>Initials <span>(optional)</span></label><input id='initials' type='text' name='initials' className='form-input' value={form.initials} onChange={handleChange} /></div>
-            <div className='form-row'><label className='form-label' htmlFor='firstNames'>First Names <span>(optional)</span></label><input id='firstNames' type='text' name='firstNames' className='form-input' value={form.firstNames} onChange={handleChange} placeholder='e.g. first names' /></div>
+            <div className='form-row'><label className='form-label' htmlFor='firstNames'>First Names <span>(optional)</span></label><input id='firstNames' type='text' name='firstNames' className='form-input' value={form.firstNames} onChange={handleChange} placeholder='Enter the names shown on the item' /></div>
           </div>
         </section>
 

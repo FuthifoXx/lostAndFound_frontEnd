@@ -59,7 +59,7 @@ function Register() {
     RSA_ID: {
       label: 'RSA ID number',
       name: 'idNumber',
-      placeholder: 'e.g. 13-digit RSA ID number',
+      placeholder: 'Enter your 13-digit RSA ID number',
       inputMode: 'numeric',
     },
     PASSPORT: {
@@ -136,15 +136,15 @@ function Register() {
               <div className='registration-grid registration-grid-three'>
                 <div className='form-row'>
                   <label className='form-label' htmlFor='first-names'>First names</label>
-                  <input id='first-names' type='text' name='firstNames' className='form-input' value={form.firstNames} onChange={handleChange} placeholder='e.g. first names' autoComplete='given-name' required />
+                  <input id='first-names' type='text' name='firstNames' className='form-input' value={form.firstNames} onChange={handleChange} placeholder='Enter your first names' autoComplete='given-name' required />
                 </div>
                 <div className='form-row'>
                   <label className='form-label' htmlFor='surname'>Surname</label>
-                  <input id='surname' type='text' name='surname' className='form-input' value={form.surname} onChange={handleChange} placeholder='e.g. surname' autoComplete='family-name' required />
+                  <input id='surname' type='text' name='surname' className='form-input' value={form.surname} onChange={handleChange} placeholder='Enter your surname' autoComplete='family-name' required />
                 </div>
                 <div className='form-row'>
                   <label className='form-label' htmlFor='initials'>Initials</label>
-                  <input id='initials' type='text' name='initials' className='form-input' value={form.initials} onChange={handleChange} placeholder='Enter initials' required />
+                  <input id='initials' type='text' name='initials' className='form-input' value={form.initials} onChange={handleChange} placeholder='Enter your initials' required />
                 </div>
               </div>
             </fieldset>
