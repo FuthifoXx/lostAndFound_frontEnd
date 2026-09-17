@@ -99,6 +99,13 @@ function AdminDashboard() {
           <h5>Branch Performance</h5>
           <p>Compare partner recovery activity.</p>
         </div>
+        <div
+          className='item-card'
+          onClick={() => navigate('/analytics/recovery')}
+        >
+          <h5>Recovery Analytics</h5>
+          <p>View recovery rates and lifecycle statistics.</p>
+        </div>
       </div>
 
       <div className='section-header'>

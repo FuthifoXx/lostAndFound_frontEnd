@@ -657,3 +657,53 @@ ul {
 .compact-card .item-img {
   height: 160px;
 }
+
+.timeline-container {
+  margin-top: 2rem;
+  background: var(--white);
+  padding: 2rem;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow-2);
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 22px;
+  width: 2px;
+  height: calc(100% - 10px);
+  background: var(--grey-300);
+}
+
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--grey-300);
+  z-index: 2;
+}
+
+.timeline-item.completed .timeline-dot {
+  background: green;
+}
+
+.timeline-item.not-completed .timeline-dot {
+  background: var(--grey-400);
+}
+
+.timeline-content h5 {
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+  color: var(--grey-600);
+}
