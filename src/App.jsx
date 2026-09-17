@@ -22,6 +22,7 @@ import ClaimRequests from './pages/ClaimRequests'
 import Profile from './pages/Profile'
 import AdminUsers from './pages/AdminUsers'
 import AdminPartners from './pages/AdminPartners'
+import CollectionReceipt from './pages/CollectionReceipt'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -226,6 +227,7 @@ function App() {
           </AdminRoute>
         }
       />
+      <Route path='/receipts/:itemId' element={<CollectionReceipt />} />
     </Routes>
   )
 }

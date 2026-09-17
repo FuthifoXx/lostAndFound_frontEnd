@@ -251,3 +251,13 @@ export const getCaseNotes = async (id) => {
 export const addCaseNote = async (id, note) => {
   return apiRequest(`/case-notes/${id}/notes`, 'POST', { note })
 }
+
+//Get receipt by item
+export const getReceipt = async (itemId) => {
+  return apiRequest(`/receipts/${itemId}`)
+}
+
+//Create receipt 
+export const createReceipt = async (itemId, data) => {
+  return apiRequest(`/receipts/${itemId}`, 'POST', data)
+}
