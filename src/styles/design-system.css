@@ -240,11 +240,21 @@ textarea {
   display: none;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--grey-200);
+  border: 0;
   border-radius: var(--radius-sm);
-  background: white;
+  background: transparent;
   color: var(--grey-800);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
   cursor: pointer;
+}
+
+.menu-toggle:hover { background: var(--brand-50); }
+
+.public-page p,
+.app-main p {
+  font-weight: 500;
 }
 
 .role-badge {
@@ -749,9 +759,10 @@ textarea {
   justify-self: start;
   color: var(--brand-700);
   font-weight: 750;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
+  text-decoration: none;
 }
+
+.journey-alternative a:hover { color: var(--brand-900); }
 
 .journey-or {
   position: absolute;
@@ -1012,7 +1023,8 @@ textarea {
   text-align: center;
 }
 
-.auth-switch a { color: var(--brand-700); font-weight: 750; text-decoration: underline; text-underline-offset: 0.2rem; }
+.auth-switch a { color: var(--brand-700); font-weight: 750; text-decoration: none; }
+.auth-switch a:hover { color: var(--brand-900); }
 
 .sidebar-backdrop {
   display: none;
