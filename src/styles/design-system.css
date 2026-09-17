@@ -696,35 +696,42 @@ textarea {
 
 .profile-verification span { font-size: 0.8rem; font-weight: 700; text-transform: capitalize; }
 .profile-privacy-note { font-size: 0.875rem; line-height: 1.6; }
-.profile-form { padding: clamp(1.5rem, 4vw, 2.5rem); }
+.profile-form {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: var(--card-content-align);
+}
 .profile-form > .form-alert,
 .profile-form > .alert { margin-bottom: var(--space-6); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); }
 .profile-form > .form-alert { border: 1px solid #fecdd3; background: var(--danger-50); color: var(--danger-700); }
 
 .profile-section { margin: 0; padding: 0 0 var(--space-8); border: 0; }
 .profile-section + .profile-section { padding-top: var(--space-8); border-top: 1px solid var(--grey-200); }
-.profile-section legend { color: var(--grey-900); font-size: 1.2rem; font-weight: 800; }
+.profile-section legend { width: 100%; color: var(--grey-900); font-size: 1.2rem; font-weight: 800; text-align: var(--card-content-align); }
 .profile-section > p { margin: var(--space-2) 0 var(--space-5); color: var(--grey-600); }
 .profile-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-5); }
 .profile-fields-three { grid-template-columns: 1.4fr 1fr 0.6fr; }
 .profile-form .form-row { margin-bottom: var(--space-5); }
+.profile-form .form-label,
+.profile-form .form-input { text-align: var(--card-content-align); }
 .profile-password { grid-column: 1 / -1; }
-.profile-save { width: min(100%, 220px); }
+.profile-save { display: block; width: min(100%, 220px); margin-inline: auto; }
 
 .profile-danger {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   gap: var(--space-5);
   margin-top: var(--space-8);
   padding-top: var(--space-6);
   border-top: 1px solid var(--grey-200);
+  text-align: var(--card-content-align);
 }
 
 .profile-danger h2 { color: var(--danger-700); font-size: 1rem; font-weight: 800; }
 .profile-danger p { margin-top: var(--space-1); color: var(--grey-600); font-size: 0.875rem; }
-.profile-delete-confirm { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
-.profile-delete-confirm strong { flex-basis: 100%; color: var(--danger-700); font-size: 0.8rem; text-align: right; }
+.profile-delete-confirm { display: flex; flex-wrap: wrap; justify-content: var(--card-content-align); gap: var(--space-2); }
+.profile-delete-confirm strong { flex-basis: 100%; color: var(--danger-700); font-size: 0.8rem; text-align: var(--card-content-align); }
 
 .title-underline {
   width: 4rem;
