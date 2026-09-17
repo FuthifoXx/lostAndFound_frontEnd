@@ -7,24 +7,31 @@ function Items() {
   const [search, setSearch] = useState('')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
+  const [totalItems, setTotalItems] = useState(0)
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await getAllItems(search)
+        setLoading(true)
+        setError('')
 
-        console.log('PUBLIC ITEMS:', data)
+        const data = await getAllItems(search, page)
 
-        setItems(data)
+        setItems(data.items)
+        setPages(data.pages || 1)
+        setTotalItems(data.totalItems || 0)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message)
       } finally {
         setLoading(false)
       }
     }
 
     fetchItems()
-  }, [search])
+  }, [search, page])
 
   if (loading) {
     return <div className='loading'></div>
@@ -44,50 +51,87 @@ function Items() {
             className='form-input'
             placeholder='Search items...'
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              setPage(1)
+            }}
           />
         </div>
 
-        {items.length === 0 ? (
+        {error ? (
+          <p className='form-alert'>{error}</p>
+        ) : items.length === 0 ? (
           <p className='text'>No approved items found</p>
         ) : (
-          <div className='items-grid'>
-            {items.map((item) => (
-              <Link
-                to={`/items/${item._id}`}
-                className='item-link'
-                key={item._id}
-              >
-                <div className='item-card'>
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className='item-img'
-                    />
-                  )}
+          <>
+            <p className='results-summary'>
+              {totalItems} available {totalItems === 1 ? 'item' : 'items'}
+            </p>
 
-                  <div className='item-header'>
-                    <h5>{item.name}</h5>
+            <div className='items-grid'>
+              {items.map((item) => (
+                <Link
+                  to={`/items/${item._id}`}
+                  className='item-link'
+                  key={item._id}
+                >
+                  <div className='item-card'>
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className='item-img'
+                      />
+                    )}
 
-                    <span className={`status ${item.status}`}>
-                      {item.status}
-                    </span>
+                    <div className='item-header'>
+                      <h5>{item.name}</h5>
+
+                      <span className={`status ${item.status}`}>
+                        {item.status}
+                      </span>
+                    </div>
+
+                    <p className='item-desc'>{item.description}</p>
+
+                    <div className='item-footer'>
+                      <small>{item.location}</small>
+
+                      <small>
+                        {new Date(item.dateLost).toLocaleDateString()}
+                      </small>
+                    </div>
                   </div>
+                </Link>
+              ))}
+            </div>
 
-                  <p className='item-desc'>{item.description}</p>
+            {pages > 1 && (
+              <nav className='pagination' aria-label='Public items pagination'>
+                <button
+                  type='button'
+                  className='btn btn-hipster'
+                  disabled={page === 1}
+                  onClick={() => setPage((currentPage) => currentPage - 1)}
+                >
+                  Previous
+                </button>
 
-                  <div className='item-footer'>
-                    <small>{item.location}</small>
+                <span>
+                  Page {page} of {pages}
+                </span>
 
-                    <small>
-                      {new Date(item.dateLost).toLocaleDateString()}
-                    </small>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                <button
+                  type='button'
+                  className='btn btn-hipster'
+                  disabled={page === pages}
+                  onClick={() => setPage((currentPage) => currentPage + 1)}
+                >
+                  Next
+                </button>
+              </nav>
+            )}
+          </>
         )}
       </div>
     </>
