@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getRecoveryHistory } from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function RecoveryHistory() {
   const [items, setItems] = useState([])
@@ -28,65 +31,45 @@ function RecoveryHistory() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Recovery History</h3>
-      <div className='title-underline'></div>
+      <PageHeader
+        title='Recovery History'
+        description='Review recovered property and completed cases.'
+      />
 
       {items.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Recovery History</h4>
-          <p>Recovered and closed cases will appear here.</p>
-        </div>
+        <EmptyState
+          title='No recovery history'
+          description='Recovered and closed cases will appear here.'
+        />
       ) : (
         <div className='items-grid'>
           {items.map((item) => (
-            <div key={item._id} className='item-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-
-              <div className='item-header'>
-                <h5>{item.name}</h5>
-                <span className={`status ${item.status}`}>{item.status}</span>
-              </div>
-
-              <p className='item-desc'>{item.description}</p>
-
-              <p>
-                <strong>Location:</strong> {item.location}
-              </p>
-
+            <ItemCard
+              key={item._id}
+              item={item}
+              actions={
+                <button
+                  className='btn btn-hipster'
+                  onClick={() => navigate(`/items/${item._id}/timeline`)}
+                >
+                  View Timeline
+                </button>
+              }
+            >
+              <p><strong>Location</strong><span>{item.location}</span></p>
               {item.partner && (
-                <p>
-                  <strong>Partner:</strong> {item.partner.name}
-                </p>
+                <p><strong>Partner</strong><span>{item.partner.name}</span></p>
               )}
-
               {item.matchedUser && (
-                <p>
-                  <strong>Owner:</strong> {item.matchedUser.email}
-                </p>
+                <p><strong>Owner</strong><span>{item.matchedUser.email}</span></p>
               )}
-
               {item.recoveredAt && (
-                <p>
-                  <strong>Recovered:</strong>{' '}
-                  {new Date(item.recoveredAt).toLocaleDateString()}
-                </p>
+                <p><strong>Recovered</strong><span>{new Date(item.recoveredAt).toLocaleDateString()}</span></p>
               )}
-
               {item.closedAt && (
-                <p>
-                  <strong>Closed:</strong>{' '}
-                  {new Date(item.closedAt).toLocaleDateString()}
-                </p>
+                <p><strong>Closed</strong><span>{new Date(item.closedAt).toLocaleDateString()}</span></p>
               )}
-              <button
-                className='btn btn-hipster'
-                onClick={() => navigate(`/items/${item._id}/timeline`)}
-              >
-                View Timeline
-              </button>
-            </div>
+            </ItemCard>
           ))}
         </div>
       )}

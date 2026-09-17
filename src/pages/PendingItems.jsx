@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getPendingItems, approveItem, deleteLostItem } from '../services/api'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function PendingItems() {
   const [items, setItems] = useState([])
@@ -31,6 +34,8 @@ function PendingItems() {
   }
 
   const handleDelete = async (id) => {
+    if (!window.confirm('Reject and remove this pending item?')) return
+
     try {
       await deleteLostItem(id)
 
@@ -46,23 +51,25 @@ function PendingItems() {
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Pending Items</h3>
-      <div className="title-underline"></div>
+      <PageHeader
+        title='Pending Items'
+        description='Review newly uploaded items before they become publicly available.'
+      />
 
-      <div className='items-grid'>
-        {items.map((item) => (
-          <div key={item._id} className='item-card'>
-            {item.image && (
-              <img src={item.image} alt={item.name} className='item-img' />
-            )}
-
-            <h5>{item.name}</h5>
-
-            <p>{item.description}</p>
-
-            <small>{item.location}</small>
-
-            <div className='item-actions'>
+      {items.length === 0 ? (
+        <EmptyState
+          title='No pending items'
+          description='All uploaded items have been reviewed.'
+        />
+      ) : (
+        <div className='items-grid'>
+          {items.map((item) => (
+            <ItemCard
+              key={item._id}
+              item={item}
+              status='pending'
+              actions={
+                <>
               <button className='btn' onClick={() => handleApprove(item._id)}>
                 Approve
               </button>
@@ -73,10 +80,17 @@ function PendingItems() {
               >
                 Reject
               </button>
-            </div>
-          </div>
-        ))}
-      </div>
+                </>
+              }
+            >
+              <p>
+                <strong>Location</strong>
+                <span>{item.location}</span>
+              </p>
+            </ItemCard>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

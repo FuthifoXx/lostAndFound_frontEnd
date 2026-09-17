@@ -4,9 +4,10 @@ import {
   getPendingClaims,
   approveClaim,
   rejectClaim,
-  markAsRecovered,
-  closeCase,
 } from '../services/api'
+import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
+import PageHeader from '../components/PageHeader'
 
 function AdminClaims() {
   const [items, setItems] = useState([])
@@ -57,94 +58,36 @@ function AdminClaims() {
     }
   }
 
-  const handleRecovered = async (id) => {
-    try {
-      await markAsRecovered(id)
-
-      setItems((prev) =>
-        prev.map((item) =>
-          item._id === id ? { ...item, status: 'recovered' } : item,
-        ),
-      )
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
-  const handleClose = async (id) => {
-    try {
-      await closeCase(id)
-
-      setItems((prev) =>
-        prev.map((item) =>
-          item._id === id ? { ...item, status: 'closed' } : item,
-        ),
-      )
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
   if (loading) {
     return <div className='loading'></div>
   }
 
   return (
     <div className='dashboard'>
-      <h3 className='title'>Pending Claims</h3>
-
-      <div className='title-underline'></div>
+      <PageHeader
+        title='Pending Claims'
+        description='Review ownership claims that require an administrator decision.'
+      />
 
       {items.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Pending Claims</h4>
-
-          <p>All claims have been reviewed</p>
-        </div>
+        <EmptyState
+          title='No pending claims'
+          description='All claims have been reviewed.'
+        />
       ) : (
         <div className='items-grid'>
           {items.map((item) => (
-            <div key={item._id} className='item-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-
-              <div className='claim-content'>
-                <h4>{item.name}</h4>
-
-                <p className='item-desc'>{item.description}</p>
-
-                <p>
-                  <strong>Location:</strong> {item.location}
-                </p>
-
-                <p>
-                  <strong>Date:</strong>{' '}
-                  {new Date(item.dateLost).toLocaleDateString()}
-                </p>
-
-                <p>
-                  <strong>Status:</strong>{' '}
-                  <span className={`status ${item.claimStatus}`}>
-                    {item.claimStatus}
-                  </span>
-                </p>
-              </div>
-
-              {/* {item.claimedBy && (
-              <p>
-                <strong>Claimed By:</strong>{' '}
-                {item.claimedBy.email}
-              </p>
-              )} */}
-
-              {item.matchedUser?.email && (
-                <p>
-                  <strong>Claimed By:</strong> {item.matchedUser.email}
-                </p>
-              )}
-
-              <div className='item-actions'>
+            <ItemCard
+              key={item._id}
+              item={item}
+              status={item.claimStatus}
+              footer={
+                <time dateTime={item.dateLost}>
+                  Lost {new Date(item.dateLost).toLocaleDateString()}
+                </time>
+              }
+              actions={
+                <>
                 <button
                   className='btn'
                   disabled={processingId === item._id}
@@ -160,22 +103,14 @@ function AdminClaims() {
                 >
                   {processingId === item._id ? 'Processing...' : 'Reject'}
                 </button>
-
-                <button
-                  className='btn'
-                  onClick={() => handleRecovered(item._id)}
-                >
-                  Mark Recovered
-                </button>
-
-                <button
-                  className='btn delete-btn'
-                  onClick={() => handleClose(item._id)}
-                >
-                  Close Case
-                </button>
-              </div>
-            </div>
+                </>
+              }
+            >
+              <p><strong>Location</strong><span>{item.location}</span></p>
+              {item.matchedUser?.email && (
+                <p><strong>Claimed by</strong><span>{item.matchedUser.email}</span></p>
+              )}
+            </ItemCard>
           ))}
         </div>
       )}
