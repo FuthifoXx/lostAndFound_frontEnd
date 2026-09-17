@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getReceipt, downloadReceiptPDF } from '../services/api'
+import {
+  createReceipt,
+  downloadReceiptPDF,
+  getReceipt,
+} from '../services/api'
 
 function CollectionReceipt() {
   const { itemId } = useParams()
@@ -9,7 +13,33 @@ function CollectionReceipt() {
   const [receipt, setReceipt] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [receiptMissing, setReceiptMissing] = useState(false)
+  const [creating, setCreating] = useState(false)
   const [downloading, setDownloading] = useState(false)
+  const [form, setForm] = useState({
+    collectedBy: '',
+    signature: '',
+    notes: '',
+  })
+
+  const handleCreateReceipt = async (e) => {
+    e.preventDefault()
+
+    try {
+      setCreating(true)
+      setError('')
+
+      await createReceipt(itemId, form)
+      const data = await getReceipt(itemId)
+
+      setReceipt(data)
+      setReceiptMissing(false)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setCreating(false)
+    }
+  }
 
   const handleDownloadPDF = async () => {
     try {
@@ -47,7 +77,11 @@ function CollectionReceipt() {
 
         setReceipt(data)
       } catch (err) {
-        setError(err.message)
+        if (err.message === 'Receipt not found') {
+          setReceiptMissing(true)
+        } else {
+          setError(err.message)
+        }
       } finally {
         setLoading(false)
       }
@@ -96,6 +130,62 @@ function CollectionReceipt() {
 
   if (loading) {
     return <div className='loading'></div>
+  }
+
+  if (receiptMissing) {
+    return (
+      <form className='form' onSubmit={handleCreateReceipt}>
+        <h4>Create Collection Receipt</h4>
+
+        <p>Record who collected the recovered item before closing the case.</p>
+
+        {error && <p className='form-alert'>{error}</p>}
+
+        <div className='form-row'>
+          <label className='form-label'>Collected By</label>
+          <input
+            type='text'
+            className='form-input'
+            value={form.collectedBy}
+            onChange={(e) =>
+              setForm({ ...form, collectedBy: e.target.value })
+            }
+            required
+          />
+        </div>
+
+        <div className='form-row'>
+          <label className='form-label'>Signature or Reference (optional)</label>
+          <input
+            type='text'
+            className='form-input'
+            value={form.signature}
+            onChange={(e) => setForm({ ...form, signature: e.target.value })}
+          />
+        </div>
+
+        <div className='form-row'>
+          <label className='form-label'>Collection Notes (optional)</label>
+          <textarea
+            className='form-textarea'
+            value={form.notes}
+            onChange={(e) => setForm({ ...form, notes: e.target.value })}
+          />
+        </div>
+
+        <button type='submit' className='btn btn-block' disabled={creating}>
+          {creating ? 'Creating Receipt...' : 'Create Collection Receipt'}
+        </button>
+
+        <button
+          type='button'
+          className='btn btn-block'
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </button>
+      </form>
+    )
   }
 
   if (error || !receipt) {
