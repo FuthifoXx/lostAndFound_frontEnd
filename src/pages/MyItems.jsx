@@ -1,11 +1,7 @@
-import React from 'react'
+import { Navigate } from 'react-router-dom'
 
 function MyItems() {
-  return (
-    <div>
-      <h3>MyItems</h3>
-    </div>
-  )
+  return <Navigate to='/dashboard' replace />
 }
 
 export default MyItems
