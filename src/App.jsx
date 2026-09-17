@@ -28,6 +28,7 @@ import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import PartnerRoute from './components/PartnerRoute'
 import AdminRoute from './components/AdminRoute'
+import VerifyReceipt from './pages/VerifyReceipt'
 
 function App() {
   return (
@@ -228,6 +229,10 @@ function App() {
         }
       />
       <Route path='/receipts/:itemId' element={<CollectionReceipt />} />
+      <Route
+        path='/verify/receipt/:receiptNumber'
+        element={<VerifyReceipt />}
+      />
     </Routes>
   )
 }
