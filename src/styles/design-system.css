@@ -733,6 +733,38 @@ textarea {
 .profile-delete-confirm { display: flex; flex-wrap: wrap; justify-content: var(--card-content-align); gap: var(--space-2); }
 .profile-delete-confirm strong { flex-basis: 100%; color: var(--danger-700); font-size: 0.8rem; text-align: var(--card-content-align); }
 
+/* Notifications */
+.notifications-summary {
+  display: flex;
+  max-width: 720px;
+  align-items: center;
+  justify-content: var(--card-content-align);
+  gap: var(--space-4);
+  margin: 0 auto var(--space-8);
+  padding: var(--space-5);
+  border: 1px solid var(--brand-200);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  text-align: var(--card-content-align);
+}
+
+.notifications-summary > strong {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: white;
+  font-size: 1.25rem;
+}
+
+.notifications-summary h2 { color: var(--grey-900); font-size: 1rem; font-weight: 800; }
+.notifications-summary p { margin-top: var(--space-1); color: var(--grey-600); font-size: 0.875rem; line-height: 1.5; }
+.notifications-page > .empty-state { margin-top: 0; }
+.notifications-page .notification-grid { margin-top: 0; }
+
 .title-underline {
   width: 4rem;
   height: 0.2rem;
@@ -1463,6 +1495,7 @@ textarea {
   .profile-delete-confirm .btn { width: 100%; }
   .profile-delete-confirm { justify-content: center; }
   .profile-delete-confirm strong { text-align: center; }
+  .notifications-summary { align-items: center; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {
