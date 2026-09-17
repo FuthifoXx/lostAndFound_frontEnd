@@ -198,3 +198,23 @@ export const getBranchPerformance = async () => {
 export const getItemTimeline = async (id) => {
   return apiRequest(`/lost-items/${id}/timeline`)
 }
+
+//register user
+export const registerUser = async (formData) => {
+  return apiRequest('/auth/register', 'POST', formData)
+}
+
+//get me
+export const getMe = async () => {
+  return apiRequest('/auth/me')
+}
+
+// update me
+export const updateMe = async (formData) => {
+  return apiRequest('/auth/me', 'PUT', formData)
+}
+
+//delete me
+export const deleteMe = async () => {
+  return apiRequest('/auth/me', 'DELETE')
+}
