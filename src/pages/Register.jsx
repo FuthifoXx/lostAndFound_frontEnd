@@ -45,9 +45,7 @@ function Register() {
       setError('')
       setSuccess('')
       await registerUser(form)
-      setSuccess('Account created. Taking you to sign in…')
-
-      window.setTimeout(() => navigate(loginPath), 1000)
+      navigate(loginPath, { replace: true })
     } catch (err) {
       setError(err.message)
     } finally {
