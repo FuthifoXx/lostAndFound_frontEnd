@@ -21,14 +21,14 @@ function Layout({ children }) {
           onNavigate={() => setSidebarPath(null)}
         />
 
-        {sidebarOpen && (
-          <button
-            type='button'
-            className='sidebar-backdrop'
-            aria-label='Close navigation menu'
-            onClick={() => setSidebarPath(null)}
-          />
-        )}
+        <button
+          type='button'
+          className={`sidebar-backdrop${sidebarOpen ? ' backdrop-open' : ''}`}
+          aria-label='Close navigation menu'
+          aria-hidden={!sidebarOpen}
+          tabIndex={sidebarOpen ? 0 : -1}
+          onClick={() => setSidebarPath(null)}
+        />
 
         <main className='app-main'>{children}</main>
       </div>
