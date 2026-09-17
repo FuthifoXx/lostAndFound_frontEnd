@@ -4,8 +4,8 @@ import {
   getPendingClaims,
   approveClaim,
   rejectClaim,
-  markItemRecovered,
-  closeItemCase,
+  markAsRecovered,
+  closeCase,
 } from '../services/api'
 
 function AdminClaims() {
@@ -59,7 +59,7 @@ function AdminClaims() {
 
   const handleRecovered = async (id) => {
     try {
-      await markItemRecovered(id)
+      await markAsRecovered(id)
 
       setItems((prev) =>
         prev.map((item) =>
@@ -73,7 +73,7 @@ function AdminClaims() {
 
   const handleClose = async (id) => {
     try {
-      await closeItemCase(id)
+      await closeCase(id)
 
       setItems((prev) =>
         prev.map((item) =>
