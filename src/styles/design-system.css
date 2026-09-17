@@ -789,7 +789,7 @@ textarea {
   margin: 0 auto var(--space-12);
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border-radius: var(--radius-lg);
-  background: var(--grey-900);
+  background: rgba(15, 23, 42, 0.9);
   color: white;
 }
 
@@ -1108,6 +1108,90 @@ textarea {
 .registration-submit .btn { min-width: 190px; }
 .registration-submit .auth-switch { margin: 0; }
 
+/* Public item details */
+.item-details-shell {
+  width: min(calc(100% - 2rem), 1060px);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 5rem) 0;
+}
+
+.item-details-loading {
+  display: grid;
+  min-height: 50vh;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-4);
+  color: var(--grey-600);
+}
+
+.item-details-shell > .empty-state { margin: clamp(2rem, 6vw, 5rem) auto; }
+
+.public-details-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  overflow: hidden;
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  background: white;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.09);
+}
+
+.public-details-media {
+  position: relative;
+  display: grid;
+  min-height: 620px;
+  place-items: center;
+  overflow: hidden;
+  background: var(--grey-100);
+}
+
+.public-details-img { width: 100%; height: 100%; object-fit: cover; }
+.public-details-media-empty { color: var(--grey-500); font-size: 0.9rem; font-weight: 700; }
+
+.public-details-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 3.5rem);
+}
+
+.public-details-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.public-details-heading .landing-eyebrow { margin-bottom: var(--space-2); }
+.public-details-heading h1 { color: var(--grey-900); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.08; }
+.public-details-description { margin-top: var(--space-5); color: var(--grey-600); font-size: 1.05rem; line-height: 1.7; }
+
+.public-details-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.public-details-meta div { padding: var(--space-4); border-radius: var(--radius-sm); background: var(--grey-50); }
+.public-details-meta dt { color: var(--grey-500); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.public-details-meta dd { margin-top: var(--space-2); color: var(--grey-900); font-weight: 650; }
+
+.claim-panel {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  border: 1px solid var(--brand-200);
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+}
+
+.claim-panel h2 { color: var(--grey-900); font-size: 1.2rem; font-weight: 800; }
+.claim-panel > p { margin-top: var(--space-2); color: var(--grey-600); line-height: 1.6; }
+.claim-panel .alert,
+.claim-panel .form-alert { margin-top: var(--space-4); padding: var(--space-3); border-radius: var(--radius-sm); }
+.claim-panel .claim-btn { width: 100%; min-height: 48px; margin-top: var(--space-5); }
+.claim-panel small { display: block; margin-top: var(--space-3); color: var(--grey-500); text-align: center; }
+
 .sidebar-backdrop {
   display: none;
 }
@@ -1166,6 +1250,8 @@ textarea {
   .registration-grid,
   .registration-grid-three { grid-template-columns: 1fr 1fr; }
   .registration-password { max-width: none; }
+  .public-details-card { grid-template-columns: 1fr; }
+  .public-details-media { min-height: min(60vw, 430px); }
 }
 
 @media (max-width: 520px) {
@@ -1215,6 +1301,12 @@ textarea {
   .registration-help { margin-left: 0; }
   .registration-submit { align-items: stretch; flex-direction: column; }
   .registration-submit .btn { width: 100%; }
+  .item-details-shell { width: min(calc(100% - 1.5rem), 1060px); padding-block: var(--space-6); }
+  .public-details-media { min-height: 280px; }
+  .public-details-content { padding: var(--space-6) var(--space-5); }
+  .public-details-heading { align-items: flex-start; flex-direction: column; }
+  .public-details-meta { grid-template-columns: 1fr; margin-top: var(--space-6); }
+  .claim-panel { margin-top: var(--space-6); padding: var(--space-5); }
 }
 
 @media (prefers-reduced-motion: reduce) {
