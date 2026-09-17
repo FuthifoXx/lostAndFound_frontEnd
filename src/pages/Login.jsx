@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { getRoleHome } from '../utils/getRoleHome'
 
 function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const requestedReturnTo = searchParams.get('returnTo')
+  const returnTo =
+    requestedReturnTo?.startsWith('/') &&
+    !requestedReturnTo.startsWith('//')
+      ? requestedReturnTo
+      : ''
 
   const [form, setForm] = useState({
     email: '',
@@ -25,7 +32,11 @@ function Login() {
     try {
       setError('')
       const authenticatedUser = await login(form)
-      navigate(getRoleHome(authenticatedUser.role), { replace: true })
+      const destination =
+        authenticatedUser.role === 'user' && returnTo
+          ? returnTo
+          : getRoleHome(authenticatedUser.role)
+      navigate(destination, { replace: true })
     } catch (err) {
       console.log(err)
       setError(err.message)
@@ -69,6 +80,15 @@ function Login() {
         <button type='submit' className='btn btn-block'>
           Login
         </button>
+
+        <p className='auth-switch'>
+          Not registered?{' '}
+          <Link
+            to={returnTo ? `/register?returnTo=${encodeURIComponent(returnTo)}` : '/register'}
+          >
+            Create an account
+          </Link>
+        </p>
       </form>
     </>
   )
