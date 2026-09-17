@@ -11,17 +11,20 @@ function ItemTimeline() {
   const [notes, setNotes] = useState([])
   const [note, setNote] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
 
   useEffect(() => {
     const fetchTimeline = async () => {
       try {
+        setError('')
         const result = await getItemTimeline(id)
         setData(result)
 
         const notesData = await getCaseNotes(id)
         setNotes(notesData)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message || 'The item timeline could not be loaded.')
       } finally {
         setLoading(false)
       }
@@ -37,19 +40,30 @@ function ItemTimeline() {
 
     try {
       setSubmitting(true)
+      setError('')
+      setNotice('')
 
-      const newNote = await addCaseNote(id, note)
+      await addCaseNote(id, note)
+      const savedNotes = await getCaseNotes(id)
 
-      setNotes((prev) => [newNote, ...prev])
+      setNotes(savedNotes)
       setNote('')
+      setNotice('Case note saved successfully.')
     } catch (err) {
-      console.log(err.message)
+      setError(err.message || 'The case note could not be saved.')
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (loading) return <div className='loading'></div>
+  if (loading) {
+    return (
+      <div className='dashboard-loading' role='status'>
+        <div className='loading'></div>
+        <p>Loading item timeline…</p>
+      </div>
+    )
+  }
 
   if (!data) {
     return (
@@ -147,11 +161,15 @@ function ItemTimeline() {
         <h4>Case Notes</h4>
       </div>
 
-      <form className='form' onSubmit={handleAddNote}>
+      <form className='form case-note-form' onSubmit={handleAddNote}>
+        {notice && <p className='alert alert-success' role='status'>{notice}</p>}
+        {error && <p className='form-alert' role='alert'>{error}</p>}
+
         <div className='form-row'>
-          <label className='form-label'>Add Note</label>
+          <label className='form-label' htmlFor='caseNote'>Add Note</label>
 
           <textarea
+            id='caseNote'
             className='form-textarea'
             value={note}
             onChange={(e) => setNote(e.target.value)}
@@ -160,7 +178,7 @@ function ItemTimeline() {
         </div>
 
         <button type='submit' className='btn btn-block' disabled={submitting}>
-          {submitting ? 'Saving...' : 'Add Note'}
+          {submitting ? 'Saving…' : 'Add Note'}
         </button>
       </form>
 
@@ -171,9 +189,10 @@ function ItemTimeline() {
           <p>Case notes added by partners or admins will appear here.</p>
         </div>
       ) : (
-        <div className='items-grid'>
+        <div className='items-grid case-notes-grid'>
           {notes.map((caseNote) => (
-            <div key={caseNote._id} className='item-card'>
+            <article key={caseNote._id} className='case-note-card'>
+              <p className='dashboard-section-eyebrow'>Saved case note</p>
               <p className='item-desc'>{caseNote.note}</p>
 
               <div className='item-footer'>
@@ -181,7 +200,7 @@ function ItemTimeline() {
 
                 <small>{new Date(caseNote.createdAt).toLocaleString()}</small>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}

@@ -461,6 +461,8 @@ textarea {
 }
 
 .receipt {
+  min-width: 0;
+  overflow: hidden;
   border-color: var(--grey-200);
   border-radius: var(--radius-md);
   box-shadow: var(--surface-shadow);
@@ -475,12 +477,22 @@ textarea {
 .receipt-section,
 .receipt-section p,
 .receipt-notes {
+  min-width: 0;
   text-align: var(--card-content-align);
 }
 
 .receipt-grid > div {
+  width: 100%;
+  min-width: 0;
   align-items: var(--card-content-align);
   text-align: var(--card-content-align);
+}
+
+.receipt-grid strong {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .receipt-item-image {
@@ -493,6 +505,35 @@ textarea {
   border-radius: var(--radius-sm);
   background: var(--success-50);
   color: var(--success-700);
+}
+
+.case-note-form {
+  margin-block: var(--space-5);
+  text-align: var(--card-content-align);
+}
+
+.case-note-form .form-input,
+.case-note-form .form-textarea {
+  text-align: var(--card-content-align);
+}
+
+.case-notes-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.case-note-card {
+  min-width: 0;
+  padding: var(--space-6);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  background: white;
+  text-align: var(--card-content-align);
+  box-shadow: var(--surface-shadow);
+}
+
+.case-note-card .item-footer {
+  justify-content: var(--card-content-align);
+  flex-wrap: wrap;
 }
 
 .dashboard-section-heading {
