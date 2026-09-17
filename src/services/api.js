@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api'
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '')
 
 // Get token from localStorage
 const getToken = () => {
@@ -29,7 +29,7 @@ export const apiRequest = async (endpoint, method = 'GET', data = null) => {
 }
 
 export const loginUser = async (data) => {
-  const res = await fetch(`http://localhost:5000/api/auth/login`, {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const getMyItems = () => {
 export const createLostItem = async (data) => {
   const token = JSON.parse(localStorage.getItem('user'))?.token
 
-  const res = await fetch('http://localhost:5000/api/lost-items', {
+  const res = await fetch(`${API_URL}/lost-items`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,

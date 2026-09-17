@@ -31,6 +31,7 @@ import PartnerOrAdminRoute from './components/PartnerOrAdminRoute'
 import AdminRoute from './components/AdminRoute'
 import UserRoute from './components/UserRoute'
 import VerifyReceipt from './pages/VerifyReceipt'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -244,6 +245,7 @@ function App() {
         path='/verify/receipt/:receiptNumber'
         element={<VerifyReceipt />}
       />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   )
 }

@@ -798,6 +798,11 @@ textarea {
 .partner-assign-control .form-label { display: block; }
 .partner-assign-control .btn { width: 100%; margin-top: var(--space-3); }
 
+.not-found-page { display: grid; min-height: 100vh; place-items: center; align-content: center; gap: var(--space-8); padding: var(--space-6); background: var(--grey-50); text-align: center; }
+.not-found-card { width: min(100%, 560px); padding: clamp(2rem, 6vw, 4rem); border: 1px solid var(--grey-200); border-radius: var(--radius-lg); background: white; box-shadow: var(--surface-shadow); }
+.not-found-card h1 { color: var(--grey-900); font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; }
+.not-found-card > p:not(.dashboard-section-eyebrow) { margin: var(--space-3) auto var(--space-6); color: var(--grey-600); line-height: 1.6; }
+
 .items-grid {
   align-items: stretch;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
