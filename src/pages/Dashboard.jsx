@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getMyItems, deleteLostItem, getDashboardStats } from '../services/api'
+import { getMyItems, getDashboardStats } from '../services/api'
 import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
@@ -13,22 +13,6 @@ function Dashboard() {
     closedCases: 0,
   })
   const navigate = useNavigate()
-
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      'Are you sure you want to delete this item?',
-    )
-
-    if (!confirmDelete) return
-
-    try {
-      await deleteLostItem(id)
-
-      setItems((prevItems) => prevItems.filter((item) => item._id !== id))
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,16 +90,10 @@ function Dashboard() {
               </div>
               <div className='item-actions'>
                 <button
-                  className='btn delete-btn'
-                  onClick={() => handleDelete(item._id)}
+                  className='btn btn-block'
+                  onClick={() => navigate(`/items/${item._id}`)}
                 >
-                  Delete
-                </button>
-                <button
-                  className='btn edit-btn'
-                  onClick={() => navigate(`/edit-item/${item._id}`)}
-                >
-                  Edit
+                  View Item / Claim
                 </button>
               </div>
             </div>
