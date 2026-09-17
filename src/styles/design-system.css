@@ -536,6 +536,32 @@ textarea {
   flex-wrap: wrap;
 }
 
+.upload-item-page { width: min(100%, var(--max-width)); margin: 0 auto; }
+.upload-item-form { display: grid; gap: var(--space-5); }
+.upload-feedback { margin: 0; padding: var(--space-4); border-radius: var(--radius-md); text-align: var(--card-content-align); }
+.upload-form-section { padding: clamp(1.5rem, 4vw, 2.5rem); border: 1px solid var(--grey-200); border-radius: var(--radius-lg); background: white; box-shadow: var(--surface-shadow); }
+.upload-section-heading { display: flex; align-items: center; justify-content: center; gap: var(--space-4); margin-bottom: var(--space-8); text-align: var(--card-content-align); }
+.upload-section-heading > span { display: grid; width: 2.5rem; height: 2.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--brand-100); color: var(--brand-700); font-weight: 800; }
+.upload-section-heading h2 { color: var(--grey-900); font-size: 1.25rem; font-weight: 800; }
+.upload-section-heading p { margin-top: var(--space-1); color: var(--grey-600); font-size: 0.9rem; }
+.upload-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+.upload-fields-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.upload-field-wide { grid-column: 1 / -1; }
+.upload-item-form .form-row { min-width: 0; margin: 0; text-align: var(--card-content-align); }
+.upload-item-form .form-label { color: var(--grey-700); font-weight: 750; }
+.upload-item-form .form-label span,
+.upload-item-form small { color: var(--grey-500); font-weight: 500; }
+.upload-item-form .form-input,
+.upload-item-form .form-textarea { min-height: 48px; text-align: var(--card-content-align); }
+.upload-item-form .form-textarea { min-height: 120px; resize: vertical; }
+.upload-file-input { padding: var(--space-2); }
+.upload-image-preview { position: relative; width: min(100%, 440px); margin: var(--space-6) auto 0; overflow: hidden; border: 1px solid var(--grey-200); border-radius: var(--radius-md); }
+.upload-image-preview img { display: block; width: 100%; height: 220px; object-fit: cover; }
+.upload-image-preview .btn { width: 100%; border-radius: 0; }
+.upload-submit { display: flex; align-items: center; justify-content: center; gap: var(--space-5); padding: var(--space-5); text-align: var(--card-content-align); }
+.upload-submit p { color: var(--grey-600); font-size: 0.9rem; }
+.upload-submit .btn { min-width: 180px; }
+
 .dashboard-section-heading {
   display: flex;
   align-items: center;
@@ -1681,6 +1707,11 @@ textarea {
   .profile-delete-confirm { justify-content: center; }
   .profile-delete-confirm strong { text-align: center; }
   .notifications-summary { align-items: center; flex-direction: column; }
+  .upload-fields,
+  .upload-fields-three { grid-template-columns: 1fr; }
+  .upload-section-heading { align-items: center; flex-direction: column; }
+  .upload-submit { align-items: stretch; flex-direction: column; }
+  .upload-submit .btn { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
