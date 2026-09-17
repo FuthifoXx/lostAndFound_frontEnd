@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getSingleItem, requestClaim } from '../services/api'
+import { formatCalendarDate } from '../utils/formatCalendarDate'
 
 function ItemDetails() {
   const { id } = useParams()
@@ -29,6 +30,7 @@ function ItemDetails() {
       const data = await requestClaim(item._id)
 
       setMessage(data.message)
+      setItem(data.item)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -60,6 +62,24 @@ function ItemDetails() {
     return <h3>Item not found</h3>
   }
 
+  const isMatchedUser = user?._id === item.matchedUser
+  const canRequestClaim =
+    isMatchedUser &&
+    item.status === 'matched' &&
+    ['none', 'rejected'].includes(item.claimStatus)
+
+  const claimButtonLabel = !user
+    ? 'Sign In to Claim'
+    : item.claimStatus === 'pending'
+      ? 'Claim Pending'
+      : item.claimStatus === 'approved'
+        ? 'Claim Approved'
+        : !isMatchedUser
+          ? 'Matched Owner Only'
+          : item.claimStatus === 'rejected'
+            ? 'Resubmit Claim'
+            : 'Claim This Item'
+
   return (
     <div className='item-details'>
       <div className='details-card'>
@@ -79,7 +99,7 @@ function ItemDetails() {
 
             <p>
               <strong>Date Lost</strong>{' '}
-              {new Date(item.dateLost).toLocaleDateString()}
+              {formatCalendarDate(item.dateLost)}
             </p>
 
             <p>
@@ -96,9 +116,9 @@ function ItemDetails() {
             <button
               className='btn claim-btn'
               onClick={handleClaim}
-              disabled={claimLoading}
+              disabled={claimLoading || (Boolean(user) && !canRequestClaim)}
             >
-              {claimLoading ? 'Requesting...' : 'Claim This Item'}
+              {claimLoading ? 'Requesting...' : claimButtonLabel}
             </button>
           </div>
         </div>
