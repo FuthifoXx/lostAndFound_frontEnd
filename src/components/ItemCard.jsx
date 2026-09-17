@@ -12,12 +12,16 @@ function ItemCard({
 }) {
   return (
     <article className={`item-card${compact ? ' item-card-compact' : ''}`}>
-      {item.image && (
+      {item.image ? (
         <div className={`item-card-media${protectImage ? ' protected-media' : ''}`}>
           <img src={item.image} alt='' className='item-img' loading='lazy' />
           {protectImage && (
             <span className='media-privacy-label'>Protected document preview</span>
           )}
+        </div>
+      ) : (
+        <div className='item-card-media item-card-media-empty'>
+          <span>No image provided</span>
         </div>
       )}
 
