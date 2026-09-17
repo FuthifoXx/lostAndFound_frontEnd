@@ -22,11 +22,13 @@ function Login() {
     e.preventDefault()
 
     try {
+      setError('')
       await login(form)
       navigate('/dashboard')
     } catch (err) {
       console.log(err)
       setError(err.message)
+      setForm((currentForm) => ({ ...currentForm, password: '' }))
     }
   }
 
@@ -45,7 +47,9 @@ function Login() {
             type='email'
             name='email'
             className='form-input'
+            value={form.email}
             onChange={handleChange}
+            autoComplete='email'
           />
         </div>
 
@@ -55,7 +59,9 @@ function Login() {
             type='password'
             name='password'
             className='form-input'
+            value={form.password}
             onChange={handleChange}
+            autoComplete='current-password'
           />
         </div>
 
