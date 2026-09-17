@@ -21,6 +21,7 @@ import PartnerClaims from './pages/PartnerClaims'
 import ClaimRequests from './pages/ClaimRequests'
 import Profile from './pages/Profile'
 import AdminUsers from './pages/AdminUsers'
+import AdminPartners from './pages/AdminPartners'
 
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -211,6 +212,16 @@ function App() {
           <AdminRoute>
             <Layout>
               <AdminUsers />
+            </Layout>
+          </AdminRoute>
+        }
+      />
+      <Route
+        path='/admin/partners'
+        element={
+          <AdminRoute>
+            <Layout>
+              <AdminPartners />
             </Layout>
           </AdminRoute>
         }
