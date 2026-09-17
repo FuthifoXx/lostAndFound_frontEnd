@@ -19,6 +19,7 @@ function Sidebar() {
         {user && !isAdmin && !isPartner && (
           <NavLink to='/dashboard'>My Dashboard</NavLink>
         )}
+        {user && <NavLink to='/profile'>Profile</NavLink>}
       </div>
 
       {isPartner && (
