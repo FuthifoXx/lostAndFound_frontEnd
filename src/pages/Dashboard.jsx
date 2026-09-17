@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getMyItems, getDashboardStats } from '../services/api'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { formatCalendarDate } from '../utils/formatCalendarDate'
 import EmptyState from '../components/EmptyState'
 import ItemCard from '../components/ItemCard'
@@ -17,18 +17,22 @@ function Dashboard() {
     recoveredItems: 0,
     closedCases: 0,
   })
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getMyItems()
-        setItems(data)
+        setError('')
+        const [data, statsData] = await Promise.all([
+          getMyItems(),
+          getDashboardStats(),
+        ])
 
-        const statsData = await getDashboardStats()
+        setItems(data)
         setStats(statsData)
       } catch (err) {
-        console.log('ERROR:', err.message)
+        setError(err.message)
       } finally {
         setLoading(false)
       }
@@ -38,14 +42,19 @@ function Dashboard() {
   }, [])
 
   if (loading) {
-    return <div className='loading'></div>
+    return (
+      <div className='dashboard-loading' role='status'>
+        <div className='loading'></div>
+        <p>Preparing your recovery dashboard…</p>
+      </div>
+    )
   }
 
   return (
-    <div className='dashboard'>
+    <div className='dashboard user-dashboard'>
       <PageHeader
-        title='My Lost Items'
-        description='Track matches, claims and recovered property in one place.'
+        title='My Recovery Dashboard'
+        description='Track matched property, claim decisions and completed recoveries in one secure place.'
       />
 
       <div className='stats-grid'>
@@ -56,13 +65,36 @@ function Dashboard() {
         <StatCard value={stats.closedCases} label='Closed cases' />
       </div>
 
-      {items.length === 0 ? (
+      <div className='dashboard-section-heading'>
+        <div>
+          <p className='dashboard-section-eyebrow'>Recovery activity</p>
+          <h2>Your matched property</h2>
+        </div>
+        <Link to='/items' className='btn btn-hipster'>Browse Found Items</Link>
+      </div>
+
+      {error ? (
         <EmptyState
-          title='No lost items'
-          description='Matched lost-property records will appear here.'
-        />
+          icon='!'
+          title='Dashboard could not be loaded'
+          description={error}
+        >
+          <button type='button' className='btn btn-hipster' onClick={() => window.location.reload()}>
+            Try again
+          </button>
+        </EmptyState>
+      ) : items.length === 0 ? (
+        <EmptyState
+          icon='⌕'
+          title='No matched property yet'
+          description='Browse approved items now, or return later when private identity matching finds a possible match.'
+        >
+          <button type='button' className='btn' onClick={() => navigate('/items')}>
+            Browse Found Items
+          </button>
+        </EmptyState>
       ) : (
-        <div className='items-grid'>
+        <div className='items-grid user-items-grid'>
           {items.map((item) => (
             <ItemCard
               key={item._id}
