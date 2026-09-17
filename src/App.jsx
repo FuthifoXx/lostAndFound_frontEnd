@@ -230,7 +230,16 @@ function App() {
           </AdminRoute>
         }
       />
-      <Route path='/receipts/:itemId' element={<CollectionReceipt />} />
+      <Route
+        path='/receipts/:itemId'
+        element={
+          <PartnerOrAdminRoute>
+            <Layout>
+              <CollectionReceipt />
+            </Layout>
+          </PartnerOrAdminRoute>
+        }
+      />
       <Route
         path='/verify/receipt/:receiptNumber'
         element={<VerifyReceipt />}

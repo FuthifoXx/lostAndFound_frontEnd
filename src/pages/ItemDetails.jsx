@@ -76,6 +76,22 @@ function ItemDetails() {
             ? 'Resubmit Claim'
             : 'Claim This Item'
 
+  const claimPanelCopy = !user
+    ? 'Sign in to request ownership. Your details stay private while the verified collection partner reviews your claim.'
+    : item?.claimStatus === 'pending'
+      ? 'Your claim is being reviewed by the verified collection partner. You will be notified when a decision is recorded.'
+      : item?.claimStatus === 'approved' && item?.status === 'claimed'
+        ? 'Ownership is approved. Follow the collection instructions provided by the verified partner.'
+        : item?.status === 'recovered'
+          ? 'The property handover has been recorded and the case is ready for closure.'
+          : item?.status === 'closed'
+            ? 'This recovery is complete and the case has been closed.'
+            : item?.claimStatus === 'rejected'
+              ? 'Your previous claim was not approved. Review your details and submit a new request if appropriate.'
+              : isMatchedUser
+                ? 'Submit an ownership claim for review by the verified collection partner.'
+                : 'Only the privately matched owner can submit a claim for this property.'
+
   return (
     <div className='public-page item-details-page'>
       <Navbar />
@@ -133,10 +149,7 @@ function ItemDetails() {
 
               <section className='claim-panel' aria-labelledby='claim-heading'>
                 <h2 id='claim-heading'>Think this belongs to you?</h2>
-                <p>
-                  Sign in and submit a claim. Your details stay private while the verified
-                  collection partner reviews ownership.
-                </p>
+                <p>{claimPanelCopy}</p>
 
                 {message && <p className='alert alert-success' role='status'>{message}</p>}
                 {error && <p className='form-alert' role='alert'>{error}</p>}

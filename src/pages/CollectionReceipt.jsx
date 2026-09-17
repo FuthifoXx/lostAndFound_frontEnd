@@ -133,21 +133,29 @@ function CollectionReceipt() {
   }
 
   if (loading) {
-    return <div className='loading'></div>
+    return (
+      <div className='dashboard-loading' role='status'>
+        <div className='loading'></div>
+        <p>Loading collection receipt…</p>
+      </div>
+    )
   }
 
   if (receiptMissing) {
     return (
-      <form className='form' onSubmit={handleCreateReceipt}>
-        <h4>Create Collection Receipt</h4>
+      <div className='receipt-create-page'>
+      <form className='receipt-create-card' onSubmit={handleCreateReceipt}>
+        <p className='dashboard-section-eyebrow'>Final handover record</p>
+        <h1>Create Collection Receipt</h1>
 
-        <p>Record who collected the recovered item before closing the case.</p>
+        <p className='receipt-create-intro'>Record who collected the property. This permanent receipt can be printed, downloaded, and independently verified.</p>
 
         {error && <p className='form-alert'>{error}</p>}
 
         <div className='form-row'>
-          <label className='form-label'>Collected By</label>
+          <label className='form-label' htmlFor='collectedBy'>Collected By</label>
           <input
+            id='collectedBy'
             type='text'
             className='form-input'
             value={form.collectedBy}
@@ -159,8 +167,9 @@ function CollectionReceipt() {
         </div>
 
         <div className='form-row'>
-          <label className='form-label'>Signature or Reference (optional)</label>
+          <label className='form-label' htmlFor='signature'>Signature or Reference <span>(optional)</span></label>
           <input
+            id='signature'
             type='text'
             className='form-input'
             value={form.signature}
@@ -169,36 +178,33 @@ function CollectionReceipt() {
         </div>
 
         <div className='form-row'>
-          <label className='form-label'>Collection Notes (optional)</label>
+          <label className='form-label' htmlFor='collectionNotes'>Collection Notes <span>(optional)</span></label>
           <textarea
+            id='collectionNotes'
             className='form-textarea'
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
           />
         </div>
 
-        <button type='submit' className='btn btn-block' disabled={creating}>
-          {creating ? 'Creating Receipt...' : 'Create Collection Receipt'}
-        </button>
-
-        <button
-          type='button'
-          className='btn btn-block'
-          onClick={() => navigate(-1)}
-        >
-          Go Back
-        </button>
+        <div className='receipt-create-actions'>
+          <button type='submit' className='btn' disabled={creating}>
+            {creating ? 'Creating Receipt…' : 'Create Collection Receipt'}
+          </button>
+          <button type='button' className='btn btn-hipster' onClick={() => navigate(-1)} disabled={creating}>Go Back</button>
+        </div>
       </form>
+      </div>
     )
   }
 
   if (error || !receipt) {
     return (
-      <div className='empty-state'>
-        <h4>Collection Receipt Unavailable</h4>
+      <div className='empty-state receipt-error-state'>
+        <h2>Collection Receipt Unavailable</h2>
         <p>{error || 'We could not find a receipt for this item.'}</p>
 
-        <button className='btn' onClick={() => navigate(-1)}>
+        <button type='button' className='btn' onClick={() => navigate(-1)}>
           Go Back
         </button>
       </div>
@@ -217,20 +223,21 @@ function CollectionReceipt() {
   return (
     <div className='receipt-page'>
       <div className='receipt-actions no-print'>
-        <button className='btn' onClick={() => navigate(-1)}>
+        <button type='button' className='btn btn-hipster' onClick={() => navigate(-1)}>
           ← Back
         </button>
 
-        <button className='btn btn-primary' onClick={() => window.print()}>
-          🖨 Print
+        <button type='button' className='btn btn-hipster' onClick={() => window.print()}>
+          Print Receipt
         </button>
 
         <button
           className='btn btn-primary'
+          type='button'
           onClick={handleDownloadPDF}
           disabled={downloading}
         >
-          {downloading ? 'Generating PDF...' : '🧾 Download PDF'}
+          {downloading ? 'Generating PDF…' : 'Download PDF'}
         </button>
       </div>
 

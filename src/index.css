@@ -948,7 +948,7 @@ font-size: 28px;
   .sidebar,
   .item-actions,
   .btn {
-    display: non !important;
+    display: none !important;
   }
 
   .receipt-card {
