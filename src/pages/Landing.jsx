@@ -39,8 +39,8 @@ function Landing() {
 
           <div className='landing-journey' aria-label='How Back 2 Owner works'>
             <div className='journey-heading'>
-              <span>How it works</span>
-              <strong>Three simple steps</strong>
+              <span>Two ways to recover your property</span>
+              <strong>Search now—or let your item find you</strong>
             </div>
             <ol className='journey-steps'>
               <li>
@@ -56,6 +56,17 @@ function Landing() {
                 <div><strong>Collect</strong><p>Collect from the verified partner location.</p></div>
               </li>
             </ol>
+            <div className='journey-alternative'>
+              <span className='journey-or'>Or</span>
+              <div>
+                <strong>Let your lost item find you</strong>
+                <p>
+                  Create an account with your identity details. If approved lost
+                  property matches them, Back 2 Owner will notify you.
+                </p>
+              </div>
+              {!user && <Link to='/register'>Create account</Link>}
+            </div>
           </div>
         </section>
 

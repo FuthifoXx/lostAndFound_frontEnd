@@ -725,6 +725,42 @@ textarea {
 .journey-steps strong { color: var(--grey-900); }
 .journey-steps p { margin-top: var(--space-1); color: var(--grey-600); line-height: 1.5; }
 
+.journey-alternative {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border-top: 1px solid var(--brand-200);
+  background: var(--brand-50);
+}
+
+.journey-alternative strong { color: var(--brand-800); font-size: 1.05rem; }
+.journey-alternative p { margin-top: var(--space-2); color: var(--grey-600); line-height: 1.55; }
+
+.journey-alternative a {
+  justify-self: start;
+  color: var(--brand-700);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.journey-or {
+  position: absolute;
+  inset: 0 auto auto 50%;
+  min-width: 36px;
+  padding: 0.2rem 0.5rem;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--brand-200);
+  border-radius: 999px;
+  background: white;
+  color: var(--brand-700);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .landing-purpose {
   display: grid;
   grid-template-columns: 1fr 1fr;
