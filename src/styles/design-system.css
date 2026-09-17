@@ -675,10 +675,18 @@ textarea {
 }
 
 .landing-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   margin-top: var(--space-5);
   color: var(--grey-500);
   font-size: 0.875rem;
   line-height: 1.6;
+}
+
+.landing-trust li + li::before {
+  margin-right: var(--space-2);
+  content: '•';
 }
 
 .landing-journey {
@@ -851,8 +859,13 @@ textarea {
   .landing-hero h1 { font-size: clamp(2.35rem, 12vw, 3.25rem); }
   .landing-actions { flex-direction: column; }
   .landing-actions .btn { width: 100%; }
-  .landing-trust span { display: none; }
   .landing-trust { display: grid; gap: var(--space-1); }
+  .landing-trust li::before,
+  .landing-trust li + li::before {
+    margin-right: var(--space-2);
+    color: var(--brand-600);
+    content: '✓';
+  }
   .journey-heading,
   .journey-steps { padding-inline: var(--space-5); }
   .landing-purpose { grid-template-columns: 1fr; gap: var(--space-4); }

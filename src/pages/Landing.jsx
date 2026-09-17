@@ -31,10 +31,11 @@ function Landing() {
               )}
             </div>
 
-            <p className='landing-trust'>
-              Secure claims <span aria-hidden='true'>•</span> Verified collection
-              <span aria-hidden='true'> • </span> Protected personal information
-            </p>
+            <ul className='landing-trust' aria-label='Back 2 Owner safeguards'>
+              <li>Secure claims</li>
+              <li>Verified collection</li>
+              <li>Protected personal information</li>
+            </ul>
           </div>
 
           <div className='landing-journey' aria-label='How Back 2 Owner works'>
