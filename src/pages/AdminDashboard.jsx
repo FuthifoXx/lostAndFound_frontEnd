@@ -2,21 +2,33 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAdminDashboardData } from '../services/api'
 import EmptyState from '../components/EmptyState'
+import ItemCard from '../components/ItemCard'
 import PageHeader from '../components/PageHeader'
 import StatCard from '../components/StatCard'
+
+const quickActions = [
+  { label: 'User Management', description: 'View, update, promote, or remove users.', to: '/admin/users', marker: '01' },
+  { label: 'Partner Management', description: 'Create, verify, and assign partners.', to: '/admin/partners', marker: '02' },
+  { label: 'Pending Items', description: 'Review newly uploaded found items.', to: '/pending-items', marker: '03' },
+  { label: 'Pending Claims', description: 'Review active ownership claims.', to: '/admin/claims', marker: '04' },
+  { label: 'Branch Performance', description: 'Compare partner recovery activity.', to: '/analytics/branches', marker: '05' },
+  { label: 'Recovery Analytics', description: 'Review recovery and closure rates.', to: '/analytics/recovery', marker: '06' },
+]
 
 function AdminDashboard() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setError('')
         const result = await getAdminDashboardData()
         setData(result)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message || 'The admin dashboard could not be loaded.')
       } finally {
         setLoading(false)
       }
@@ -25,169 +37,102 @@ function AdminDashboard() {
     fetchData()
   }, [])
 
-  if (loading) return <div className='loading'></div>
-
-  if (!data) {
+  if (loading) {
     return (
-      <EmptyState
-        title='Unable to load admin dashboard'
-        description='Please try again later.'
-      />
+      <div className='dashboard-loading' role='status'>
+        <div className='loading'></div>
+        <p>Loading admin dashboard…</p>
+      </div>
+    )
+  }
+
+  if (error || !data) {
+    return (
+      <div className='dashboard admin-dashboard'>
+        <PageHeader title='Admin Dashboard' description='Review platform activity and prioritize work requiring attention.' />
+        <EmptyState title='Unable to load admin dashboard' description={error || 'Please try again later.'} />
+      </div>
     )
   }
 
   const { stats, recentPendingItems, recentPendingClaims } = data
 
   return (
-    <div className='dashboard'>
+    <div className='dashboard admin-dashboard'>
       <PageHeader
         title='Admin Dashboard'
         description='Review platform activity and prioritize work requiring attention.'
       />
 
-      <div className='stats-grid'>
+      <section className='stats-grid admin-dashboard-stats' aria-label='Platform summary'>
         <StatCard value={stats.totalItems} label='Total items' />
         <StatCard value={stats.pendingItems} label='Pending items' />
         <StatCard value={stats.matchedItems} label='Matched' />
         <StatCard value={stats.pendingClaims} label='Pending claims' />
         <StatCard value={stats.recoveredItems} label='Recovered' />
         <StatCard value={stats.closedCases} label='Closed cases' />
-      </div>
+      </section>
 
-      <div className='section-header'>
-        <h4>Quick Actions</h4>
-      </div>
-
-      <div className='items-grid'>
-        <div className='item-card' onClick={() => navigate('/admin/users')}>
-          <h5>User Management</h5>
-          <p>View, update, promote, or delete users.</p>
+      <section className='admin-actions' aria-labelledby='quick-actions-title'>
+        <div className='dashboard-section-heading'>
+          <div>
+            <p className='dashboard-section-eyebrow'>Administration</p>
+            <h2 id='quick-actions-title'>Quick actions</h2>
+          </div>
         </div>
-
-        <div className='item-card' onClick={() => navigate('/admin/partners')}>
-          <h5>Partner Management</h5>
-          <p>Create, verify, and assign partners.</p>
+        <div className='admin-action-grid'>
+          {quickActions.map((action) => (
+            <Link key={action.to} to={action.to} className='admin-action-card'>
+              <span aria-hidden='true'>{action.marker}</span>
+              <div>
+                <h3>{action.label}</h3>
+                <p>{action.description}</p>
+              </div>
+              <strong aria-hidden='true'>→</strong>
+            </Link>
+          ))}
         </div>
+      </section>
 
-        <div className='item-card' onClick={() => navigate('/pending-items')}>
-          <h5>Pending Items</h5>
-          <p>Review uploaded found items.</p>
+      <section className='admin-review-section' aria-labelledby='pending-items-title'>
+        <div className='admin-section-heading'>
+          <div><p className='dashboard-section-eyebrow'>Review queue</p><h2 id='pending-items-title'>Recent pending items</h2></div>
+          <Link to='/pending-items' className='btn btn-hipster'>View all items</Link>
         </div>
-
-        <div className='item-card' onClick={() => navigate('/admin/claims')}>
-          <h5>Pending Claims</h5>
-          <p>Review active ownership claims.</p>
-        </div>
-
-        <div
-          className='item-card'
-          onClick={() => navigate('/analytics/branches')}
-        >
-          <h5>Branch Performance</h5>
-          <p>Compare partner recovery activity.</p>
-        </div>
-        <div
-          className='item-card'
-          onClick={() => navigate('/analytics/recovery')}
-        >
-          <h5>Recovery Analytics</h5>
-          <p>View recovery rates and lifecycle statistics.</p>
-        </div>
-      </div>
-
-      <div className='section-header'>
-        <h4>Recent Pending Items</h4>
-
-        <Link to='/pending-items' className='section-link'>
-          View all
-        </Link>
-      </div>
 
       {recentPendingItems.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Pending Items</h4>
-          <p>All uploaded items have been reviewed.</p>
-        </div>
+        <EmptyState title='No pending items' description='All uploaded items have been reviewed.' />
       ) : (
-        <div className='items-grid'>
+        <div className='items-grid admin-review-grid'>
           {recentPendingItems.map((item) => (
-            <div key={item._id} className='item-card compact-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-
-              <div className='item-header'>
-                <h5>{item.name}</h5>
-                <span className='status pending'>Pending</span>
-              </div>
-
-              <p className='item-desc'>{item.description}</p>
-
-              <div className='item-footer'>
-                <small>{item.location}</small>
-                <small>{item.partner?.name || 'No partner'}</small>
-              </div>
-
-              <div className='item-actions'>
-                <button
-                  className='btn btn-hipster'
-                  onClick={() => navigate(`/items/${item._id}/timeline`)}
-                >
-                  View Timeline
-                </button>
-              </div>
-            </div>
+            <ItemCard key={item._id} item={item} compact actions={<button className='btn btn-hipster' onClick={() => navigate(`/items/${item._id}/timeline`)}>View Timeline</button>}>
+              <p><strong>Location</strong><span>{item.location}</span></p>
+              <p><strong>Partner</strong><span>{item.partner?.name || 'No partner assigned'}</span></p>
+            </ItemCard>
           ))}
         </div>
       )}
+      </section>
 
-      <div className='section-header'>
-        <h4>Recent Pending Claims</h4>
-
-        <Link to='/admin/claims' className='section-link'>
-          View all
-        </Link>
-      </div>
+      <section className='admin-review-section' aria-labelledby='pending-claims-title'>
+        <div className='admin-section-heading'>
+          <div><p className='dashboard-section-eyebrow'>Ownership review</p><h2 id='pending-claims-title'>Recent pending claims</h2></div>
+          <Link to='/admin/claims' className='btn btn-hipster'>View all claims</Link>
+        </div>
 
       {recentPendingClaims.length === 0 ? (
-        <div className='empty-state'>
-          <h4>No Pending Claims</h4>
-          <p>All claims have been reviewed.</p>
-        </div>
+        <EmptyState title='No pending claims' description='All ownership claims have been reviewed.' />
       ) : (
-        <div className='items-grid'>
+        <div className='items-grid admin-review-grid'>
           {recentPendingClaims.map((item) => (
-            <div key={item._id} className='item-card compact-card'>
-              {item.image && (
-                <img src={item.image} alt={item.name} className='item-img' />
-              )}
-
-              <div className='item-header'>
-                <h5>{item.name}</h5>
-                <span className={`status ${item.claimStatus}`}>
-                  {item.claimStatus}
-                </span>
-              </div>
-
-              <p className='item-desc'>{item.description}</p>
-
-              <div className='item-footer'>
-                <small>{item.matchedUser?.email || 'No claimant email'}</small>
-                <small>{item.partner?.name || 'No partner'}</small>
-              </div>
-
-              <div className='item-actions'>
-                <button
-                  className='btn btn-hipster'
-                  onClick={() => navigate(`/items/${item._id}/timeline`)}
-                >
-                  View Timeline
-                </button>
-              </div>
-            </div>
+            <ItemCard key={item._id} item={item} status={item.claimStatus} compact actions={<button className='btn btn-hipster' onClick={() => navigate(`/items/${item._id}/timeline`)}>View Timeline</button>}>
+              <p><strong>Claimant</strong><span>{item.matchedUser?.email || 'No claimant email'}</span></p>
+              <p><strong>Partner</strong><span>{item.partner?.name || 'No partner assigned'}</span></p>
+            </ItemCard>
           ))}
         </div>
       )}
+      </section>
     </div>
   )
 }
