@@ -1,10 +1,18 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { getRoleHome } from '../utils/getRoleHome'
 
 function Logo() {
+  const { user } = useAuth()
+
   return (
-    <h4 className='logo'>
-      Back<sub className='logo-accent'>2</sub>Owner
-    </h4>
+    <Link
+      className='logo'
+      to={user ? getRoleHome(user.role) : '/'}
+      aria-label='Back 2 Owner home'
+    >
+      Back <span className='logo-accent'>2</span> Owner
+    </Link>
   )
 }
 
