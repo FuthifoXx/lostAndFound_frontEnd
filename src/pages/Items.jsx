@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { getAllItems } from '../services/api'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
 function Items() {
   const [search, setSearch] = useState('')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchItems = async () => {

@@ -8,7 +8,7 @@ function ItemDetails() {
   const [loading, setLoading] = useState(true)
   const [claimLoading, setClaimLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [error, seError] = useState('')
+  const [error, setError] = useState('')
 
   const handleClaim = async () => {
     try {
