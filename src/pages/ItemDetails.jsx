@@ -33,7 +33,13 @@ function ItemDetails() {
       const data = await requestClaim(item._id)
 
       setMessage(data.message)
-      setItem(data.item)
+
+      setItem((currentItem) => ({
+        ...currentItem,
+        status: data.item.status,
+        claimStatus: data.item.claimStatus,
+        isMatchedUser: true,
+      }))
     } catch (err) {
       setError(err.message)
     } finally {
@@ -58,7 +64,7 @@ function ItemDetails() {
     fetchItem()
   }, [id])
 
-  const isMatchedUser = user?._id === item?.matchedUser
+  const isMatchedUser = item?.isMatchedUser === true
   const canRequestClaim =
     isMatchedUser &&
     item?.status === 'matched' &&
@@ -106,22 +112,36 @@ function ItemDetails() {
           <EmptyState
             icon='!'
             title='Item could not be found'
-            description={error || 'This item may no longer be publicly available.'}
+            description={
+              error || 'This item may no longer be publicly available.'
+            }
           >
-            <button type='button' className='btn btn-hipster' onClick={() => navigate('/items')}>
+            <button
+              type='button'
+              className='btn btn-hipster'
+              onClick={() => navigate('/items')}
+            >
               Back to Browse Items
             </button>
           </EmptyState>
         ) : (
           <article className='public-details-card'>
-            <div className={`public-details-media${item.image ? ' protected-media' : ' public-details-media-empty'}`}>
+            <div
+              className={`public-details-media${item.image ? ' protected-media' : ' public-details-media-empty'}`}
+            >
               {item.image ? (
                 <>
                   <img src={item.image} alt='' className='public-details-img' />
-                  <span className='media-privacy-label'>Protected document preview</span>
+                  <span className='media-privacy-label'>
+                    Protected document preview
+                  </span>
                 </>
               ) : (
-                <span>No image provided</span>
+                <span>
+                  {item.hasProtectedImage
+                    ? 'Protected image available to authorized users'
+                    : 'No image provided'}
+                </span>
               )}
             </div>
 
@@ -134,7 +154,9 @@ function ItemDetails() {
                 <StatusBadge status={item.status} />
               </div>
 
-              {item.description && <p className='public-details-description'>{item.description}</p>}
+              {item.description && (
+                <p className='public-details-description'>{item.description}</p>
+              )}
 
               <dl className='public-details-meta'>
                 <div>
@@ -151,8 +173,16 @@ function ItemDetails() {
                 <h2 id='claim-heading'>Think this belongs to you?</h2>
                 <p>{claimPanelCopy}</p>
 
-                {message && <p className='alert alert-success' role='status'>{message}</p>}
-                {error && <p className='form-alert' role='alert'>{error}</p>}
+                {message && (
+                  <p className='alert alert-success' role='status'>
+                    {message}
+                  </p>
+                )}
+                {error && (
+                  <p className='form-alert' role='alert'>
+                    {error}
+                  </p>
+                )}
 
                 <button
                   type='button'

@@ -104,15 +104,7 @@ export const getAllItems = async (keyword = '', page = 1, limit = 8) => {
 }
 
 export const getSingleItem = async (id) => {
-  const res = await fetch(`${API_URL}/lost-items/${id}`)
-
-  const data = await res.json()
-
-  if (!res.ok) {
-    throw new Error(data.message || 'Failed to fetch item')
-  }
-
-  return data
+  return apiRequest(`/lost-items/${id}`)
 }
 
 export const requestClaim = async (id) => {
