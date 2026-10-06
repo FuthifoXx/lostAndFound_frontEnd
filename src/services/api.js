@@ -1,4 +1,6 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '')
+const API_URL = (
+  import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+).replace(/\/$/, '')
 
 // Get token from localStorage
 const getToken = () => {
@@ -79,6 +81,34 @@ export const deleteLostItem = async (id) => {
 
 export const updateLostItem = async (id, data) => {
   return apiRequest(`/lost-items/${id}`, 'PUT', data)
+}
+
+// Add or replace a pending item's document image
+export const updateLostItemImage = async (id, file) => {
+  const token = getToken()
+
+  if (!token) {
+    throw new Error('Please sign in before updating an image.')
+  }
+
+  const formData = new FormData()
+  formData.append('image', file)
+
+  const res = await fetch(`${API_URL}/lost-items/${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+
+  const result = await res.json()
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Failed to update document image')
+  }
+
+  return result
 }
 
 export const getNotifications = async () => {
@@ -231,7 +261,7 @@ export const createPartner = async (data) => {
 //verify partner
 export const verifyPartner = async (id) => {
   return apiRequest(`/partners/${id}/verify`, 'PUT')
-}    
+}
 
 //assign user to partner
 export const assignUserToPartner = async (partnerId, userId) => {
