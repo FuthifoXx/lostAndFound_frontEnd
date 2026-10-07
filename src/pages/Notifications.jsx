@@ -49,7 +49,7 @@ function Notifications() {
         <strong>{notifications.length}</strong>
         <div>
           <h2>{notifications.length === 1 ? 'Recovery update' : 'Recovery updates'}</h2>
-          <p>Delivery badges refer to SMS or WhatsApp attempts. Your in-app update remains available here.</p>
+          <p>Delivery badges cover email, SMS and WhatsApp. Accepted means the provider accepted the message, not confirmed inbox delivery. Your in-app update remains available here.</p>
         </div>
       </section>
 
@@ -75,23 +75,25 @@ function Notifications() {
             const title = note.type
               ? note.type.replaceAll('_', ' ')
               : 'Notification'
-            const channel = note.channel || 'In-app'
-            const deliveryLabel = note.status === 'failed'
-              ? `${channel} delivery failed`
+            const channel = ({ EMAIL: 'Email', SMS: 'SMS', WHATSAPP: 'WhatsApp' })[note.channel] || note.channel || 'In-app'
+            const deliveryLabel = !note.channel
+              ? 'In-app update'
+              : note.status === 'failed'
+              ? `${channel} send unconfirmed`
               : note.status === 'sent'
-                ? `${channel} sent`
+                ? `${channel} accepted`
                 : `${channel} pending`
 
             const notificationItem = {
               name: title,
               description: note.message,
-              image: note.item?.image,
             }
 
             return (
               <ItemCard
                 key={note._id}
                 item={notificationItem}
+                showImage={false}
                 status={null}
                 badges={
                   [
@@ -103,7 +105,7 @@ function Notifications() {
                       ? [
                         {
                           status: note.item.status,
-                          label: `Item: ${note.item.status}`,
+                          label: `Current item status: ${note.item.status}`,
                         },
                       ]
                       : []),

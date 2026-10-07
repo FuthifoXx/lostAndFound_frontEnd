@@ -8,11 +8,12 @@ function ItemCard({
   footer,
   actions,
   protectImage = true,
+  showImage = true,
   compact = false,
 }) {
   return (
     <article className={`item-card${compact ? ' item-card-compact' : ''}`}>
-      {item.image ? (
+      {showImage && (item.image ? (
         <div
           className={`item-card-media${protectImage ? ' protected-media' : ''}`}
         >
@@ -31,7 +32,7 @@ function ItemCard({
               : 'No image provided'}
           </span>
         </div>
-      )}
+      ))}
 
       <div className='item-card-body'>
         <div className='item-header'>
