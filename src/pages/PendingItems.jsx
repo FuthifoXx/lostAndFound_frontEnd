@@ -55,9 +55,9 @@ function PendingItems() {
 
       setItems((prev) => prev.filter((item) => item._id !== id))
       setConfirmation(null)
-      setNotice('Item rejected and removed from the review queue.')
+      setNotice('Item permanently deleted.')
     } catch (err) {
-      setError(err.message || 'The item could not be rejected.')
+      setError(err.message || 'The item could not be deleted.')
     } finally {
       setProcessingId(null)
     }
@@ -101,17 +101,17 @@ function PendingItems() {
               status='pending'
               actions={
                 confirmation?.id === item._id ? (
-                  <div className={`claim-decision-confirm claim-decision-${confirmation.decision}`} role='group' aria-label={`Confirm item ${confirmation.decision}`}>
-                    <strong>{confirmation.decision === 'approve' ? 'Approve this item and run automatic owner matching?' : 'Reject and permanently remove this uploaded item?'}</strong>
+                  <div className={`claim-decision-confirm claim-decision-${confirmation.decision}`} role='group' aria-label={confirmation.decision === 'approve' ? 'Confirm item approval' : 'Confirm permanent item deletion'}>
+                    <strong>{confirmation.decision === 'approve' ? 'Approve this item and run automatic owner matching?' : 'Permanently delete this item and its uploaded image? This cannot be undone.'}</strong>
                     <button className={`btn${confirmation.decision === 'reject' ? ' delete-btn' : ''}`} disabled={processingId === item._id} onClick={() => confirmation.decision === 'approve' ? handleApprove(item._id) : handleDelete(item._id)}>
-                      {processingId === item._id ? 'Processing…' : confirmation.decision === 'approve' ? 'Confirm Approval' : 'Confirm Rejection'}
+                      {processingId === item._id ? 'Processing…' : confirmation.decision === 'approve' ? 'Confirm Approval' : 'Delete permanently'}
                     </button>
                     <button className='btn btn-hipster' disabled={processingId === item._id} onClick={() => setConfirmation(null)}>Cancel</button>
                   </div>
                 ) : (
                   <>
                     <button className='btn' onClick={() => setConfirmation({ id: item._id, decision: 'approve' })}>Approve</button>
-                    <button className='btn delete-btn' onClick={() => setConfirmation({ id: item._id, decision: 'reject' })}>Reject</button>
+                    <button className='btn delete-btn' onClick={() => setConfirmation({ id: item._id, decision: 'reject' })}>Delete item</button>
                   </>
                 )
               }
