@@ -13,6 +13,17 @@ function Sidebar({ open = false, onNavigate }) {
       className={`sidebar${open ? ' sidebar-open' : ''}`}
       aria-label='Primary navigation'
     >
+      <div className='sidebar-mobile-header'>
+        <span>Navigation</span>
+        <button
+          type='button'
+          className='menu-toggle'
+          aria-label='Close navigation menu'
+          onClick={onNavigate}
+        >
+          <span aria-hidden='true'>×</span>
+        </button>
+      </div>
       <div className='sidebar-section'>
         <p className='sidebar-label'>Main</p>
 

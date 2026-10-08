@@ -1734,7 +1734,19 @@ textarea {
   display: none;
 }
 
+.sidebar-mobile-header { display: none; }
+
 @media (max-width: 900px) {
+  .sidebar-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    margin-bottom: var(--space-3);
+    color: var(--grey-800);
+    font-weight: 750;
+  }
+
   .menu-toggle { display: inline-grid; place-items: center; }
 
   .topbar-email { display: none; }

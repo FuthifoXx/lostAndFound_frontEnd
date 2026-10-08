@@ -10,12 +10,12 @@ function Topbar({ sidebarOpen, onMenuClick }) {
         <button
           type='button'
           className='menu-toggle'
-          aria-label='Toggle navigation menu'
+          aria-label={sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
           aria-controls='primary-sidebar'
           aria-expanded={sidebarOpen}
           onClick={onMenuClick}
         >
-          <span aria-hidden='true'>☰</span>
+          <span aria-hidden='true'>{sidebarOpen ? '×' : '☰'}</span>
         </button>
 
         <Logo />

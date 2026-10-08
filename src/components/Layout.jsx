@@ -12,6 +12,15 @@ function Layout({ children }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [pathname])
 
+  useEffect(() => {
+    if (!sidebarOpen) return
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setSidebarPath(null)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [sidebarOpen])
+
   return (
     <div className='app-shell'>
       <Topbar
