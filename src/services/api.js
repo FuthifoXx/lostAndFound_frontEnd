@@ -69,7 +69,9 @@ export const createLostItem = async (data) => {
   const result = await res.json()
 
   if (!res.ok) {
-    throw new Error(result.message || 'Failed to create item')
+    const error = new Error(result.message || 'Failed to create item')
+    error.code = result.code
+    throw error
   }
 
   return result

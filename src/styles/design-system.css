@@ -1929,9 +1929,16 @@ textarea {
   background: var(--grey-100);
 }
 
-/* Transparent supplied brand artwork, shared by public and signed-in headers. */
-.logo { display: inline-flex; align-items: center; flex-shrink: 0; line-height: 1; }
-.logo-image { display: block; width: 112px; height: 70px; object-fit: contain; }
+/* Supplied fingerprint symbol with a readable responsive wordmark. */
+.logo { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; line-height: 1; }
+.logo-image { display: block; width: 44px; height: 44px; object-fit: contain; }
+.logo-wordmark { font-size: 22px; font-weight: 800; letter-spacing: -0.04em; }
+.logo .logo-accent { color: #007bea; }
+.separate-item-confirmation { padding: 1rem; border: 1px solid var(--grey-200); border-radius: 12px; background: var(--grey-100); }
+.separate-item-confirmation label { display: flex; align-items: flex-start; gap: 12px; margin-top: 12px; cursor: pointer; }
+.separate-item-confirmation input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
 @media (max-width: 600px) {
-  .logo-image { width: 96px; height: 58px; }
+  .logo { gap: 6px; }
+  .logo-image { width: 36px; height: 36px; }
+  .logo-wordmark { font-size: 18px; }
 }

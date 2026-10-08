@@ -17,6 +17,8 @@ function AddItem() {
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [duplicateWarning, setDuplicateWarning] = useState(false)
+  const [confirmSeparateItem, setConfirmSeparateItem] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -26,6 +28,11 @@ function AddItem() {
 
   const handleChange = (event) => {
     const { name, value, files } = event.target
+    if (['identityType', 'idNumber', 'passportNumber', 'documentNumber'].includes(name)) {
+      setDuplicateWarning(false)
+      setConfirmSeparateItem(false)
+      setError('')
+    }
     if (name === 'image') {
       const selectedImage = files?.[0] || null
       if (selectedImage && !selectedImage.type.startsWith('image/')) {
@@ -55,12 +62,17 @@ function AddItem() {
         const inactive = ['idNumber', 'passportNumber', 'documentNumber'].includes(key) && key !== activeIdentifier
         if (!inactive && value) formData.append(key, value)
       })
+      if (confirmSeparateItem) formData.append('confirmSeparateItem', 'true')
       if (image) formData.append('image', image)
       await createLostItem(formData)
       setSuccess('Item captured successfully. Redirecting to the Partner Dashboard…')
       window.setTimeout(() => navigate('/partner'), 900)
     } catch (err) {
       setError(err.message || 'The item could not be captured.')
+      if (err.code === 'ACTIVE_DOCUMENT_CASE' || err.message === 'An active case already exists for this document') {
+        setDuplicateWarning(true)
+        setConfirmSeparateItem(false)
+      }
     } finally { setSubmitting(false) }
   }
 
@@ -76,6 +88,15 @@ function AddItem() {
       <PageHeader title='Capture Found Item' description='Record the property and its identity details for secure approval and automatic owner matching.' />
       <form className='upload-item-form' onSubmit={handleSubmit}>
         {error && <p className='form-alert upload-feedback' role='alert'>{error}</p>}
+        {duplicateWarning && (
+          <section className='separate-item-confirmation' aria-label='Check existing document case'>
+            <p>This identity document is already linked to an active case. Check that you are recording a different physical item before submitting again.</p>
+            <label>
+              <input type='checkbox' checked={confirmSeparateItem} onChange={(event) => setConfirmSeparateItem(event.target.checked)} />
+              <span>I confirm this is a different physical item, not a repeat upload of the existing item.</span>
+            </label>
+          </section>
+        )}
         {success && <p className='alert alert-success upload-feedback' role='status'>{success}</p>}
 
         <section className='upload-form-section' aria-labelledby='item-details-heading'>
@@ -108,7 +129,7 @@ function AddItem() {
           </div>
         </section>
 
-        <div className='upload-submit'><p>New items remain pending until an administrator approves them.</p><button type='submit' className='btn' disabled={submitting || Boolean(success)}>{submitting ? 'Submitting Item…' : success ? 'Item Submitted' : 'Submit Item'}</button></div>
+        <div className='upload-submit'><p>New items remain pending until an administrator approves them.</p><button type='submit' className='btn' disabled={submitting || Boolean(success) || (duplicateWarning && !confirmSeparateItem)}>{submitting ? 'Submitting Item…' : success ? 'Item Submitted' : 'Submit Item'}</button></div>
       </form>
     </main>
   )

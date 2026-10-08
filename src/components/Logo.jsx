@@ -11,7 +11,8 @@ function Logo() {
       to={user ? getRoleHome(user.role) : '/'}
       aria-label='Back 2 Owner home'
     >
-      <img className='logo-image' src='/back-2-owner-logo.png' alt='Back 2 Owner' width='1448' height='1086' />
+      <img className='logo-image' src='/apple-touch-icon.png' alt='' width='180' height='180' />
+      <span className='logo-wordmark'>Back <span className='logo-accent'>2</span> Owner</span>
     </Link>
   )
 }
