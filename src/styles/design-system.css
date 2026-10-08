@@ -1928,3 +1928,10 @@ textarea {
   align-self: start;
   background: var(--grey-100);
 }
+
+/* Transparent supplied brand artwork, shared by public and signed-in headers. */
+.logo { display: inline-flex; align-items: center; flex-shrink: 0; line-height: 1; }
+.logo-image { display: block; width: 112px; height: 70px; object-fit: contain; }
+@media (max-width: 600px) {
+  .logo-image { width: 96px; height: 58px; }
+}
