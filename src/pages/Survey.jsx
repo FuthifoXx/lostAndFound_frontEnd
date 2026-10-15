@@ -4,18 +4,18 @@ import { apiRequest } from '../services/api'
 import '../styles/survey.css'
 
 const questions = [
-  ['seenAppBefore', 'Have you ever come across a lost and found app before?', ['Yes', 'No']],
+  ['seenAppBefore', 'Have you ever come across a lost-and-found app before?', ['Yes', 'No']],
   ['lostBefore', 'Have you ever lost an important document or personal item?', ['Yes', 'No']],
-  ['recovered', 'Were you able to recover it?', ['Yes', 'No']],
-  ['ratings', 'How would you rate the service at Home Affairs, the Licensing Department or another department?'],
-  ['replacementFeeFair', 'Do you think the fee paid to replace a lost document is fair and reasonable?', ['Yes', 'No']],
+  ['recovered', 'Were you able to recover it back?', ['Yes', 'No']],
+  ['ratings', 'How would you rate the level of service at Home Affairs, the Licensing Department and other public service offices?'],
+  ['replacementFeeFair', 'Do you think a fee paid to replace a lost document is fair and reasonable?', ['Yes', 'No']],
   ['usefulness', 'How useful would a service like this be in your community?', ['Very useful', 'Somewhat useful', 'Not useful', 'Not sure yet']],
   ['recommend', 'Would you recommend this service to someone?', ['Yes', 'Maybe', 'No']],
-  ['subscribe', 'Would you subscribe to a service provider that assists with lost document recovery?', ['Yes', 'No', 'Maybe']],
-  ['willingToPay', 'How much would you be willing to pay for a recovered item, from R20 to R100?'],
+  ['subscribe', 'Would you subscribe to a service provider that assists with lost-document recovery?', ['Yes', 'No', 'Maybe']],
+  ['willingToPay', 'How much are you willing to pay for a recovered item on a scale of R20 to R100?'],
   ['interest', 'Would you like to get involved?', ['Just sharing feedback', 'Help test the app', 'Volunteer in my community', 'Explore becoming a collection partner']],
 ]
-const ratings = [['queueRating', 'Time spent in queues'], ['helpDeskRating', 'Information at the help desk'], ['customerServiceRating', 'Customer service']]
+const ratings = [['queueRating', 'Time spent in queues'], ['helpDeskRating', 'Level of information at the help desk'], ['customerServiceRating', 'Level of customer service']]
 export default function Survey() {
   const [answers, setAnswers] = useState({})
   const [busy, setBusy] = useState(false)
@@ -43,7 +43,7 @@ export default function Survey() {
       <aside className="survey-explainer"><strong>New to Back 2 Owner?</strong><p>Found items are recorded by collection partners and reviewed by an administrator. Owners can browse, submit a claim and collect after verification. Matching identity details can also help notify an owner.</p><Link to="/" target="_blank" rel="noreferrer">Explore the app in a new tab ↗</Link></aside>
       <p className="survey-note">Read to the respondent: Taking part is voluntary. We use your answers to improve Back 2 Owner and plan the community pilot. You can skip the interview or stop at any time. Contact details are optional. Complete the applicable questions to save a response. Skip question 3 if no item was lost. Service ratings are optional if the respondent has no experience of these departments.</p>
       {questions.map(([key, label, options], index) => <fieldset key={key} disabled={key === 'recovered' && answers.lostBefore !== 'Yes'}><legend><span className="survey-number">{index + 1}</span>{label}</legend>
-        {key === 'recovered' && answers.lostBefore !== 'Yes' ? <p className="survey-note">Not applicable unless the respondent answered Yes to question 2.</p> : options ? <div className="survey-options">{options.map(option => <label className="survey-choice" key={option}><input type="radio" name={key} value={option} required checked={answers[key] === option} onChange={e => update(key, e.target.value)} /><span>{option}</span></label>)}</div> : key === 'ratings' ? <><p className="survey-note">1 = Poor · 10 = Excellent. Leave blank if not applicable.</p>{ratings.map(([field, text]) => <label className="survey-field" key={field}>{text}<select value={answers[field] || ''} onChange={e => update(field, e.target.value)}><option value="">Not applicable / no experience</option>{Array.from({ length: 10 }, (_, i) => <option value={i + 1} key={i}>{i + 1}</option>)}</select></label>)}</> : <label className="survey-field">Amount in rand (R)<input type="number" min="20" max="100" step="1" required value={answers.willingToPay || ''} onChange={e => update('willingToPay', e.target.value)} /></label>}
+        {key === 'recovered' && answers.lostBefore !== 'Yes' ? <p className="survey-note">Not applicable unless the respondent answered Yes to question 2.</p> : options ? <div className="survey-options">{options.map(option => <label className="survey-choice" key={option}><input type="radio" name={key} value={option} required checked={answers[key] === option} onChange={e => update(key, e.target.value)} /><span>{option}</span></label>)}</div> : key === 'ratings' ? <><p className="survey-note">1 = Poor · 10 = Excellent. Leave blank if not applicable.</p>{ratings.map(([field, text]) => <label className="survey-field" key={field}>{text}<select value={answers[field] || ''} onChange={e => update(field, e.target.value)}><option value="">Not applicable / no experience</option>{Array.from({ length: 10 }, (_, i) => <option value={i + 1} key={i}>{i + 1}</option>)}</select></label>)}</> : <label className="survey-field">Amount in rand (R20–R100)<input type="number" min="20" max="100" step="1" required value={answers.willingToPay || ''} onChange={e => update('willingToPay', e.target.value)} /></label>}
         {key === 'lostBefore' && answers.lostBefore === 'Yes' && <label className="survey-field">What was it?<input maxLength={300} required value={answers.lostItem || ''} onChange={e => update('lostItem', e.target.value)} /></label>}
         {key === 'recovered' && answers.lostBefore === 'Yes' && answers.recovered === 'Yes' && <label className="survey-field">How did you recover it?<input maxLength={500} required value={answers.recoveryMethod || ''} onChange={e => update('recoveryMethod', e.target.value)} /></label>}
       </fieldset>)}
