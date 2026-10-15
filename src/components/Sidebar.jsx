@@ -60,6 +60,7 @@ function Sidebar({ open = false, onNavigate }) {
           <NavLink to='/recovery-history' onClick={onNavigate}>Recovery History</NavLink>
           <NavLink to='/analytics/recovery' onClick={onNavigate}>Recovery Analytics</NavLink>
           <NavLink to='/analytics/branches' onClick={onNavigate}>Branch Performance</NavLink>
+          <NavLink to='/admin/survey' onClick={onNavigate}>Community Feedback</NavLink>
           <NavLink to='/admin/partners' onClick={onNavigate}>Partner Management</NavLink>
         </div>
       )}
