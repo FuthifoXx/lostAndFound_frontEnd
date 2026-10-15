@@ -40,7 +40,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Landing />} />
       <Route path='/admin/survey' element={<AdminRoute><Layout><AdminSurvey /></Layout></AdminRoute>} />
-      <Route path='/survey' element={<Survey />} />
+      <Route path='/admin/survey/new' element={<AdminRoute><Layout><Survey /></Layout></AdminRoute>} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
 

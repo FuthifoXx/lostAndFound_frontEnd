@@ -21,7 +21,6 @@ function Landing() {
             </p>
 
             <div className='landing-actions'>
-              <Link to='/survey' className='btn btn-hipster'>Have your say</Link>
               <Link to='/items' className='btn'>Browse found items</Link>
               {user ? (
                 <Link to={getRoleHome(user.role)} className='btn btn-hipster'>
