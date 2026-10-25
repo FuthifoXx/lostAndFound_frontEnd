@@ -18,7 +18,12 @@ function PendingItems() {
       try {
         setError('')
         const data = await getPendingItems()
-        setItems(data)
+        const pendingItems = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.items)
+            ? data.items
+            : []
+        setItems(pendingItems)
       } catch (err) {
         setError(err.message || 'Pending items could not be loaded.')
       } finally {
