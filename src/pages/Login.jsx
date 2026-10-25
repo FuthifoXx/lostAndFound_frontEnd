@@ -36,7 +36,7 @@ function Login() {
       setError('')
       const authenticatedUser = await login(form)
       const destination =
-        authenticatedUser.role === 'user' && returnTo
+        returnTo
           ? returnTo
           : getRoleHome(authenticatedUser.role)
       navigate(destination, { replace: true })
@@ -74,7 +74,13 @@ function Login() {
               <p>Enter your Back 2 Owner account details.</p>
             </div>
 
-            {returnTo && (
+            {searchParams.get('reason') === 'session-ended' && (
+              <p className='auth-notice' role='status'>
+                Your session has ended. Please sign in again to continue.
+              </p>
+            )}
+
+            {returnTo && searchParams.get('reason') !== 'session-ended' && (
               <p className='auth-notice'>Sign in to continue with this item.</p>
             )}
 

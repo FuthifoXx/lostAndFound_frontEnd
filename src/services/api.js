@@ -8,6 +8,15 @@ const getToken = () => {
   return user?.token
 }
 
+// Ignore failures from requests belonging to a session that has since changed.
+const checkSession = (res, token) => {
+  if (res.status === 401 && token && getToken() === token) {
+    localStorage.removeItem('user')
+    window.dispatchEvent(new Event('auth:session-ended'))
+    throw new Error('Your session has ended. Please sign in again.')
+  }
+}
+
 // Generic request function
 export const apiRequest = async (endpoint, method = 'GET', data = null) => {
   const token = getToken()
@@ -20,6 +29,8 @@ export const apiRequest = async (endpoint, method = 'GET', data = null) => {
     },
     body: data ? JSON.stringify(data) : null,
   })
+
+  checkSession(res, token)
 
   const result = await res.json()
 
@@ -55,7 +66,7 @@ export const getMyItems = () => {
 
 // get my lost items
 export const createLostItem = async (data) => {
-  const token = JSON.parse(localStorage.getItem('user'))?.token
+  const token = getToken()
 
   const res = await fetch(`${API_URL}/lost-items`, {
     method: 'POST',
@@ -65,6 +76,8 @@ export const createLostItem = async (data) => {
     },
     body: data,
   })
+
+  checkSession(res, token)
 
   const result = await res.json()
 
@@ -103,6 +116,8 @@ export const updateLostItemImage = async (id, file) => {
     },
     body: formData,
   })
+
+  checkSession(res, token)
 
   const result = await res.json()
 
@@ -299,6 +314,8 @@ export const downloadReceiptPDF = async (itemId) => {
       Authorization: token ? `Bearer ${token}` : '',
     },
   })
+
+  checkSession(res, token)
 
   if (!res.ok) {
     const result = await res.json()
