@@ -125,7 +125,7 @@ function Login() {
               </div>
             </div>
 
-            <p className='auth-switch'><Link to='/forgot-password'>Forgot password?</Link></p>
+            <p className='auth-switch form-row'><Link to='/forgot-password'>Forgot password?</Link></p>
 
             <button type='submit' className='btn btn-block' disabled={submitting}>
               {submitting ? 'Signing in…' : 'Sign in'}
