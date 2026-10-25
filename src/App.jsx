@@ -3,6 +3,7 @@ import Landing from './pages/Landing'
 import Survey from './pages/Survey'
 import AdminSurvey from './pages/AdminSurvey'
 import Login from './pages/Login'
+import PasswordRecovery from './pages/PasswordRecovery'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import AddItem from './pages/AddItem'
@@ -42,6 +43,8 @@ function App() {
       <Route path='/admin/survey' element={<AdminRoute><Layout><AdminSurvey /></Layout></AdminRoute>} />
       <Route path='/admin/survey/new' element={<AdminRoute><Layout><Survey /></Layout></AdminRoute>} />
       <Route path='/login' element={<Login />} />
+      <Route path='/forgot-password' element={<PasswordRecovery key='forgot' />} />
+      <Route path='/reset-password' element={<PasswordRecovery key='reset' reset />} />
       <Route path='/register' element={<Register />} />
 
       <Route path='/items' element={<Items />} />
