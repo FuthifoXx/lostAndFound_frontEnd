@@ -34,6 +34,7 @@ function Sidebar({ open = false, onNavigate }) {
         {user && !isAdmin && !isPartner && (
           <NavLink to='/dashboard' onClick={onNavigate}>My Dashboard</NavLink>
         )}
+        {user && <NavLink to='/recovery-setup' onClick={onNavigate}>Recovery setup</NavLink>}
         {user && <NavLink to='/profile' onClick={onNavigate}>Profile</NavLink>}
       </div>
 

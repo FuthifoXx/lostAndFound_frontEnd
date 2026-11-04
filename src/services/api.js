@@ -351,3 +351,10 @@ const recoveryRequest = async (endpoint, data) => {
 
 export const forgotPassword = (email) => recoveryRequest('forgot-password', { email })
 export const resetPassword = (token, password) => recoveryRequest('reset-password', { token, password })
+
+export const requestEmailConfirmation = () => apiRequest('/auth/email-confirmation', 'POST')
+export const confirmEmail = (token) => recoveryRequest('verify-email', { token })
+export const saveRecoveryProfile = (data) => apiRequest('/auth/recovery-profile', 'PUT', data)
+export const getPossibleMatches = () => apiRequest('/auth/possible-matches')
+export const getLossReports = () => apiRequest('/auth/loss-reports')
+export const createLossReport = (data) => apiRequest('/auth/loss-reports', 'POST', data)

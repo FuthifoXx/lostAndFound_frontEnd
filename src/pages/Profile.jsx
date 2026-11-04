@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getMe, updateMe, deleteMe } from '../services/api'
 import { useAuth } from '../hooks/useAuth'
 import PageHeader from '../components/PageHeader'
@@ -9,6 +9,7 @@ function Profile() {
   const { logout, updateSession } = useAuth()
 
   const [form, setForm] = useState({
+    displayName: '',
     surname: '',
     initials: '',
     firstNames: '',
@@ -34,6 +35,7 @@ function Profile() {
         setIdentityType(data.identityType || '')
 
         setForm({
+          displayName: data.displayName || '',
           surname: data.surname || '',
           initials: data.initials || '',
           firstNames: Array.isArray(data.firstNames)
@@ -112,13 +114,13 @@ function Profile() {
       <div className='profile-layout'>
         <aside className='profile-summary'>
           <span className='profile-avatar' aria-hidden='true'>
-            {(form.firstNames || form.email || '?').charAt(0).toUpperCase()}
+            {(form.displayName || form.firstNames || form.email || '?').charAt(0).toUpperCase()}
           </span>
-          <h2>{form.firstNames || 'Back 2 Owner member'}</h2>
+          <h2>{form.displayName || form.firstNames || 'Back 2 Owner member'}</h2>
           <p>{form.email}</p>
           <div className='profile-verification'>
-            <strong>Private identity matching</strong>
-            <span>{identityType ? identityType.replace('_', ' ') : 'Identity protected'}</span>
+            <strong>Document details supplied</strong>
+            <span>{identityType ? identityType.replace('_', ' ') : 'Not supplied'}</span>
           </div>
           <p className='profile-privacy-note'>
             Your identity document details are protected and never shown in public item listings.
@@ -131,19 +133,20 @@ function Profile() {
 
           <fieldset className='profile-section'>
             <legend>Personal details</legend>
-            <p>Use the names shown on your identity document.</p>
+            <p>Your display name can be different from your document names. Add optional document matching in <Link to='/recovery-setup'>Recovery setup</Link>.</p>
+            <div className='form-row'><label className='form-label' htmlFor='profile-display-name'>Display name</label><input id='profile-display-name' className='form-input' name='displayName' value={form.displayName} onChange={handleChange} maxLength={80} autoComplete='nickname' /></div>
             <div className='profile-fields profile-fields-three'>
               <div className='form-row'>
                 <label className='form-label' htmlFor='profile-first-names'>First names</label>
-                <input id='profile-first-names' className='form-input' name='firstNames' value={form.firstNames} onChange={handleChange} autoComplete='given-name' required />
+                <input id='profile-first-names' className='form-input' name='firstNames' value={form.firstNames} onChange={handleChange} autoComplete='given-name' />
               </div>
               <div className='form-row'>
                 <label className='form-label' htmlFor='profile-surname'>Surname</label>
-                <input id='profile-surname' className='form-input' name='surname' value={form.surname} onChange={handleChange} autoComplete='family-name' required />
+                <input id='profile-surname' className='form-input' name='surname' value={form.surname} onChange={handleChange} autoComplete='family-name' />
               </div>
               <div className='form-row'>
                 <label className='form-label' htmlFor='profile-initials'>Initials</label>
-                <input id='profile-initials' className='form-input' name='initials' value={form.initials} onChange={handleChange} required />
+                <input id='profile-initials' className='form-input' name='initials' value={form.initials} onChange={handleChange} />
               </div>
             </div>
           </fieldset>
@@ -154,7 +157,7 @@ function Profile() {
             <div className='profile-fields'>
               <div className='form-row'>
                 <label className='form-label' htmlFor='profile-phone'>Phone number</label>
-                <input id='profile-phone' className='form-input' type='tel' name='phone' value={form.phone} onChange={handleChange} autoComplete='tel' required />
+                <input id='profile-phone' className='form-input' type='tel' name='phone' value={form.phone} onChange={handleChange} autoComplete='tel' />
               </div>
               <div className='form-row'>
                 <label className='form-label' htmlFor='profile-email'>Email address</label>

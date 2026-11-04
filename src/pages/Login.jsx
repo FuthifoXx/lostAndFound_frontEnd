@@ -84,6 +84,8 @@ function Login() {
               <p className='auth-notice'>Sign in to continue with this item.</p>
             )}
 
+            {searchParams.get('registered') === '1' && <p className='auth-notice' role='status'>Account created. Check your email for a confirmation link, then sign in to choose your recovery options.</p>}
+
             {error && <p className='form-alert' role='alert'>{error}</p>}
 
             <div className='form-row'>

@@ -57,6 +57,8 @@ function Dashboard() {
         description='Track matched property, claim decisions and completed recoveries in one secure place.'
       />
 
+      <section className='recovery-panel'><h2>Your recovery options</h2><p>Keep a private lost-item report, confirm your email, or choose how to match your documents. You can add these details when you are ready.</p><Link className='btn' to='/recovery-setup'>Open Recovery setup</Link></section>
+
       <div className='stats-grid'>
         <StatCard value={stats.totalItems} label='Total items' />
         <StatCard value={stats.matchedItems} label='Matched' />
