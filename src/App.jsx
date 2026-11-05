@@ -5,6 +5,8 @@ import AdminSurvey from './pages/AdminSurvey'
 import Login from './pages/Login'
 import PasswordRecovery from './pages/PasswordRecovery'
 import Register from './pages/Register'
+import VerifyEmail from './pages/VerifyEmail'
+import RecoverySetup from './pages/RecoverySetup'
 import Dashboard from './pages/Dashboard'
 import AddItem from './pages/AddItem'
 import MyItems from './pages/MyItems'
@@ -46,6 +48,8 @@ function App() {
       <Route path='/forgot-password' element={<PasswordRecovery key='forgot' />} />
       <Route path='/reset-password' element={<PasswordRecovery key='reset' reset />} />
       <Route path='/register' element={<Register />} />
+      <Route path='/verify-email' element={<VerifyEmail />} />
+      <Route path='/recovery-setup' element={<ProtectedRoute><Layout><RecoverySetup /></Layout></ProtectedRoute>} />
 
       <Route path='/items' element={<Items />} />
       <Route path='/items/:id' element={<ItemDetails />} />

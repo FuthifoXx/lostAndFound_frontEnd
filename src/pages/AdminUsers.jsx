@@ -86,7 +86,7 @@ function AdminUsers() {
   const filteredUsers = users.filter((registeredUser) => {
     const fullName = `${Array.isArray(registeredUser.firstNames) ? registeredUser.firstNames.join(' ') : registeredUser.firstNames || ''} ${registeredUser.surname || ''}`
     const partner = registeredUser.partner ? `${registeredUser.partner.name} ${registeredUser.partner.branch}` : ''
-    const matchesQuery = !normalizedQuery || `${registeredUser.email} ${fullName} ${registeredUser.phone || ''} ${partner}`.toLowerCase().includes(normalizedQuery)
+    const matchesQuery = !normalizedQuery || `${registeredUser.email} ${registeredUser.displayName || ''} ${fullName} ${registeredUser.phone || ''} ${partner}`.toLowerCase().includes(normalizedQuery)
     return matchesQuery && (roleFilter === 'all' || registeredUser.role === roleFilter)
   })
 
@@ -134,8 +134,8 @@ function AdminUsers() {
 
             return <article key={registeredUser._id} className='admin-user-card'>
               <div className='admin-user-card-heading'>
-                <div className='admin-user-avatar' aria-hidden='true'>{(fullName || registeredUser.email).charAt(0).toUpperCase()}</div>
-                <div><h2>{fullName || 'Unnamed account'}</h2><p>{registeredUser.email}</p></div>
+                <div className='admin-user-avatar' aria-hidden='true'>{(registeredUser.displayName || fullName || registeredUser.email).charAt(0).toUpperCase()}</div>
+                <div><h2>{registeredUser.displayName || fullName || 'Unnamed account'}</h2><p>{registeredUser.email}</p></div>
                 <span className={`admin-role-badge role-${registeredUser.role}`}>{registeredUser.role}</span>
               </div>
 
